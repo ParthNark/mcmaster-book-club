@@ -362,6 +362,18 @@ main {
   line-height: 1.7;
 }
 
+.inline-link {
+  color: var(--color-maroon);
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  transition: color 0.2s ease;
+}
+
+.inline-link:hover {
+  color: var(--color-burnt-orange);
+}
+
 /* Join Section */
 .join-section {
   background: linear-gradient(135deg, #fdfaf5 0%, #f5ead9 100%);
@@ -427,6 +439,7 @@ main {
   margin-top: 2rem;
   padding-top: 2rem;
   border-top: 2px solid rgba(122, 0, 60, 0.2);
+  text-align: center;
 }
 
 .social-preview p {
@@ -436,37 +449,31 @@ main {
   font-weight: 600;
 }
 
-.social-icons {
-  display: flex;
-  justify-content: center;
-  gap: 2rem;
-}
-
-.social-icon {
+/* Linktree Button */
+.btn-linktree {
   display: inline-flex;
   align-items: center;
-  justify-content: center;
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  background-color: white;
-  box-shadow: 0 2px 8px rgba(122, 0, 60, 0.1);
+  gap: 0.6rem;
+  padding: 0.75rem 2rem;
+  background-color: var(--color-maroon);
+  color: var(--color-cream);
+  font-family: var(--font-heading);
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 50px;
+  text-decoration: none;
+  box-shadow: 0 4px 14px rgba(122, 0, 60, 0.25);
   transition: var(--transition);
 }
 
-.social-icon:hover {
-  background-color: var(--color-maroon);
-  transform: translateY(-5px);
+.btn-linktree:hover {
+  background-color: var(--color-dark-maroon);
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(122, 0, 60, 0.35);
 }
 
-.social-icon:hover svg {
-  stroke: white;
-  fill: white;
-}
-
-.social-icon svg {
-  width: 28px;
-  height: 28px;
+.btn-linktree svg {
+  flex-shrink: 0;
 }
 
 /* ===== FOOTER ===== */
@@ -674,21 +681,6 @@ main {
   /* Sections */
   .section {
     padding: 1.5rem 1rem;
-  }
-
-  /* Social Icons */
-  .social-icons {
-    gap: 1rem;
-  }
-
-  .social-icon {
-    width: 45px;
-    height: 45px;
-  }
-
-  .social-icon svg {
-    width: 24px;
-    height: 24px;
   }
 
   /* Book Card */
@@ -937,6 +929,286 @@ main {
 
   .hw-title {
     font-size: 1.2rem;
+  }
+}
+
+/* ===== Home Widget Grid (two-book layout) ===== */
+.hw-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2rem;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.hw-grid .hw-card {
+  max-width: none;
+}
+
+@media (max-width: 768px) {
+  .hw-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+}
+
+/* ===== Meetings & Events Section (home page) ===== */
+.meetings-events-section {
+  background: linear-gradient(135deg, #fdfaf5 0%, #f5ead9 100%);
+}
+
+.me-subsection {
+  margin-bottom: 2.5rem;
+}
+
+.me-subsection:last-child {
+  margin-bottom: 0;
+}
+
+.me-subheading {
+  font-family: 'Poppins', sans-serif;
+  font-size: 1.5rem;
+  color: var(--color-maroon);
+  margin-bottom: 1.25rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Monthly Picks grid */
+.me-picks-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 1.5rem;
+}
+
+.me-pick-card {
+  display: grid;
+  grid-template-columns: 100px 1fr;
+  gap: 1.25rem;
+  background: white;
+  border-radius: 14px;
+  padding: 1.4rem;
+  box-shadow: 0 4px 16px rgba(122, 0, 60, 0.08);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.me-pick-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgba(122, 0, 60, 0.14);
+}
+
+.me-pick-cover {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+.me-pick-cover img {
+  width: 100%;
+  max-width: 100px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  object-fit: cover;
+}
+
+.me-pick-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.me-pick-title {
+  font-family: 'Merriweather', serif;
+  font-size: 1.1rem;
+  color: var(--color-maroon);
+  font-weight: 700;
+  line-height: 1.3;
+  margin: 0;
+}
+
+.me-pick-author {
+  font-style: italic;
+  color: var(--color-burnt-orange);
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+.me-pick-meeting {
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.82rem;
+  color: var(--color-text);
+  margin-top: 0.25rem;
+}
+
+.me-pick-notes {
+  font-size: 0.85rem;
+  color: #8a7d73;
+  font-style: italic;
+  margin-top: 0.15rem;
+}
+
+.me-pick-details-btn {
+  margin-top: 0.6rem;
+  align-self: flex-start;
+  font-size: 0.85rem;
+  padding: 0.4rem 1rem;
+  text-decoration: none;
+}
+
+/* Events grid */
+.me-events-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.me-event-card {
+  background: white;
+  border-radius: 14px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 16px rgba(122, 0, 60, 0.08);
+  border-left: 4px solid var(--color-burnt-orange);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.me-event-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgba(122, 0, 60, 0.14);
+}
+
+.me-event-title {
+  font-family: 'Poppins', sans-serif;
+  font-size: 1.15rem;
+  color: var(--color-maroon);
+  font-weight: 700;
+  margin: 0 0 0.4rem;
+}
+
+.me-event-datetime {
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.88rem;
+  color: var(--color-burnt-orange);
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+}
+
+.me-event-location {
+  font-size: 0.88rem;
+  color: #8a7d73;
+  margin-bottom: 0.5rem;
+}
+
+.me-event-desc {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: var(--color-text);
+  margin-bottom: 0.75rem;
+}
+
+.me-event-actions {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.me-event-ig-btn,
+.me-event-rsvp-btn {
+  display: inline-block;
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 0.5rem 1.1rem;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: var(--transition);
+}
+
+.me-event-ig-btn {
+  background: linear-gradient(135deg, #833ab4, #fd1d1d, #fcb045);
+  color: white;
+}
+
+.me-event-ig-btn:hover {
+  opacity: 0.85;
+  transform: translateY(-1px);
+}
+
+.me-event-rsvp-btn {
+  background: var(--color-maroon);
+  color: white;
+}
+
+.me-event-rsvp-btn:hover {
+  background: var(--color-dark-maroon);
+  transform: translateY(-1px);
+}
+
+.me-no-events {
+  text-align: center;
+  font-family: 'Poppins', sans-serif;
+  font-size: 1.05rem;
+  color: #8a7d73;
+  font-style: italic;
+  padding: 2rem 0;
+}
+
+.me-loading {
+  text-align: center;
+  font-style: italic;
+  color: var(--color-burnt-orange);
+  padding: 1.5rem 0;
+  font-family: 'Poppins', sans-serif;
+}
+
+.me-error {
+  text-align: center;
+  font-family: 'Poppins', sans-serif;
+  font-size: 1rem;
+  color: var(--color-burnt-orange);
+  padding: 1.5rem 0;
+  font-style: italic;
+}
+
+/* Meetings & Events responsive */
+@media (max-width: 768px) {
+  .me-picks-grid,
+  .me-events-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .me-pick-card {
+    grid-template-columns: 80px 1fr;
+    gap: 1rem;
+    padding: 1.1rem;
+  }
+
+  .me-pick-cover img {
+    max-width: 80px;
+  }
+
+  .me-subheading {
+    font-size: 1.3rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .me-pick-card {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+
+  .me-pick-cover {
+    justify-content: center;
+  }
+
+  .me-pick-cover img {
+    max-width: 100px;
+  }
+
+  .me-event-actions {
+    justify-content: center;
   }
 }
 
@@ -1304,6 +1576,12 @@ main {
 
   .page-hero h1 {
     font-size: 2rem;
+  }
+
+  #cr-books-container {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
   }
 
   .cr-book-card {

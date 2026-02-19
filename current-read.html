@@ -34,7 +34,7 @@
                 <li class="nav-item"><a href="index.html#home" class="nav-link">Home</a></li>
                 <li class="nav-item"><a href="index.html#about" class="nav-link">About</a></li>
                 <li class="nav-item"><a href="current-read.html" class="nav-link nav-link-active">Current Read</a></li>
-                <li class="nav-item"><a href="index.html#meetings" class="nav-link">Meetings</a></li>
+                <li class="nav-item"><a href="meetings-events.html" class="nav-link">Meetings & Events</a></li>
                 <li class="nav-item"><a href="index.html#join" class="nav-link nav-link-cta">Join Us</a></li>
             </ul>
         </div>
@@ -44,46 +44,16 @@
         <!-- Page Hero -->
         <section class="page-hero">
             <div class="container">
-                <h1>📚 Current Read</h1>
+                <h1>📚 Current Reads</h1>
                 <p>What we're reading this month — and what's coming next.</p>
             </div>
         </section>
 
-        <!-- Current Book Feature Card -->
+        <!-- Current Books (dynamically rendered) -->
         <section class="section cr-book-section">
             <div class="container">
-                <p id="cr-loading" class="cr-loading-msg">Loading current read…</p>
-                <div class="cr-book-card" id="cr-book-card">
-                    <div class="cr-book-cover">
-                        <img id="cr-cover-img" src="images/current-book-cover.png" alt="Book cover">
-                    </div>
-                    <div class="cr-book-info">
-                        <h2 class="cr-book-title" id="cr-title">Loading…</h2>
-                        <p class="cr-book-author" id="cr-author"></p>
-
-                        <div class="cr-tags" id="cr-tags"></div>
-
-                        <p class="cr-book-summary" id="cr-summary"></p>
-
-                        <div class="cr-meeting-info">
-                            <h3>📅 Meeting Info</h3>
-                            <ul id="cr-meeting-list">
-                                <li>Loading…</li>
-                            </ul>
-                        </div>
-
-                        <div class="cr-discussion">
-                            <h3>💬 Discussion Prompts</h3>
-                            <ol id="cr-prompts">
-                                <li>Loading…</li>
-                            </ol>
-                        </div>
-
-                        <a id="cr-goodreads-btn" class="btn btn-secondary btn-goodreads" href="#" target="_blank" rel="noopener" style="display:none;">
-                            ⭐ View Ratings on Goodreads
-                        </a>
-                    </div>
-                </div>
+                <p id="cr-loading" class="cr-loading-msg">Loading current reads…</p>
+                <div id="cr-books-container"></div>
                 <p id="cr-error" class="cr-error-msg" style="display:none;">Book details loading failed — please check back.</p>
             </div>
         </section>
@@ -139,7 +109,7 @@
                     <li><a href="index.html#home">Home</a></li>
                     <li><a href="index.html#about">About</a></li>
                     <li><a href="current-read.html">Current Read</a></li>
-                    <li><a href="index.html#meetings">Meetings</a></li>
+                    <li><a href="meetings-events.html">Meetings & Events</a></li>
                     <li><a href="index.html#join">Join Us</a></li>
                 </ul>
             </div>
@@ -152,6 +122,11 @@
                             <rect x="2" y="2" width="20" height="20" rx="4.18" ry="4.18" fill="none" stroke="currentColor" stroke-width="2"/>
                             <circle cx="12" cy="12" r="3.6" fill="none" stroke="currentColor" stroke-width="2"/>
                             <circle cx="18.5" cy="5.5" r="1.5" fill="currentColor"/>
+                        </svg>
+                    </a>
+                    <a href="https://linktr.ee/mcmasterbooks" target="_blank" rel="noopener" aria-label="Linktree" class="footer-social-link">
+                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M7.953 15.066l-.038-4.18 4.058-.002v13.12h.076V10.882l4.058.002-.038 4.18 4.354-4.1-1.476-1.58-2.762 2.608.038-5.238h3.4L12 0 4.553 6.754h3.4l.038 5.238-2.762-2.608-1.476 1.58 4.2 4.102z" fill="currentColor"/>
                         </svg>
                     </a>
                     <a href="#" aria-label="Discord" class="footer-social-link">
@@ -193,18 +168,24 @@
             }
         });
 
-        // ─── Load config + Open Library data ──────────────────────
+        /** Escape HTML entities to prevent XSS */
+        function escapeHtml(str) {
+            var div = document.createElement('div');
+            div.appendChild(document.createTextNode(str));
+            return div.innerHTML;
+        }
+
+        // ─── Load TWO current books + Open Library data ───────────
         (async function () {
-            var loadingEl = document.getElementById('cr-loading');
-            var cardEl    = document.getElementById('cr-book-card');
-            var errorEl   = document.getElementById('cr-error');
+            var loadingEl   = document.getElementById('cr-loading');
+            var containerEl = document.getElementById('cr-books-container');
+            var errorEl     = document.getElementById('cr-error');
 
             /**
              * Fetch config from Google Sheets API first.
-             * If the API isn't configured or fails, fall back to local data/current.json.
+             * getCurrent() returns normalized { books, voting_open, vote_form_url }.
              */
             async function loadConfig() {
-                // Try Google Sheets API first
                 if (typeof getCurrent === 'function' &&
                     typeof API_BASE !== 'undefined' &&
                     API_BASE !== 'PASTE_WEB_APP_URL_HERE') {
@@ -215,90 +196,95 @@
                         console.warn('API fetch failed, falling back to local JSON:', e);
                     }
                 }
-                // Fallback: local file
                 var res = await fetch('data/current.json');
                 if (!res.ok) throw new Error('Could not load config from API or local file');
                 return res.json();
             }
 
             try {
-                // 1. Load config (API → local fallback)
+                // 1. Load config
                 var config = await loadConfig();
 
-                // 2. Fetch from Open Library (with fallback to config values)
-                var book = await fetchBookFromOpenLibrary(config);
+                // books is always an array (normalized by api.js _normalizeCurrent)
+                var books = config.books || [];
+                if (books.length === 0) throw new Error('No books in response');
+
+                // 2. Fetch Open Library data for each book in parallel
+                var olPromises = books.map(function (b) { return fetchBookFromOpenLibrary(b); });
+                var olResults  = await Promise.all(olPromises);
 
                 // 3. Hide loading
                 if (loadingEl) loadingEl.style.display = 'none';
 
-                // 4. Populate UI — Title
-                document.getElementById('cr-title').textContent = book.title || config.title || 'TBA';
+                // 4. Render a full book card for each book
+                var html = '';
+                for (var i = 0; i < books.length; i++) {
+                    var bk   = books[i];
+                    var book = olResults[i];
+                    var bookId = bk.id || ('book' + (i + 1));
 
-                // 5. Authors
-                var authorsText = (book.authors && book.authors.length > 0)
-                    ? 'by ' + book.authors.join(', ')
-                    : (config.author ? 'by ' + config.author : '');
-                document.getElementById('cr-author').textContent = authorsText;
+                    var title = escapeHtml(book.title || bk.title || 'TBA');
+                    var authorsText = (book.authors && book.authors.length > 0)
+                        ? 'by ' + escapeHtml(book.authors.join(', '))
+                        : (bk.author ? 'by ' + escapeHtml(bk.author) : '');
+                    var coverSrc = book.coverUrl || 'images/current-book-cover.png';
+                    var summaryText = escapeHtml(book.description || bk.custom_summary || '');
 
-                // 6. Cover image
-                var coverImg = document.getElementById('cr-cover-img');
-                if (book.coverUrl) {
-                    coverImg.alt = 'Cover of ' + (book.title || config.title || 'current book');
-                    // Test the cover URL — Open Library returns 404 for missing covers
-                    coverImg.onerror = function () {
-                        this.onerror = null;
-                        this.src = 'images/current-book-cover.png';
-                        this.alt = 'Book cover placeholder';
-                    };
-                    coverImg.src = book.coverUrl;
-                }
-
-                // 7. Description / Summary
-                var summaryText = book.description || config.custom_summary || '';
-                document.getElementById('cr-summary').textContent = summaryText;
-
-                // 8. Tags / Subjects
-                var tagsEl = document.getElementById('cr-tags');
-                tagsEl.innerHTML = '';
-                var tagsList = (config.tags && config.tags.length > 0)
-                    ? config.tags
-                    : (book.subjects || []);
-                tagsList.forEach(function (tag) {
-                    var span = document.createElement('span');
-                    span.className = 'cr-tag';
-                    span.textContent = tag;
-                    tagsEl.appendChild(span);
-                });
-
-                // 9. Meeting info (always from config)
-                var meetList = document.getElementById('cr-meeting-list');
-                meetList.innerHTML = '';
-                var timeLi = document.createElement('li');
-                timeLi.innerHTML = '<strong>When:</strong> ' + (config.meeting_time || 'TBA');
-                meetList.appendChild(timeLi);
-                var locLi = document.createElement('li');
-                locLi.innerHTML = '<strong>Where:</strong> ' + (config.meeting_location || 'TBA');
-                meetList.appendChild(locLi);
-
-                // 10. Discussion prompts (from config)
-                var promptsEl = document.getElementById('cr-prompts');
-                promptsEl.innerHTML = '';
-                if (config.discussion_prompts && config.discussion_prompts.length > 0) {
-                    config.discussion_prompts.forEach(function (q) {
-                        var li = document.createElement('li');
-                        li.textContent = q;
-                        promptsEl.appendChild(li);
+                    // Tags
+                    var tagsHtml = '';
+                    var tagsList = (bk.tags && bk.tags.length > 0) ? bk.tags : (book.subjects || []);
+                    tagsList.forEach(function (tag) {
+                        tagsHtml += '<span class="cr-tag">' + escapeHtml(tag) + '</span>';
                     });
+
+                    // Meeting info
+                    var meetingHtml = '<li><strong>When:</strong> ' + escapeHtml(bk.meeting_time || 'TBA') + '</li>'
+                        + '<li><strong>Where:</strong> ' + escapeHtml(bk.meeting_location || 'TBA') + '</li>';
+                    if (bk.meeting_notes) {
+                        meetingHtml += '<li><strong>Notes:</strong> ' + escapeHtml(bk.meeting_notes) + '</li>';
+                    }
+
+                    // Discussion prompts
+                    var promptsHtml = '';
+                    if (bk.discussion_prompts && bk.discussion_prompts.length > 0) {
+                        bk.discussion_prompts.forEach(function (q) {
+                            promptsHtml += '<li>' + escapeHtml(q) + '</li>';
+                        });
+                    }
+
+                    // Goodreads button
+                    var grBtnHtml = '';
+                    if (bk.goodreads_url && bk.goodreads_url.trim()) {
+                        grBtnHtml = '<a class="btn btn-secondary btn-goodreads" href="' + escapeHtml(bk.goodreads_url) + '" target="_blank" rel="noopener">⭐ View Ratings on Goodreads</a>';
+                    }
+
+                    html += '<div class="cr-book-card" id="' + bookId + '">'
+                        + '<div class="cr-book-cover">'
+                        +   '<img src="' + coverSrc + '" alt="Cover of ' + title + '" onerror="this.onerror=null;this.src=\'images/current-book-cover.png\';">'
+                        + '</div>'
+                        + '<div class="cr-book-info">'
+                        +   '<h2 class="cr-book-title">' + title + '</h2>'
+                        +   '<p class="cr-book-author">' + authorsText + '</p>'
+                        +   '<div class="cr-tags">' + tagsHtml + '</div>'
+                        +   '<p class="cr-book-summary">' + summaryText + '</p>'
+                        +   '<div class="cr-meeting-info"><h3>📅 Meeting Info</h3><ul>' + meetingHtml + '</ul></div>'
+                        +   (promptsHtml ? '<div class="cr-discussion"><h3>💬 Discussion Prompts</h3><ol>' + promptsHtml + '</ol></div>' : '')
+                        +   grBtnHtml
+                        + '</div>'
+                        + '</div>';
                 }
 
-                // 11. Goodreads button
-                var grBtn = document.getElementById('cr-goodreads-btn');
-                if (config.goodreads_url && config.goodreads_url.trim() !== '') {
-                    grBtn.href = config.goodreads_url;
-                    grBtn.style.display = 'inline-block';
+                containerEl.innerHTML = html;
+
+                // Scroll to anchored book if URL has #book1 or #book2
+                if (window.location.hash) {
+                    var target = document.getElementById(window.location.hash.substring(1));
+                    if (target) {
+                        setTimeout(function () { target.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 100);
+                    }
                 }
 
-                // 12. Vote button (from config)
+                // 5. Vote button (global settings)
                 var voteBtn = document.getElementById('vote-btn');
                 if (config.voting_open && config.vote_form_url && config.vote_form_url.trim() !== '') {
                     voteBtn.disabled = false;
@@ -311,7 +297,7 @@
                     voteBtn.textContent = 'Voting opens soon';
                 }
 
-                // 13. Load past reads from API (if available)
+                // 6. Load past reads
                 loadPastReads();
 
             } catch (err) {
@@ -365,13 +351,6 @@
                 console.warn('Could not load past reads:', e);
                 container.innerHTML = '<div class="error-state">Unable to load past reads right now.</div>';
             }
-        }
-
-        /** Escape HTML entities to prevent XSS */
-        function escapeHtml(str) {
-            var div = document.createElement('div');
-            div.appendChild(document.createTextNode(str));
-            return div.innerHTML;
         }
     </script>
 </body>

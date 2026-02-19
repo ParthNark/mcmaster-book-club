@@ -34,7 +34,7 @@
                 <li class="nav-item"><a href="#home" class="nav-link">Home</a></li>
                 <li class="nav-item"><a href="#about" class="nav-link">About</a></li>
                 <li class="nav-item"><a href="current-read.html" class="nav-link">Current Read</a></li>
-                <li class="nav-item"><a href="#meetings" class="nav-link">Meetings</a></li>
+                <li class="nav-item"><a href="meetings-events.html" class="nav-link">Meetings & Events</a></li>
                 <li class="nav-item"><a href="#join" class="nav-link nav-link-cta">Join Us</a></li>
             </ul>
         </div>
@@ -131,46 +131,29 @@
             </div>
         </section>
 
-        <!-- Current Read Widget -->
+        <!-- Current Reads Widget (Two Books) -->
         <section id="current-read" class="section current-read-section">
             <div class="container">
                 <h2>
                     <span class="section-icon">📚</span>
-                    Current Read
+                    Current Reads
                 </h2>
 
                 <!-- Loading state -->
-                <p id="hw-loading" class="hw-loading">Loading current read…</p>
+                <p id="hw-loading" class="hw-loading">Loading current reads…</p>
 
-                <!-- Widget card (hidden until data loads) -->
-                <a href="current-read.html" class="hw-card" id="hw-card" style="display:none;">
-                    <div class="hw-cover">
-                        <img id="hw-cover-img" src="" alt="Book cover">
-                    </div>
-                    <div class="hw-body">
-                        <div class="hw-header">
-                            <h3 class="hw-title" id="hw-title">Loading…</h3>
-                            <span class="hw-rating" id="hw-rating" style="display:none;"></span>
-                        </div>
-                        <p class="hw-author" id="hw-author"></p>
-                        <p class="hw-desc" id="hw-desc"></p>
-                        <div class="hw-tags" id="hw-tags"></div>
-                        <div class="hw-footer">
-                            <span class="hw-cta">View details & discussion prompts →</span>
-                            <span class="hw-goodreads" id="hw-goodreads" style="display:none;">⭐ Goodreads</span>
-                        </div>
-                    </div>
-                </a>
+                <!-- Two-book grid (hidden until data loads) -->
+                <div class="hw-grid" id="hw-grid" style="display:none;"></div>
 
                 <!-- Error fallback -->
                 <div id="hw-error" class="hw-error" style="display:none;">
-                    <p>We're currently reading a new book together!</p>
+                    <p>We're currently reading new books together!</p>
                     <a href="current-read.html" class="btn btn-primary">View current book details →</a>
                 </div>
             </div>
         </section>
 
-        <!-- Meetings Section -->
+        <!-- When We Meet Section -->
         <section id="meetings" class="section meetings-section">
             <div class="container">
                 <h2>
@@ -180,26 +163,26 @@
                 <div class="meetings-grid">
                     <article class="meeting-card">
                         <div class="meeting-icon">🗓️</div>
-                        <h3>Regular Meetings</h3>
+                        <h3>Monthly Meetings</h3>
                         <p>
-                            We gather bi-weekly to discuss our selections. Sessions are held both in-person and 
-                            virtually to accommodate everyone's schedule.
+                            We gather monthly to discuss our selections — both fiction and non-fiction picks.
+                            Everyone is welcome, whether you finished the book or just started.
                         </p>
                     </article>
                     <article class="meeting-card">
                         <div class="meeting-icon">📍</div>
                         <h3>Location</h3>
                         <p>
-                            Meetings take place at McMaster University campus and online via Zoom. 
-                            Check our Discord for the latest location updates and meeting links.
+                            Meetings take place in the Blue Lounge at McMaster University.
+                            Check our <a href="https://www.instagram.com/mcmasterbooks/" target="_blank" rel="noopener" class="inline-link">Instagram</a> for room updates.
                         </p>
                     </article>
                     <article class="meeting-card">
                         <div class="meeting-icon">⏰</div>
                         <h3>Schedule</h3>
                         <p>
-                            Join us Thursdays at 6 PM EST. Sessions typically run for 90 minutes with 
-                            refreshments provided. All members are encouraged to participate in discussions.
+                            Follow us on <a href="https://www.instagram.com/mcmasterbooks/" target="_blank" rel="noopener" class="inline-link">Instagram</a>
+                            and check <a href="meetings-events.html" class="inline-link">Meetings & Events</a> for the latest dates and times.
                         </p>
                     </article>
                 </div>
@@ -229,21 +212,12 @@
                     </div>
                     <div class="social-preview">
                         <p>Connect with us:</p>
-                        <div class="social-icons">
-                            <a href="https://www.instagram.com/mcmasterbooks/" target="_blank" rel="noopener" class="social-icon" aria-label="Instagram">
-                                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                    <rect width="24" height="24" fill="none"/>
-                                    <rect x="2" y="2" width="20" height="20" rx="4.18" ry="4.18" fill="none" stroke="#7a003c" stroke-width="2"/>
-                                    <circle cx="12" cy="12" r="3.6" fill="none" stroke="#7a003c" stroke-width="2"/>
-                                    <circle cx="18.5" cy="5.5" r="1.5" fill="#7a003c"/>
-                                </svg>
-                            </a>
-                            <a href="#" class="social-icon" aria-label="Discord">
-                                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M20.317 4.3671c-1.8345-.8954-3.970-.4383-3.970-.4383l-.195.234c2.3825.7234 3.5175 1.7622 3.5175 1.7622-1.5-.7372-2.9906-1.0972-4.4131-1.2237-.9035-.1117-1.7885-.0835-2.6059.0619 0 0 .137-.1618.4147-.3953-1.6365-.247-3.0992.1584-3.0992.1584s1.1246 1.0369 3.5042 1.7397v-.01c.4725.5648.9451 1.1295 1.3175 1.7622.6234 1.1293.9935 2.4627.9935 3.7961 0 0-.5589 1.1947-2.1768 1.5921 0 0 .1302.1618.4147.1618 1.3175 0 2.1768-.9452 2.1768-.9452.1302 1.2564-.3897 2.511-1.1246 3.4294-.6234.7371-1.5588 1.2565-2.5233 1.3441.5878.4665 1.3175.7919 2.1768.8238.8592.0318 1.7593-.1319 2.5233-.4665.7641-.3346 1.5281-.8874 2.0765-1.55-.3897 2.511-2.6059 4.3671-5.2118 4.3671-1.3175 0-2.5233-.3345-3.5175-1.0369.2914-.1938.5878-.3884.8813-.5829 1.5-.9451 2.8537-2.3758 3.6227-4.0328.7641-1.657 1.0285-3.4933.7641-5.2936-.2645-1.8003-.7641-3.494-1.8345-4.9575z" fill="#7a003c"/>
-                                </svg>
-                            </a>
-                        </div>
+                        <a href="https://linktr.ee/mcmasterbooks" target="_blank" rel="noopener" class="btn-linktree" aria-label="Linktree">
+                            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor">
+                                <path d="M7.953 15.066l-.038-2.888 4.088-.004.038 11.822h3.834l.037-11.822 4.09.004-.04 2.888L24 10.994l-4.07-4.064 2.898-.04L19.953.015l-4.06 4.072L15.932 1.2h-3.834l.027 2.886L8.062 0 4.09 4.074l2.86.03-4.073 4.08 4.073 4.074.038-2.888-4.09-.004L7.953 15.066z"/>
+                            </svg>
+                            <span>Our Linktree</span>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -288,7 +262,7 @@
                     <li><a href="#home">Home</a></li>
                     <li><a href="#about">About</a></li>
                     <li><a href="current-read.html">Current Read</a></li>
-                    <li><a href="#meetings">Meetings</a></li>
+                    <li><a href="meetings-events.html">Meetings & Events</a></li>
                     <li><a href="#join">Join Us</a></li>
                 </ul>
             </div>
@@ -301,6 +275,11 @@
                             <rect x="2" y="2" width="20" height="20" rx="4.18" ry="4.18" fill="none" stroke="currentColor" stroke-width="2"/>
                             <circle cx="12" cy="12" r="3.6" fill="none" stroke="currentColor" stroke-width="2"/>
                             <circle cx="18.5" cy="5.5" r="1.5" fill="currentColor"/>
+                        </svg>
+                    </a>
+                    <a href="https://linktr.ee/mcmasterbooks" target="_blank" rel="noopener" aria-label="Linktree" class="footer-social-link">
+                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M7.953 15.066l-.038-4.18 4.058-.002v13.12h.076V10.882l4.058.002-.038 4.18 4.354-4.1-1.476-1.58-2.762 2.608.038-5.238h3.4L12 0 4.553 6.754h3.4l.038 5.238-2.762-2.608-1.476 1.58 4.2 4.102z" fill="currentColor"/>
                         </svg>
                     </a>
                     <a href="#" aria-label="Discord" class="footer-social-link">
@@ -344,14 +323,21 @@
             }
         });
 
-        // ─── Current Read Widget ──────────────────────────────
+        /** Escape HTML entities to prevent XSS */
+        function _esc(str) {
+            var d = document.createElement('div');
+            d.appendChild(document.createTextNode(str));
+            return d.innerHTML;
+        }
+
+        // ─── Current Reads Widget (Two Books) ──────────────────
         (async function () {
             var loadingEl = document.getElementById('hw-loading');
-            var cardEl    = document.getElementById('hw-card');
+            var gridEl    = document.getElementById('hw-grid');
             var errorEl   = document.getElementById('hw-error');
 
             try {
-                // 1. Load config from API (fallback to local JSON)
+                // 1. Load config from API (getCurrent always returns normalized shape)
                 var config;
                 if (typeof getCurrent === 'function' &&
                     typeof API_BASE !== 'undefined' &&
@@ -364,60 +350,65 @@
                     config = await res.json();
                 }
 
-                // 2. Fetch Open Library data
-                var book = await fetchBookFromOpenLibrary(config);
+                // books is always an array (normalized by api.js _normalizeCurrent)
+                var books = config.books || [];
+                if (books.length === 0) throw new Error('No books in response');
 
-                // 3. Populate widget
-                document.getElementById('hw-title').textContent = book.title || config.title || 'TBA';
+                // 2. Fetch Open Library data for each book in parallel
+                var olPromises = books.map(function (b) { return fetchBookFromOpenLibrary(b); });
+                var olResults  = await Promise.all(olPromises);
 
-                var authorText = (book.authors && book.authors.length > 0)
-                    ? 'by ' + book.authors.join(', ')
-                    : (config.author ? 'by ' + config.author : '');
-                document.getElementById('hw-author').textContent = authorText;
+                // 3. Build card HTML for each book
+                var cardsHtml = '';
+                for (var i = 0; i < books.length; i++) {
+                    var bk   = books[i];
+                    var book = olResults[i];
+                    var bookId = bk.id || ('book' + (i + 1));
 
-                // Cover
-                var coverImg = document.getElementById('hw-cover-img');
-                if (book.coverUrl) {
-                    coverImg.onerror = function () {
-                        this.onerror = null;
-                        this.src = 'images/current-book-cover.png';
-                        this.alt = 'Book cover placeholder';
-                    };
-                    coverImg.src = book.coverUrl;
-                    coverImg.alt = 'Cover of ' + (book.title || config.title || 'current book');
+                    var title = _esc(book.title || bk.title || 'TBA');
+                    var authorText = (book.authors && book.authors.length > 0)
+                        ? 'by ' + _esc(book.authors.join(', '))
+                        : (bk.author ? 'by ' + _esc(bk.author) : '');
+                    var coverSrc = book.coverUrl || 'images/current-book-cover.png';
+                    var fullDesc = book.description || bk.custom_summary || '';
+                    if (fullDesc.length > 160) fullDesc = fullDesc.substring(0, 157) + '…';
+                    fullDesc = _esc(fullDesc);
+
+                    var tagsHtml = '';
+                    var tags = (bk.tags && bk.tags.length > 0) ? bk.tags : (book.subjects || []);
+                    tags.forEach(function (tag) {
+                        tagsHtml += '<span class="hw-tag">' + _esc(tag) + '</span>';
+                    });
+
+                    var ratingHtml = '';
+                    if (bk.rating_text && bk.rating_text.trim()) {
+                        ratingHtml = '<span class="hw-rating">' + _esc(bk.rating_text) + '</span>';
+                    }
+
+                    var grHtml = '';
+                    if (bk.goodreads_url && bk.goodreads_url.trim()) {
+                        grHtml = '<span class="hw-goodreads">⭐ Goodreads</span>';
+                    }
+
+                    cardsHtml += '<a href="current-read.html#' + bookId + '" class="hw-card">'
+                        + '<div class="hw-cover"><img src="' + coverSrc + '" alt="Cover of ' + title + '" onerror="this.onerror=null;this.src=\'images/current-book-cover.png\';"></div>'
+                        + '<div class="hw-body">'
+                        +   '<div class="hw-header"><h3 class="hw-title">' + title + '</h3>' + ratingHtml + '</div>'
+                        +   '<p class="hw-author">' + authorText + '</p>'
+                        +   '<p class="hw-desc">' + fullDesc + '</p>'
+                        +   '<div class="hw-tags">' + tagsHtml + '</div>'
+                        +   '<div class="hw-footer">'
+                        +     '<span class="hw-cta">View details & discussion prompts →</span>'
+                        +     grHtml
+                        +   '</div>'
+                        + '</div>'
+                        + '</a>';
                 }
 
-                // Description (truncated to 160 chars)
-                var fullDesc = book.description || config.custom_summary || '';
-                if (fullDesc.length > 160) fullDesc = fullDesc.substring(0, 157) + '…';
-                document.getElementById('hw-desc').textContent = fullDesc;
-
-                // Tags
-                var tagsEl = document.getElementById('hw-tags');
-                var tags = (config.tags && config.tags.length > 0) ? config.tags : (book.subjects || []);
-                tags.forEach(function (tag) {
-                    var span = document.createElement('span');
-                    span.className = 'hw-tag';
-                    span.textContent = tag;
-                    tagsEl.appendChild(span);
-                });
-
-                // Rating badge (optional)
-                if (config.rating_text && config.rating_text.trim() !== '') {
-                    var ratingEl = document.getElementById('hw-rating');
-                    ratingEl.textContent = config.rating_text;
-                    ratingEl.style.display = 'inline-block';
-                }
-
-                // Goodreads link (optional, shown as label only — card itself links to current-read.html)
-                if (config.goodreads_url && config.goodreads_url.trim() !== '') {
-                    var grEl = document.getElementById('hw-goodreads');
-                    grEl.style.display = 'inline-block';
-                }
-
-                // Show card, hide loading
+                // 4. Show grid, hide loading
                 if (loadingEl) loadingEl.style.display = 'none';
-                cardEl.style.display = '';
+                gridEl.innerHTML = cardsHtml;
+                gridEl.style.display = '';
 
             } catch (err) {
                 console.error('Home widget load error:', err);

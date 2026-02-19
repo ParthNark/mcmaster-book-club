@@ -38,19 +38,67 @@ function _apiCacheSet(key, data) {
 
 /**
  * Fetch the current-read data from the "current" sheet tab.
+ * Always returns { books: [{...}, ...], voting_open: bool, vote_form_url: string }.
+ * Handles edge cases: old flat format, missing books array, empty responses.
  * Cached in sessionStorage for 5 minutes.
- * @returns {Promise<Object>} — { title, author, summary, tags[], ... }
+ * @returns {Promise<Object>}
  */
 function getCurrent() {
   var cached = _apiCacheGet('current');
-  if (cached) return Promise.resolve(cached);
+  if (cached) return Promise.resolve(_normalizeCurrent(cached));
 
   return fetch(API_BASE + "?path=current")
     .then(function (res) { return res.json(); })
     .then(function (data) {
       _apiCacheSet('current', data);
-      return data;
+      return _normalizeCurrent(data);
     });
+}
+
+/**
+ * Normalize the API response so every consumer sees a stable shape:
+ *   { books: [{id, isbn, ...}, ...], voting_open: bool, vote_form_url: string }
+ */
+function _normalizeCurrent(data) {
+  if (!data) return { books: [], voting_open: false, vote_form_url: '' };
+
+  // Ensure books is always an array
+  var books;
+  if (Array.isArray(data.books)) {
+    books = data.books;
+  } else if (data.isbn || data.work_id || data.title) {
+    // Old flat format — wrap in array
+    books = [data];
+  } else {
+    books = [];
+  }
+
+  // Filter out books that lack any identifier (isbn, work_id, or title)
+  books = books.filter(function (b) {
+    return (b.isbn && b.isbn.trim() !== '') ||
+           (b.work_id && b.work_id.trim() !== '') ||
+           (b.title && b.title.trim() !== '');
+  });
+
+  // Ensure each book has an id
+  for (var i = 0; i < books.length; i++) {
+    if (!books[i].id) books[i].id = 'book' + (i + 1);
+    // Ensure tags and discussion_prompts are always arrays
+    if (books[i].tags && typeof books[i].tags === 'string') {
+      books[i].tags = books[i].tags.split(';').map(function(t) { return t.trim(); }).filter(Boolean);
+    }
+    if (!Array.isArray(books[i].tags)) books[i].tags = [];
+    if (books[i].discussion_prompts && typeof books[i].discussion_prompts === 'string') {
+      books[i].discussion_prompts = books[i].discussion_prompts.split('|').map(function(t) { return t.trim(); }).filter(Boolean);
+    }
+    if (!Array.isArray(books[i].discussion_prompts)) books[i].discussion_prompts = [];
+  }
+
+  return {
+    books: books,
+    voting_open: data.voting_open === true || String(data.voting_open).toUpperCase() === 'TRUE',
+    vote_form_url: data.vote_form_url || ''
+  };
 }
 
 /**
@@ -66,6 +114,23 @@ function getPast() {
     .then(function (res) { return res.json(); })
     .then(function (data) {
       _apiCacheSet('past', data);
+      return data;
+    });
+}
+
+/**
+ * Fetch events from the "events" sheet tab.
+ * Cached in sessionStorage for 5 minutes.
+ * @returns {Promise<Array>} — [{ title, date, time, location, description, instagram_embed_url, rsvp_url }, ...]
+ */
+function getEvents() {
+  var cached = _apiCacheGet('events');
+  if (cached) return Promise.resolve(cached);
+
+  return fetch(API_BASE + "?path=events")
+    .then(function (res) { return res.json(); })
+    .then(function (data) {
+      _apiCacheSet('events', data);
       return data;
     });
 }
