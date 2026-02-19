@@ -1238,6 +1238,64 @@ main {
   color: var(--color-text);
 }
 
+/* ===== Past Reads — Loading / Error States ===== */
+.loading-state,
+.error-state {
+  text-align: center;
+  padding: 40px;
+  font-size: 1.1rem;
+  color: #555;
+  font-family: 'Poppins', sans-serif;
+}
+
+.error-state {
+  color: var(--color-burnt-orange);
+  font-style: italic;
+}
+
+/* ===== Skeleton Shimmer Cards ===== */
+.skeleton-card {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(122, 0, 60, 0.08);
+  border-left: 4px solid #e0d6ce;
+}
+
+.skeleton-line {
+  border-radius: 4px;
+  background: linear-gradient(90deg, #eee 25%, #ddd 37%, #eee 63%);
+  background-size: 400% 100%;
+  animation: shimmer 1.4s ease infinite;
+}
+
+.skeleton-title {
+  height: 18px;
+  width: 65%;
+  margin-bottom: 0.65rem;
+}
+
+.skeleton-author {
+  height: 14px;
+  width: 45%;
+  margin-bottom: 0.85rem;
+}
+
+.skeleton-blurb {
+  height: 12px;
+  width: 100%;
+  margin-bottom: 0.45rem;
+}
+
+.skeleton-blurb.short {
+  width: 70%;
+}
+
+@keyframes shimmer {
+  0%   { background-position: 100% 50%; }
+  100% { background-position: 0   50%; }
+}
+
 /* ===== NEW RESPONSIVE — 768px ===== */
 @media (max-width: 768px) {
   .page-hero {

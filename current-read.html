@@ -115,38 +115,12 @@
                     <span class="section-icon">📖</span>
                     Past Reads
                 </h2>
-                <div class="cr-past-grid" id="cr-past-grid">
-                    <!-- Populated by JS from Google Sheet. Fallback static cards: -->
-                    <article class="cr-past-card">
-                        <h3>Normal People</h3>
-                        <p class="cr-past-author">by Sally Rooney</p>
-                        <p class="cr-past-blurb">An intimate story of mutual fascination and friendship between two people who cannot stop gravitating toward each other.</p>
-                    </article>
-                    <article class="cr-past-card">
-                        <h3>Educated</h3>
-                        <p class="cr-past-author">by Tara Westover</p>
-                        <p class="cr-past-blurb">A memoir about growing up in a survivalist family and the transformative power of education.</p>
-                    </article>
-                    <article class="cr-past-card">
-                        <h3>Circe</h3>
-                        <p class="cr-past-author">by Madeline Miller</p>
-                        <p class="cr-past-blurb">A bold reimagining of Greek mythology told through the eyes of one of its most overlooked figures.</p>
-                    </article>
-                    <article class="cr-past-card">
-                        <h3>The Midnight Library</h3>
-                        <p class="cr-past-author">by Matt Haig</p>
-                        <p class="cr-past-blurb">Between life and death lies a library of every life you could have lived — a novel about regret, hope, and second chances.</p>
-                    </article>
-                    <article class="cr-past-card">
-                        <h3>Atomic Habits</h3>
-                        <p class="cr-past-author">by James Clear</p>
-                        <p class="cr-past-blurb">A practical guide to building good habits and breaking bad ones, backed by science and real-life stories.</p>
-                    </article>
-                    <article class="cr-past-card">
-                        <h3>Klara and the Sun</h3>
-                        <p class="cr-past-author">by Kazuo Ishiguro</p>
-                        <p class="cr-past-blurb">Seen through the eyes of an artificial friend, a haunting exploration of love, sacrifice, and what it means to be human.</p>
-                    </article>
+                <div id="past-reads-container">
+                    <div class="cr-past-grid">
+                        <div class="skeleton-card"><div class="skeleton-line skeleton-title"></div><div class="skeleton-line skeleton-author"></div><div class="skeleton-line skeleton-blurb"></div><div class="skeleton-line skeleton-blurb short"></div></div>
+                        <div class="skeleton-card"><div class="skeleton-line skeleton-title"></div><div class="skeleton-line skeleton-author"></div><div class="skeleton-line skeleton-blurb"></div><div class="skeleton-line skeleton-blurb short"></div></div>
+                        <div class="skeleton-card"><div class="skeleton-line skeleton-title"></div><div class="skeleton-line skeleton-author"></div><div class="skeleton-line skeleton-blurb"></div><div class="skeleton-line skeleton-blurb short"></div></div>
+                    </div>
                 </div>
             </div>
         </section>
@@ -348,57 +322,56 @@
         })();
 
         /**
-         * Fetch past reads from Google Sheets API and render them.
-         * If API isn't configured or fails, keep the static fallback HTML.
+         * Fetch past reads from Google Sheets API and render them dynamically.
+         * Shows skeleton loading → real cards on success, error state on failure.
          */
         async function loadPastReads() {
-            if (typeof getPast !== 'function' ||
-                typeof API_BASE === 'undefined' ||
-                API_BASE === 'PASTE_WEB_APP_URL_HERE') {
-                return; // Keep static fallback cards
-            }
+            var container = document.getElementById('past-reads-container');
+            if (!container) return;
+
             try {
+                if (typeof getPast !== 'function' ||
+                    typeof API_BASE === 'undefined' ||
+                    API_BASE === 'PASTE_WEB_APP_URL_HERE') {
+                    throw new Error('API not configured');
+                }
+
                 var pastBooks = await getPast();
-                if (!Array.isArray(pastBooks) || pastBooks.length === 0) return;
+                if (!Array.isArray(pastBooks) || pastBooks.length === 0) {
+                    throw new Error('No past reads returned');
+                }
 
-                var grid = document.getElementById('cr-past-grid');
-                grid.innerHTML = ''; // Clear static fallback cards
-
+                // Build grid of real cards
+                var gridHtml = '<div class="cr-past-grid">';
                 pastBooks.forEach(function (book) {
-                    var article = document.createElement('article');
-                    article.className = 'cr-past-card';
-
-                    var h3 = document.createElement('h3');
-                    h3.textContent = book.title || 'Untitled';
-                    article.appendChild(h3);
-
+                    gridHtml += '<article class="cr-past-card">';
+                    gridHtml += '<h3>' + escapeHtml(book.title || 'Untitled') + '</h3>';
                     if (book.author) {
-                        var authorP = document.createElement('p');
-                        authorP.className = 'cr-past-author';
-                        authorP.textContent = 'by ' + book.author;
-                        article.appendChild(authorP);
+                        gridHtml += '<p class="cr-past-author">by ' + escapeHtml(book.author) + '</p>';
                     }
-
                     if (book.month) {
-                        var monthP = document.createElement('p');
-                        monthP.className = 'cr-past-month';
-                        monthP.textContent = book.month;
-                        article.appendChild(monthP);
+                        gridHtml += '<p class="cr-past-month">' + escapeHtml(book.month) + '</p>';
                     }
-
                     if (book.short_blurb) {
-                        var blurbP = document.createElement('p');
-                        blurbP.className = 'cr-past-blurb';
-                        blurbP.textContent = book.short_blurb;
-                        article.appendChild(blurbP);
+                        gridHtml += '<p class="cr-past-blurb">' + escapeHtml(book.short_blurb) + '</p>';
                     }
-
-                    grid.appendChild(article);
+                    gridHtml += '</article>';
                 });
+                gridHtml += '</div>';
+
+                container.innerHTML = gridHtml;
+
             } catch (e) {
-                console.warn('Could not load past reads from API:', e);
-                // Keep static fallback cards
+                console.warn('Could not load past reads:', e);
+                container.innerHTML = '<div class="error-state">Unable to load past reads right now.</div>';
             }
+        }
+
+        /** Escape HTML entities to prevent XSS */
+        function escapeHtml(str) {
+            var div = document.createElement('div');
+            div.appendChild(document.createTextNode(str));
+            return div.innerHTML;
         }
     </script>
 </body>
