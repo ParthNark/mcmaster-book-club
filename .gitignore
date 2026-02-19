@@ -1,0 +1,16 @@
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor files
+.vscode/
+*.swp
+*.swo
+*~
+
+# Backup files
+images/logo_original.png
+
+# Python
+__pycache__/
+*.pyc

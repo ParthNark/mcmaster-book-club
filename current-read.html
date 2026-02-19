@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Current Read – McMaster Book Club</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://openlibrary.org">
+    <link rel="preconnect" href="https://covers.openlibrary.org">
+    <link rel="preconnect" href="https://script.google.com">
+    <link rel="preconnect" href="https://script.googleusercontent.com">
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <script src="js/api.js"></script>
+    <script src="js/openlibrary.js"></script>
+</head>
+<body>
+    <!-- Skip to main content link for accessibility -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+
+    <!-- Navigation Bar (consistent with index.html) -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <a href="index.html"><img src="images/logo.png" alt="McMaster Book Club logo" class="nav-logo-img"> McMaster Book Club</a>
+            </div>
+            <button class="hamburger" id="hamburger" aria-label="Toggle navigation" aria-expanded="false">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <ul class="nav-menu" id="nav-menu">
+                <li class="nav-item"><a href="index.html#home" class="nav-link">Home</a></li>
+                <li class="nav-item"><a href="index.html#about" class="nav-link">About</a></li>
+                <li class="nav-item"><a href="current-read.html" class="nav-link nav-link-active">Current Read</a></li>
+                <li class="nav-item"><a href="index.html#meetings" class="nav-link">Meetings</a></li>
+                <li class="nav-item"><a href="index.html#join" class="nav-link nav-link-cta">Join Us</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main id="main-content">
+        <!-- Page Hero -->
+        <section class="page-hero">
+            <div class="container">
+                <h1>📚 Current Read</h1>
+                <p>What we're reading this month — and what's coming next.</p>
+            </div>
+        </section>
+
+        <!-- Current Book Feature Card -->
+        <section class="section cr-book-section">
+            <div class="container">
+                <p id="cr-loading" class="cr-loading-msg">Loading current read…</p>
+                <div class="cr-book-card" id="cr-book-card">
+                    <div class="cr-book-cover">
+                        <img id="cr-cover-img" src="images/current-book-cover.png" alt="Book cover">
+                    </div>
+                    <div class="cr-book-info">
+                        <h2 class="cr-book-title" id="cr-title">Loading…</h2>
+                        <p class="cr-book-author" id="cr-author"></p>
+
+                        <div class="cr-tags" id="cr-tags"></div>
+
+                        <p class="cr-book-summary" id="cr-summary"></p>
+
+                        <div class="cr-meeting-info">
+                            <h3>📅 Meeting Info</h3>
+                            <ul id="cr-meeting-list">
+                                <li>Loading…</li>
+                            </ul>
+                        </div>
+
+                        <div class="cr-discussion">
+                            <h3>💬 Discussion Prompts</h3>
+                            <ol id="cr-prompts">
+                                <li>Loading…</li>
+                            </ol>
+                        </div>
+
+                        <a id="cr-goodreads-btn" class="btn btn-secondary btn-goodreads" href="#" target="_blank" rel="noopener" style="display:none;">
+                            ⭐ View Ratings on Goodreads
+                        </a>
+                    </div>
+                </div>
+                <p id="cr-error" class="cr-error-msg" style="display:none;">Book details loading failed — please check back.</p>
+            </div>
+        </section>
+
+        <!-- Vote for Next Month's Book -->
+        <section class="section cr-vote-section">
+            <div class="container">
+                <h2>
+                    <span class="section-icon">🗳️</span>
+                    Stay Tuned: Vote for Next Month's Book
+                </h2>
+                <div class="cr-vote-content">
+                    <p>
+                        Every month, members get to vote on the next read! When voting opens, 
+                        click the button below to cast your vote via our Google Form.
+                    </p>
+                    <button id="vote-btn" class="btn btn-primary btn-large" disabled>
+                        Voting opens soon
+                    </button>
+                    <p class="cr-vote-hint">The button will activate once voting is open.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Past Reads -->
+        <section class="section cr-past-section">
+            <div class="container">
+                <h2>
+                    <span class="section-icon">📖</span>
+                    Past Reads
+                </h2>
+                <div class="cr-past-grid" id="cr-past-grid">
+                    <!-- Populated by JS from Google Sheet. Fallback static cards: -->
+                    <article class="cr-past-card">
+                        <h3>Normal People</h3>
+                        <p class="cr-past-author">by Sally Rooney</p>
+                        <p class="cr-past-blurb">An intimate story of mutual fascination and friendship between two people who cannot stop gravitating toward each other.</p>
+                    </article>
+                    <article class="cr-past-card">
+                        <h3>Educated</h3>
+                        <p class="cr-past-author">by Tara Westover</p>
+                        <p class="cr-past-blurb">A memoir about growing up in a survivalist family and the transformative power of education.</p>
+                    </article>
+                    <article class="cr-past-card">
+                        <h3>Circe</h3>
+                        <p class="cr-past-author">by Madeline Miller</p>
+                        <p class="cr-past-blurb">A bold reimagining of Greek mythology told through the eyes of one of its most overlooked figures.</p>
+                    </article>
+                    <article class="cr-past-card">
+                        <h3>The Midnight Library</h3>
+                        <p class="cr-past-author">by Matt Haig</p>
+                        <p class="cr-past-blurb">Between life and death lies a library of every life you could have lived — a novel about regret, hope, and second chances.</p>
+                    </article>
+                    <article class="cr-past-card">
+                        <h3>Atomic Habits</h3>
+                        <p class="cr-past-author">by James Clear</p>
+                        <p class="cr-past-blurb">A practical guide to building good habits and breaking bad ones, backed by science and real-life stories.</p>
+                    </article>
+                    <article class="cr-past-card">
+                        <h3>Klara and the Sun</h3>
+                        <p class="cr-past-author">by Kazuo Ishiguro</p>
+                        <p class="cr-past-blurb">Seen through the eyes of an artificial friend, a haunting exploration of love, sacrifice, and what it means to be human.</p>
+                    </article>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer (consistent with index.html) -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>McMaster Book Club</h4>
+                <p>Building community through the love of reading.</p>
+            </div>
+            <div class="footer-section">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="index.html#home">Home</a></li>
+                    <li><a href="index.html#about">About</a></li>
+                    <li><a href="current-read.html">Current Read</a></li>
+                    <li><a href="index.html#meetings">Meetings</a></li>
+                    <li><a href="index.html#join">Join Us</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Connect</h4>
+                <div class="footer-social">
+                    <a href="https://www.instagram.com/mcmasterbooks/" target="_blank" rel="noopener" aria-label="Instagram" class="footer-social-link">
+                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <rect width="24" height="24" fill="none"/>
+                            <rect x="2" y="2" width="20" height="20" rx="4.18" ry="4.18" fill="none" stroke="currentColor" stroke-width="2"/>
+                            <circle cx="12" cy="12" r="3.6" fill="none" stroke="currentColor" stroke-width="2"/>
+                            <circle cx="18.5" cy="5.5" r="1.5" fill="currentColor"/>
+                        </svg>
+                    </a>
+                    <a href="#" aria-label="Discord" class="footer-social-link">
+                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M20.317 4.3671c-1.8345-.8954-3.970-.4383-3.970-.4383l-.195.234c2.3825.7234 3.5175 1.7622 3.5175 1.7622-1.5-.7372-2.9906-1.0972-4.4131-1.2237-.9035-.1117-1.7885-.0835-2.6059.0619 0 0 .137-.1618.4147-.3953-1.6365-.247-3.0992.1584-3.0992.1584s1.1246 1.0369 3.5042 1.7397v-.01c.4725.5648.9451 1.1295 1.3175 1.7622.6234 1.1293.9935 2.4627.9935 3.7961 0 0-.5589 1.1947-2.1768 1.5921 0 0 .1302.1618.4147.1618 1.3175 0 2.1768-.9452 2.1768-.9452.1302 1.2564-.3897 2.511-1.1246 3.4294-.6234.7371-1.5588 1.2565-2.5233 1.3441.5878.4665 1.3175.7919 2.1768.8238.8592.0318 1.7593-.1319 2.5233-.4665.7641-.3346 1.5281-.8874 2.0765-1.55-.3897 2.511-2.6059 4.3671-5.2118 4.3671-1.3175 0-2.5233-.3345-3.5175-1.0369.2914-.1938.5878-.3884.8813-.5829 1.5-.9451 2.8537-2.3758 3.6227-4.0328.7641-1.657 1.0285-3.4933.7641-5.2936-.2645-1.8003-.7641-3.494-1.8345-4.9575z" fill="currentColor"/>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 McMaster Book Club. All rights reserved. Made with <span class="heart">❤️</span> for book lovers.</p>
+        </div>
+    </footer>
+
+    <script>
+        // ─── Mobile menu toggle ────────────────────────────────────
+        var hamburger = document.getElementById('hamburger');
+        var navMenu = document.getElementById('nav-menu');
+
+        hamburger.addEventListener('click', function () {
+            navMenu.classList.toggle('active');
+            hamburger.setAttribute('aria-expanded',
+                hamburger.getAttribute('aria-expanded') === 'false' ? 'true' : 'false'
+            );
+        });
+
+        document.querySelectorAll('.nav-link').forEach(function (link) {
+            link.addEventListener('click', function () {
+                navMenu.classList.remove('active');
+                hamburger.setAttribute('aria-expanded', 'false');
+            });
+        });
+
+        document.addEventListener('click', function (e) {
+            if (!e.target.closest('.nav-container')) {
+                navMenu.classList.remove('active');
+                hamburger.setAttribute('aria-expanded', 'false');
+            }
+        });
+
+        // ─── Load config + Open Library data ──────────────────────
+        (async function () {
+            var loadingEl = document.getElementById('cr-loading');
+            var cardEl    = document.getElementById('cr-book-card');
+            var errorEl   = document.getElementById('cr-error');
+
+            /**
+             * Fetch config from Google Sheets API first.
+             * If the API isn't configured or fails, fall back to local data/current.json.
+             */
+            async function loadConfig() {
+                // Try Google Sheets API first
+                if (typeof getCurrent === 'function' &&
+                    typeof API_BASE !== 'undefined' &&
+                    API_BASE !== 'PASTE_WEB_APP_URL_HERE') {
+                    try {
+                        var apiData = await getCurrent();
+                        if (apiData && !apiData.error) return apiData;
+                    } catch (e) {
+                        console.warn('API fetch failed, falling back to local JSON:', e);
+                    }
+                }
+                // Fallback: local file
+                var res = await fetch('data/current.json');
+                if (!res.ok) throw new Error('Could not load config from API or local file');
+                return res.json();
+            }
+
+            try {
+                // 1. Load config (API → local fallback)
+                var config = await loadConfig();
+
+                // 2. Fetch from Open Library (with fallback to config values)
+                var book = await fetchBookFromOpenLibrary(config);
+
+                // 3. Hide loading
+                if (loadingEl) loadingEl.style.display = 'none';
+
+                // 4. Populate UI — Title
+                document.getElementById('cr-title').textContent = book.title || config.title || 'TBA';
+
+                // 5. Authors
+                var authorsText = (book.authors && book.authors.length > 0)
+                    ? 'by ' + book.authors.join(', ')
+                    : (config.author ? 'by ' + config.author : '');
+                document.getElementById('cr-author').textContent = authorsText;
+
+                // 6. Cover image
+                var coverImg = document.getElementById('cr-cover-img');
+                if (book.coverUrl) {
+                    coverImg.alt = 'Cover of ' + (book.title || config.title || 'current book');
+                    // Test the cover URL — Open Library returns 404 for missing covers
+                    coverImg.onerror = function () {
+                        this.onerror = null;
+                        this.src = 'images/current-book-cover.png';
+                        this.alt = 'Book cover placeholder';
+                    };
+                    coverImg.src = book.coverUrl;
+                }
+
+                // 7. Description / Summary
+                var summaryText = book.description || config.custom_summary || '';
+                document.getElementById('cr-summary').textContent = summaryText;
+
+                // 8. Tags / Subjects
+                var tagsEl = document.getElementById('cr-tags');
+                tagsEl.innerHTML = '';
+                var tagsList = (config.tags && config.tags.length > 0)
+                    ? config.tags
+                    : (book.subjects || []);
+                tagsList.forEach(function (tag) {
+                    var span = document.createElement('span');
+                    span.className = 'cr-tag';
+                    span.textContent = tag;
+                    tagsEl.appendChild(span);
+                });
+
+                // 9. Meeting info (always from config)
+                var meetList = document.getElementById('cr-meeting-list');
+                meetList.innerHTML = '';
+                var timeLi = document.createElement('li');
+                timeLi.innerHTML = '<strong>When:</strong> ' + (config.meeting_time || 'TBA');
+                meetList.appendChild(timeLi);
+                var locLi = document.createElement('li');
+                locLi.innerHTML = '<strong>Where:</strong> ' + (config.meeting_location || 'TBA');
+                meetList.appendChild(locLi);
+
+                // 10. Discussion prompts (from config)
+                var promptsEl = document.getElementById('cr-prompts');
+                promptsEl.innerHTML = '';
+                if (config.discussion_prompts && config.discussion_prompts.length > 0) {
+                    config.discussion_prompts.forEach(function (q) {
+                        var li = document.createElement('li');
+                        li.textContent = q;
+                        promptsEl.appendChild(li);
+                    });
+                }
+
+                // 11. Goodreads button
+                var grBtn = document.getElementById('cr-goodreads-btn');
+                if (config.goodreads_url && config.goodreads_url.trim() !== '') {
+                    grBtn.href = config.goodreads_url;
+                    grBtn.style.display = 'inline-block';
+                }
+
+                // 12. Vote button (from config)
+                var voteBtn = document.getElementById('vote-btn');
+                if (config.voting_open && config.vote_form_url && config.vote_form_url.trim() !== '') {
+                    voteBtn.disabled = false;
+                    voteBtn.textContent = 'Vote for Next Month';
+                    voteBtn.addEventListener('click', function () {
+                        window.open(config.vote_form_url.trim(), '_blank');
+                    });
+                } else {
+                    voteBtn.disabled = true;
+                    voteBtn.textContent = 'Voting opens soon';
+                }
+
+                // 13. Load past reads from API (if available)
+                loadPastReads();
+
+            } catch (err) {
+                console.error('Current-read page load error:', err);
+                if (loadingEl) loadingEl.style.display = 'none';
+                if (errorEl)   errorEl.style.display = 'block';
+            }
+        })();
+
+        /**
+         * Fetch past reads from Google Sheets API and render them.
+         * If API isn't configured or fails, keep the static fallback HTML.
+         */
+        async function loadPastReads() {
+            if (typeof getPast !== 'function' ||
+                typeof API_BASE === 'undefined' ||
+                API_BASE === 'PASTE_WEB_APP_URL_HERE') {
+                return; // Keep static fallback cards
+            }
+            try {
+                var pastBooks = await getPast();
+                if (!Array.isArray(pastBooks) || pastBooks.length === 0) return;
+
+                var grid = document.getElementById('cr-past-grid');
+                grid.innerHTML = ''; // Clear static fallback cards
+
+                pastBooks.forEach(function (book) {
+                    var article = document.createElement('article');
+                    article.className = 'cr-past-card';
+
+                    var h3 = document.createElement('h3');
+                    h3.textContent = book.title || 'Untitled';
+                    article.appendChild(h3);
+
+                    if (book.author) {
+                        var authorP = document.createElement('p');
+                        authorP.className = 'cr-past-author';
+                        authorP.textContent = 'by ' + book.author;
+                        article.appendChild(authorP);
+                    }
+
+                    if (book.month) {
+                        var monthP = document.createElement('p');
+                        monthP.className = 'cr-past-month';
+                        monthP.textContent = book.month;
+                        article.appendChild(monthP);
+                    }
+
+                    if (book.short_blurb) {
+                        var blurbP = document.createElement('p');
+                        blurbP.className = 'cr-past-blurb';
+                        blurbP.textContent = book.short_blurb;
+                        article.appendChild(blurbP);
+                    }
+
+                    grid.appendChild(article);
+                });
+            } catch (e) {
+                console.warn('Could not load past reads from API:', e);
+                // Keep static fallback cards
+            }
+        }
+    </script>
+</body>
+</html>

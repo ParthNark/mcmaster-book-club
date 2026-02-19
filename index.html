@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>McMaster Book Club</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://openlibrary.org">
+    <link rel="preconnect" href="https://covers.openlibrary.org">
+    <link rel="preconnect" href="https://script.google.com">
+    <link rel="preconnect" href="https://script.googleusercontent.com">
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <script src="js/api.js"></script>
+    <script src="js/openlibrary.js"></script>
+</head>
+<body>
+    <!-- Skip to main content link for accessibility -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <a href="#home"><img src="images/logo.png" alt="McMaster Book Club logo" class="nav-logo-img"> McMaster Book Club</a>
+            </div>
+            <button class="hamburger" id="hamburger" aria-label="Toggle navigation" aria-expanded="false">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <ul class="nav-menu" id="nav-menu">
+                <li class="nav-item"><a href="#home" class="nav-link">Home</a></li>
+                <li class="nav-item"><a href="#about" class="nav-link">About</a></li>
+                <li class="nav-item"><a href="current-read.html" class="nav-link">Current Read</a></li>
+                <li class="nav-item"><a href="#meetings" class="nav-link">Meetings</a></li>
+                <li class="nav-item"><a href="#join" class="nav-link nav-link-cta">Join Us</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main id="main-content">
+        <!-- Hero / Header Section -->
+        <section id="home" class="hero">
+            <div class="hero-image-container">
+                <img src="images/headerfinal.png" alt="McMaster Book Club Header" class="hero-image">
+            </div>
+            <div class="bookshelf-divider">
+                <svg class="bookshelf-svg" viewBox="0 0 1440 190" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <defs>
+                        <linearGradient id="shelfWood" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="0%" stop-color="#c98e57"/>
+                            <stop offset="100%" stop-color="#9f6035"/>
+                        </linearGradient>
+                        <linearGradient id="backPanel" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="0%" stop-color="#ecdde0"/>
+                            <stop offset="100%" stop-color="#e4d0d5"/>
+                        </linearGradient>
+                    </defs>
+
+                    <rect x="0" y="0" width="1440" height="190" fill="url(#backPanel)"/>
+                    <rect x="48" y="38" width="1344" height="14" rx="7" fill="#b9804d" opacity="0.65"/>
+                    <rect x="40" y="52" width="1360" height="20" rx="10" fill="url(#shelfWood)"/>
+                    <rect x="40" y="72" width="1360" height="7" rx="3.5" fill="#7e4b2d" opacity="0.55"/>
+
+                    <g fill="#8a5433" opacity="0.6">
+                        <rect x="120" y="78" width="14" height="56" rx="7"/>
+                        <rect x="430" y="78" width="14" height="56" rx="7"/>
+                        <rect x="740" y="78" width="14" height="56" rx="7"/>
+                        <rect x="1050" y="78" width="14" height="56" rx="7"/>
+                        <rect x="1290" y="78" width="14" height="56" rx="7"/>
+                    </g>
+
+                    <g>
+                        <rect x="88" y="8" width="36" height="44" rx="3" fill="#d4602b" stroke="#8a3f1e" stroke-width="2"/>
+                        <rect x="132" y="0" width="40" height="52" rx="3" fill="#7a003c" stroke="#4f0028" stroke-width="2"/>
+                        <rect x="179" y="10" width="38" height="42" rx="3" fill="#d4b5a0" stroke="#9d7b61" stroke-width="2"/>
+                        <rect x="224" y="2" width="33" height="50" rx="3" fill="#fbf5ed" stroke="#c7b9a5" stroke-width="2"/>
+                        <rect x="263" y="7" width="41" height="45" rx="3" fill="#a91d42" stroke="#76112d" stroke-width="2"/>
+
+                        <rect x="332" y="10" width="35" height="42" rx="3" fill="#d4602b" stroke="#8a3f1e" stroke-width="2"/>
+                        <rect x="372" y="3" width="37" height="49" rx="3" fill="#7a003c" stroke="#4f0028" stroke-width="2"/>
+                        <rect x="416" y="12" width="32" height="40" rx="3" fill="#d4b5a0" stroke="#9d7b61" stroke-width="2"/>
+                        <rect x="454" y="4" width="34" height="48" rx="3" fill="#fbf5ed" stroke="#c7b9a5" stroke-width="2"/>
+                        <rect x="495" y="8" width="39" height="44" rx="3" fill="#a91d42" stroke="#76112d" stroke-width="2"/>
+
+                        <rect x="562" y="9" width="36" height="43" rx="3" fill="#d4602b" stroke="#8a3f1e" stroke-width="2"/>
+                        <rect x="604" y="1" width="39" height="51" rx="3" fill="#7a003c" stroke="#4f0028" stroke-width="2"/>
+                        <rect x="650" y="10" width="36" height="42" rx="3" fill="#d4b5a0" stroke="#9d7b61" stroke-width="2"/>
+                        <rect x="693" y="2" width="34" height="50" rx="3" fill="#fbf5ed" stroke="#c7b9a5" stroke-width="2"/>
+                        <rect x="734" y="7" width="40" height="45" rx="3" fill="#a91d42" stroke="#76112d" stroke-width="2"/>
+
+                        <rect x="802" y="10" width="35" height="42" rx="3" fill="#d4602b" stroke="#8a3f1e" stroke-width="2"/>
+                        <rect x="843" y="3" width="37" height="49" rx="3" fill="#7a003c" stroke="#4f0028" stroke-width="2"/>
+                        <rect x="886" y="10" width="34" height="42" rx="3" fill="#d4b5a0" stroke="#9d7b61" stroke-width="2"/>
+                        <rect x="926" y="2" width="38" height="50" rx="3" fill="#fbf5ed" stroke="#c7b9a5" stroke-width="2"/>
+                        <rect x="971" y="7" width="39" height="45" rx="3" fill="#a91d42" stroke="#76112d" stroke-width="2"/>
+
+                        <rect x="1038" y="9" width="36" height="43" rx="3" fill="#d4602b" stroke="#8a3f1e" stroke-width="2"/>
+                        <rect x="1080" y="1" width="39" height="51" rx="3" fill="#7a003c" stroke="#4f0028" stroke-width="2"/>
+                        <rect x="1126" y="10" width="36" height="42" rx="3" fill="#d4b5a0" stroke="#9d7b61" stroke-width="2"/>
+                        <rect x="1169" y="2" width="34" height="50" rx="3" fill="#fbf5ed" stroke="#c7b9a5" stroke-width="2"/>
+                        <rect x="1210" y="7" width="40" height="45" rx="3" fill="#a91d42" stroke="#76112d" stroke-width="2"/>
+                    </g>
+
+                    <line x1="40" y1="136" x2="1400" y2="136" stroke="#b9859d" stroke-width="4" opacity="0.55"/>
+                </svg>
+            </div>
+        </section>
+
+        <!-- About Us Section -->
+        <section id="about" class="section about-section">
+            <div class="container">
+                <h2>
+                    <span class="section-icon">📖</span>
+                    About Us
+                </h2>
+                <div class="section-content">
+                    <p>
+                        McMaster Book Club is a vibrant community of readers dedicated to exploring diverse literature, 
+                        sharing perspectives, and fostering meaningful discussions. Whether you're a casual reader or a 
+                        book enthusiast, our club welcomes everyone who shares a passion for stories and ideas.
+                    </p>
+                    <p>
+                        We meet regularly to discuss our current reads, discover new authors, and connect with fellow book lovers. 
+                        Our diverse selection of genres ensures there's something for everyone, and our welcoming environment 
+                        encourages all members to share their thoughts and interpretations.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Current Read Widget -->
+        <section id="current-read" class="section current-read-section">
+            <div class="container">
+                <h2>
+                    <span class="section-icon">📚</span>
+                    Current Read
+                </h2>
+
+                <!-- Loading state -->
+                <p id="hw-loading" class="hw-loading">Loading current read…</p>
+
+                <!-- Widget card (hidden until data loads) -->
+                <a href="current-read.html" class="hw-card" id="hw-card" style="display:none;">
+                    <div class="hw-cover">
+                        <img id="hw-cover-img" src="" alt="Book cover">
+                    </div>
+                    <div class="hw-body">
+                        <div class="hw-header">
+                            <h3 class="hw-title" id="hw-title">Loading…</h3>
+                            <span class="hw-rating" id="hw-rating" style="display:none;"></span>
+                        </div>
+                        <p class="hw-author" id="hw-author"></p>
+                        <p class="hw-desc" id="hw-desc"></p>
+                        <div class="hw-tags" id="hw-tags"></div>
+                        <div class="hw-footer">
+                            <span class="hw-cta">View details & discussion prompts →</span>
+                            <span class="hw-goodreads" id="hw-goodreads" style="display:none;">⭐ Goodreads</span>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- Error fallback -->
+                <div id="hw-error" class="hw-error" style="display:none;">
+                    <p>We're currently reading a new book together!</p>
+                    <a href="current-read.html" class="btn btn-primary">View current book details →</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Meetings Section -->
+        <section id="meetings" class="section meetings-section">
+            <div class="container">
+                <h2>
+                    <span class="section-icon">📅</span>
+                    When We Meet
+                </h2>
+                <div class="meetings-grid">
+                    <article class="meeting-card">
+                        <div class="meeting-icon">🗓️</div>
+                        <h3>Regular Meetings</h3>
+                        <p>
+                            We gather bi-weekly to discuss our selections. Sessions are held both in-person and 
+                            virtually to accommodate everyone's schedule.
+                        </p>
+                    </article>
+                    <article class="meeting-card">
+                        <div class="meeting-icon">📍</div>
+                        <h3>Location</h3>
+                        <p>
+                            Meetings take place at McMaster University campus and online via Zoom. 
+                            Check our Discord for the latest location updates and meeting links.
+                        </p>
+                    </article>
+                    <article class="meeting-card">
+                        <div class="meeting-icon">⏰</div>
+                        <h3>Schedule</h3>
+                        <p>
+                            Join us Thursdays at 6 PM EST. Sessions typically run for 90 minutes with 
+                            refreshments provided. All members are encouraged to participate in discussions.
+                        </p>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <!-- Join the Club Section -->
+        <section id="join" class="section join-section">
+            <div class="container">
+                <h2>
+                    <span class="section-icon">✨</span>
+                    Join the Club
+                </h2>
+                <div class="join-content">
+                    <p>
+                        Ready to become part of our literary community? Joining is easy and completely free! 
+                        Connect with us on Discord, attend a meeting, or reach out to learn more about how we can 
+                        welcome you into our book-loving family.
+                    </p>
+                    <div class="join-actions">
+                        <button class="btn btn-primary" onclick="alert('Membership form coming soon!')">
+                            Become a Member
+                        </button>
+                        <button class="btn btn-secondary" onclick="window.open('https://www.instagram.com/mcmasterbooks/', '_blank')">
+                            Follow Our Instagram
+                        </button>
+                    </div>
+                    <div class="social-preview">
+                        <p>Connect with us:</p>
+                        <div class="social-icons">
+                            <a href="https://www.instagram.com/mcmasterbooks/" target="_blank" rel="noopener" class="social-icon" aria-label="Instagram">
+                                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <rect width="24" height="24" fill="none"/>
+                                    <rect x="2" y="2" width="20" height="20" rx="4.18" ry="4.18" fill="none" stroke="#7a003c" stroke-width="2"/>
+                                    <circle cx="12" cy="12" r="3.6" fill="none" stroke="#7a003c" stroke-width="2"/>
+                                    <circle cx="18.5" cy="5.5" r="1.5" fill="#7a003c"/>
+                                </svg>
+                            </a>
+                            <a href="#" class="social-icon" aria-label="Discord">
+                                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M20.317 4.3671c-1.8345-.8954-3.970-.4383-3.970-.4383l-.195.234c2.3825.7234 3.5175 1.7622 3.5175 1.7622-1.5-.7372-2.9906-1.0972-4.4131-1.2237-.9035-.1117-1.7885-.0835-2.6059.0619 0 0 .137-.1618.4147-.3953-1.6365-.247-3.0992.1584-3.0992.1584s1.1246 1.0369 3.5042 1.7397v-.01c.4725.5648.9451 1.1295 1.3175 1.7622.6234 1.1293.9935 2.4627.9935 3.7961 0 0-.5589 1.1947-2.1768 1.5921 0 0 .1302.1618.4147.1618 1.3175 0 2.1768-.9452 2.1768-.9452.1302 1.2564-.3897 2.511-1.1246 3.4294-.6234.7371-1.5588 1.2565-2.5233 1.3441.5878.4665 1.3175.7919 2.1768.8238.8592.0318 1.7593-.1319 2.5233-.4665.7641-.3346 1.5281-.8874 2.0765-1.55-.3897 2.511-2.6059 4.3671-5.2118 4.3671-1.3175 0-2.5233-.3345-3.5175-1.0369.2914-.1938.5878-.3884.8813-.5829 1.5-.9451 2.8537-2.3758 3.6227-4.0328.7641-1.657 1.0285-3.4933.7641-5.2936-.2645-1.8003-.7641-3.494-1.8345-4.9575z" fill="#7a003c"/>
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Newsletter Signup Section -->
+        <section id="newsletter" class="section newsletter-section">
+            <div class="container">
+                <h2>
+                    <span class="section-icon">📬</span>
+                    Join Our Newsletter
+                </h2>
+                <div class="newsletter-content">
+                    <p>Get updates on meetings, book picks, and events.</p>
+                    <form class="newsletter-form" onsubmit="return false;" novalidate>
+                        <div class="newsletter-input-group">
+                            <label for="newsletter-email" class="sr-only">Email address</label>
+                            <input type="email" id="newsletter-email" class="newsletter-input" placeholder="your.email@example.com" required aria-describedby="newsletter-msg">
+                            <button type="submit" class="btn btn-primary newsletter-btn" id="newsletter-submit">Subscribe</button>
+                        </div>
+                        <!-- Honeypot — hidden from real users, catches bots -->
+                        <div style="position:absolute;left:-9999px;" aria-hidden="true">
+                            <label for="website">Leave blank</label>
+                            <input type="text" id="newsletter-honeypot" name="website" tabindex="-1" autocomplete="off">
+                        </div>
+                        <div id="newsletter-msg" class="newsletter-msg" aria-live="polite"></div>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>McMaster Book Club</h4>
+                <p>Building community through the love of reading.</p>
+            </div>
+            <div class="footer-section">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="current-read.html">Current Read</a></li>
+                    <li><a href="#meetings">Meetings</a></li>
+                    <li><a href="#join">Join Us</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Connect</h4>
+                <div class="footer-social">
+                    <a href="https://www.instagram.com/mcmasterbooks/" target="_blank" rel="noopener" aria-label="Instagram" class="footer-social-link">
+                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <rect width="24" height="24" fill="none"/>
+                            <rect x="2" y="2" width="20" height="20" rx="4.18" ry="4.18" fill="none" stroke="currentColor" stroke-width="2"/>
+                            <circle cx="12" cy="12" r="3.6" fill="none" stroke="currentColor" stroke-width="2"/>
+                            <circle cx="18.5" cy="5.5" r="1.5" fill="currentColor"/>
+                        </svg>
+                    </a>
+                    <a href="#" aria-label="Discord" class="footer-social-link">
+                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M20.317 4.3671c-1.8345-.8954-3.970-.4383-3.970-.4383l-.195.234c2.3825.7234 3.5175 1.7622 3.5175 1.7622-1.5-.7372-2.9906-1.0972-4.4131-1.2237-.9035-.1117-1.7885-.0835-2.6059.0619 0 0 .137-.1618.4147-.3953-1.6365-.247-3.0992.1584-3.0992.1584s1.1246 1.0369 3.5042 1.7397v-.01c.4725.5648.9451 1.1295 1.3175 1.7622.6234 1.1293.9935 2.4627.9935 3.7961 0 0-.5589 1.1947-2.1768 1.5921 0 0 .1302.1618.4147.1618 1.3175 0 2.1768-.9452 2.1768-.9452.1302 1.2564-.3897 2.511-1.1246 3.4294-.6234.7371-1.5588 1.2565-2.5233 1.3441.5878.4665 1.3175.7919 2.1768.8238.8592.0318 1.7593-.1319 2.5233-.4665.7641-.3346 1.5281-.8874 2.0765-1.55-.3897 2.511-2.6059 4.3671-5.2118 4.3671-1.3175 0-2.5233-.3345-3.5175-1.0369.2914-.1938.5878-.3884.8813-.5829 1.5-.9451 2.8537-2.3758 3.6227-4.0328.7641-1.657 1.0285-3.4933.7641-5.2936-.2645-1.8003-.7641-3.494-1.8345-4.9575z" fill="currentColor"/>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 McMaster Book Club. All rights reserved. Made with <span class="heart">❤️</span> for book lovers.</p>
+        </div>
+    </footer>
+
+    <!-- Mobile Menu Toggle Script -->
+    <script>
+        const hamburger = document.getElementById('hamburger');
+        const navMenu = document.getElementById('nav-menu');
+
+        hamburger.addEventListener('click', () => {
+            navMenu.classList.toggle('active');
+            hamburger.setAttribute('aria-expanded', 
+                hamburger.getAttribute('aria-expanded') === 'false' ? 'true' : 'false'
+            );
+        });
+
+        // Close menu when a link is clicked
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', () => {
+                navMenu.classList.remove('active');
+                hamburger.setAttribute('aria-expanded', 'false');
+            });
+        });
+
+        // Close menu when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.nav-container')) {
+                navMenu.classList.remove('active');
+                hamburger.setAttribute('aria-expanded', 'false');
+            }
+        });
+
+        // ─── Current Read Widget ──────────────────────────────
+        (async function () {
+            var loadingEl = document.getElementById('hw-loading');
+            var cardEl    = document.getElementById('hw-card');
+            var errorEl   = document.getElementById('hw-error');
+
+            try {
+                // 1. Load config from API (fallback to local JSON)
+                var config;
+                if (typeof getCurrent === 'function' &&
+                    typeof API_BASE !== 'undefined' &&
+                    API_BASE !== 'PASTE_WEB_APP_URL_HERE') {
+                    config = await getCurrent();
+                    if (!config || config.error) throw new Error('API returned error');
+                } else {
+                    var res = await fetch('data/current.json');
+                    if (!res.ok) throw new Error('Local JSON failed');
+                    config = await res.json();
+                }
+
+                // 2. Fetch Open Library data
+                var book = await fetchBookFromOpenLibrary(config);
+
+                // 3. Populate widget
+                document.getElementById('hw-title').textContent = book.title || config.title || 'TBA';
+
+                var authorText = (book.authors && book.authors.length > 0)
+                    ? 'by ' + book.authors.join(', ')
+                    : (config.author ? 'by ' + config.author : '');
+                document.getElementById('hw-author').textContent = authorText;
+
+                // Cover
+                var coverImg = document.getElementById('hw-cover-img');
+                if (book.coverUrl) {
+                    coverImg.onerror = function () {
+                        this.onerror = null;
+                        this.src = 'images/current-book-cover.png';
+                        this.alt = 'Book cover placeholder';
+                    };
+                    coverImg.src = book.coverUrl;
+                    coverImg.alt = 'Cover of ' + (book.title || config.title || 'current book');
+                }
+
+                // Description (truncated to 160 chars)
+                var fullDesc = book.description || config.custom_summary || '';
+                if (fullDesc.length > 160) fullDesc = fullDesc.substring(0, 157) + '…';
+                document.getElementById('hw-desc').textContent = fullDesc;
+
+                // Tags
+                var tagsEl = document.getElementById('hw-tags');
+                var tags = (config.tags && config.tags.length > 0) ? config.tags : (book.subjects || []);
+                tags.forEach(function (tag) {
+                    var span = document.createElement('span');
+                    span.className = 'hw-tag';
+                    span.textContent = tag;
+                    tagsEl.appendChild(span);
+                });
+
+                // Rating badge (optional)
+                if (config.rating_text && config.rating_text.trim() !== '') {
+                    var ratingEl = document.getElementById('hw-rating');
+                    ratingEl.textContent = config.rating_text;
+                    ratingEl.style.display = 'inline-block';
+                }
+
+                // Goodreads link (optional, shown as label only — card itself links to current-read.html)
+                if (config.goodreads_url && config.goodreads_url.trim() !== '') {
+                    var grEl = document.getElementById('hw-goodreads');
+                    grEl.style.display = 'inline-block';
+                }
+
+                // Show card, hide loading
+                if (loadingEl) loadingEl.style.display = 'none';
+                cardEl.style.display = '';
+
+            } catch (err) {
+                console.error('Home widget load error:', err);
+                if (loadingEl) loadingEl.style.display = 'none';
+                if (errorEl)   errorEl.style.display = 'block';
+            }
+        })();
+
+        // Newsletter signup (calls backend if configured, otherwise client-only)
+        (function() {
+            var form = document.querySelector('.newsletter-form');
+            if (!form) return;
+            var emailInput  = document.getElementById('newsletter-email');
+            var msg         = document.getElementById('newsletter-msg');
+            var submitBtn   = document.getElementById('newsletter-submit');
+            var honeypotIn  = document.getElementById('newsletter-honeypot');
+
+            submitBtn.addEventListener('click', function() {
+                var email      = emailInput.value.trim();
+                var honeypot   = honeypotIn ? honeypotIn.value : '';
+                var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+                msg.classList.remove('newsletter-success', 'newsletter-error');
+
+                if (!email || !emailRegex.test(email)) {
+                    msg.textContent = 'Please enter a valid email address.';
+                    msg.classList.add('newsletter-error');
+                    return;
+                }
+
+                // If API isn't configured yet, store in localStorage as placeholder
+                if (typeof postNewsletter === 'undefined' ||
+                    typeof API_BASE === 'undefined' ||
+                    API_BASE === 'PASTE_WEB_APP_URL_HERE') {
+                    try {
+                        var stored = JSON.parse(localStorage.getItem('newsletter_emails') || '[]');
+                        stored.push({ email: email, date: new Date().toISOString() });
+                        localStorage.setItem('newsletter_emails', JSON.stringify(stored));
+                    } catch (e) { /* localStorage unavailable */ }
+                    msg.textContent = "Thanks! We'll be in touch.";
+                    msg.classList.add('newsletter-success');
+                    emailInput.value = '';
+                    return;
+                }
+
+                // Disable button while submitting
+                submitBtn.disabled = true;
+                submitBtn.textContent = 'Sending…';
+
+                postNewsletter(email, 'index', honeypot)
+                    .then(function(res) {
+                        if (res.ok) {
+                            msg.textContent = "Thanks! You're on the list.";
+                            msg.classList.add('newsletter-success');
+                            emailInput.value = '';
+                        } else {
+                            msg.textContent = res.error || 'Something went wrong. Try again.';
+                            msg.classList.add('newsletter-error');
+                        }
+                    })
+                    .catch(function() {
+                        msg.textContent = 'Network error. Please try again.';
+                        msg.classList.add('newsletter-error');
+                    })
+                    .finally(function() {
+                        submitBtn.disabled = false;
+                        submitBtn.textContent = 'Subscribe';
+                    });
+            });
+        })();
+    </script>
+</body>
+</html>
