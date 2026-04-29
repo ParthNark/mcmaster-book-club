@@ -21,6 +21,10 @@
 // Replace with your Google Sheet ID (the long string in the Sheet URL)
 const SHEET_ID = "PASTE_YOUR_SHEET_ID_HERE";
 
+// Placeholder admin password for trivia uploads.
+// IMPORTANT: Replace this with a secure value or a more secure auth flow before public use.
+const ADMIN_PASSWORD = "CHANGE_ME";
+
 // Rate-limit window (milliseconds). Same email cannot submit twice within this.
 const RATE_LIMIT_MS = 24 * 60 * 60 * 1000; // 24 hours
 // ─────────────────────────────────────────────────────────────────────────────
@@ -86,14 +90,38 @@ function cellToString(val) {
   return String(val).trim();
 }
 
+/**
+ * Normalize a sheet header to lower_snake_case.
+ */
+function normalizeHeader(header) {
+  return String(header || "")
+    .trim()
+    .toLowerCase()
+    .replace(/\s+/g, "_")
+    .replace(/[^a-z0-9_]/g, "");
+}
+
+/**
+ * Safely parse a date from a sheet cell or string.
+ */
+function parseDateValue(val) {
+  if (val instanceof Date) return val;
+  var d = new Date(val);
+  if (isNaN(d.getTime())) return null;
+  return d;
+}
+
 
 // ─── GET HANDLER ────────────────────────────────────────────────────────────
 
 function doGet(e) {
   var path = (e && e.parameter && e.parameter.path) ? e.parameter.path : "";
+  var action = (e && e.parameter && e.parameter.action) ? e.parameter.action : "";
 
   try {
-    if (path === "current") {
+    if (action === "leaderboards") {
+      return getTriviaLeaderboards();
+    } else if (path === "current") {
       return getCurrent();
     } else if (path === "past") {
       return getPast();
@@ -263,9 +291,23 @@ function getEvents() {
 
 function doPost(e) {
   var path = (e && e.parameter && e.parameter.path) ? e.parameter.path : "";
+  var action = (e && e.parameter && e.parameter.action) ? e.parameter.action : "";
+
+  if (!action && e && e.postData && e.postData.contents) {
+    try {
+      var parsedBody = JSON.parse(e.postData.contents);
+      if (parsedBody && parsedBody.action) {
+        action = String(parsedBody.action);
+      }
+    } catch (parseErr) {
+      // Ignore invalid JSON when routing.
+    }
+  }
 
   try {
-    if (path === "newsletter") {
+    if (action === "upload-kahoot") {
+      return handleTriviaUpload(e);
+    } else if (path === "newsletter") {
       return handleNewsletter(e);
     } else {
       return jsonResponse({ error: "Unknown POST path. Use ?path=newsletter" }, 400);
@@ -332,4 +374,261 @@ function handleNewsletter(e) {
   ]);
 
   return jsonResponse({ ok: true, message: "Subscribed!" });
+}
+
+// ─── TRIVIA / KAHOOT LEADERBOARDS ─────────────────────────────────────────
+
+function getTriviaLeaderboards() {
+  var kahoots = readKahoots();
+  var scores = readScores();
+
+  var kahootById = {};
+  kahoots.forEach(function (k) { kahootById[k.kahoot_id] = k; });
+
+  // All-time leaderboard
+  var allTime = buildLeaderboard(scores, null);
+
+  // Last 4 months leaderboard
+  var cutoff = new Date();
+  cutoff.setMonth(cutoff.getMonth() - 4);
+  var recentIds = {};
+  kahoots.forEach(function (k) {
+    if (k.dateObj && k.dateObj.getTime() >= cutoff.getTime()) {
+      recentIds[k.kahoot_id] = true;
+    }
+  });
+  var lastFourMonths = buildLeaderboard(scores, recentIds);
+
+  // Latest kahoot
+  var latest = null;
+  kahoots.forEach(function (k) {
+    if (!latest || (k.sortTime > latest.sortTime)) {
+      latest = k;
+    }
+  });
+
+  var latestKahoot = null;
+  if (latest) {
+    var latestScores = scores
+      .filter(function (s) { return s.kahoot_id === latest.kahoot_id; })
+      .sort(function (a, b) {
+        var ra = (a.rank === null || a.rank === undefined) ? 999999 : a.rank;
+        var rb = (b.rank === null || b.rank === undefined) ? 999999 : b.rank;
+        if (ra !== rb) return ra - rb;
+        return (b.score || 0) - (a.score || 0);
+      });
+
+    latestKahoot = {
+      kahoot: {
+        kahoot_id: latest.kahoot_id,
+        title: latest.title,
+        theme: latest.theme,
+        date: latest.date,
+        winner: latest.winner,
+        notes: latest.notes
+      },
+      scores: latestScores
+    };
+  }
+
+  // Archive
+  var kahootArchive = kahoots
+    .sort(function (a, b) { return b.sortTime - a.sortTime; })
+    .map(function (k) {
+      return {
+        kahoot_id: k.kahoot_id,
+        title: k.title,
+        theme: k.theme,
+        date: k.date,
+        winner: k.winner,
+        notes: k.notes
+      };
+    });
+
+  return jsonResponse({
+    allTime: allTime,
+    lastFourMonths: lastFourMonths,
+    latestKahoot: latestKahoot,
+    kahootArchive: kahootArchive
+  });
+}
+
+function readKahoots() {
+  var sheet = getSheet("kahoots");
+  if (!sheet) return [];
+
+  var data = sheet.getDataRange().getValues();
+  if (!data || data.length < 2) return [];
+
+  var headers = data[0].map(normalizeHeader);
+  var results = [];
+
+  for (var i = 1; i < data.length; i++) {
+    var row = {};
+    for (var j = 0; j < headers.length; j++) {
+      row[headers[j]] = data[i][j];
+    }
+
+    if (!row.kahoot_id) continue;
+
+    var dateObj = parseDateValue(row.date);
+    var dateStr = dateObj ? formatDate(dateObj) : String(row.date || "").trim();
+
+    var createdObj = parseDateValue(row.created_at);
+    var sortTime = createdObj ? createdObj.getTime() : (dateObj ? dateObj.getTime() : 0);
+
+    results.push({
+      kahoot_id: String(row.kahoot_id).trim(),
+      title: String(row.title || "").trim(),
+      theme: String(row.theme || "").trim(),
+      winner: String(row.winner || "").trim(),
+      notes: String(row.notes || "").trim(),
+      date: dateStr,
+      dateObj: dateObj,
+      sortTime: sortTime
+    });
+  }
+
+  return results;
+}
+
+function readScores() {
+  var sheet = getSheet("scores");
+  if (!sheet) return [];
+
+  var data = sheet.getDataRange().getValues();
+  if (!data || data.length < 2) return [];
+
+  var headers = data[0].map(normalizeHeader);
+  var results = [];
+
+  for (var i = 1; i < data.length; i++) {
+    var row = {};
+    for (var j = 0; j < headers.length; j++) {
+      row[headers[j]] = data[i][j];
+    }
+
+    if (!row.kahoot_id || !row.player_name) continue;
+
+    var scoreVal = Number(row.score);
+    var rankVal = Number(row.rank);
+
+    results.push({
+      kahoot_id: String(row.kahoot_id).trim(),
+      player_name: String(row.player_name).trim(),
+      score: isNaN(scoreVal) ? 0 : scoreVal,
+      rank: isNaN(rankVal) ? null : rankVal,
+      created_at: String(row.created_at || "").trim()
+    });
+  }
+
+  return results;
+}
+
+function buildLeaderboard(scores, allowedKahootIds) {
+  var map = {};
+
+  scores.forEach(function (s) {
+    if (allowedKahootIds && !allowedKahootIds[s.kahoot_id]) return;
+
+    var name = String(s.player_name || "").trim();
+    if (!name) return;
+
+    var key = name.toLowerCase();
+    if (!map[key]) {
+      map[key] = {
+        player_name: name,
+        total_score: 0,
+        games_played: 0,
+        wins: 0
+      };
+    }
+
+    map[key].total_score += Number(s.score) || 0;
+    map[key].games_played += 1;
+    if (Number(s.rank) === 1) map[key].wins += 1;
+  });
+
+  var arr = Object.keys(map).map(function (k) { return map[k]; });
+  arr.sort(function (a, b) { return b.total_score - a.total_score; });
+  return arr.slice(0, 10);
+}
+
+function handleTriviaUpload(e) {
+  var body = {};
+  try {
+    body = JSON.parse(e.postData.contents);
+  } catch (parseErr) {
+    return jsonResponse({ ok: false, error: "Invalid JSON body." }, 400);
+  }
+
+  var password = String(body.password || "").trim();
+  if (!password || password !== ADMIN_PASSWORD) {
+    return jsonResponse({ ok: false, error: "Unauthorized." }, 403);
+  }
+
+  var title = String(body.title || "").trim();
+  var theme = String(body.theme || "").trim();
+  var notes = String(body.notes || "").trim();
+  var dateStr = String(body.date || "").trim();
+  var results = Array.isArray(body.results) ? body.results : [];
+
+  if (!title || results.length === 0) {
+    return jsonResponse({ ok: false, error: "Title and results are required." }, 400);
+  }
+
+  var dateObj = parseDateValue(dateStr) || new Date();
+  var createdAt = new Date().toISOString();
+  var kahootId = "kahoot_" + Utilities.getUuid();
+
+  // Determine winner (rank 1)
+  var winner = "";
+  for (var i = 0; i < results.length; i++) {
+    if (Number(results[i].rank) === 1) {
+      winner = String(results[i].player_name || "").trim();
+      break;
+    }
+  }
+
+  if (!winner && results.length > 0) {
+    winner = String(results[0].player_name || "").trim();
+  }
+
+  // Append kahoot row
+  var kahootsSheet = getSheet("kahoots");
+  if (!kahootsSheet) {
+    return jsonResponse({ ok: false, error: "Missing 'kahoots' sheet." }, 500);
+  }
+
+  kahootsSheet.appendRow([
+    kahootId,
+    dateObj,
+    title,
+    theme,
+    winner,
+    notes,
+    createdAt
+  ]);
+
+  // Append scores
+  var scoresSheet = getSheet("scores");
+  if (!scoresSheet) {
+    return jsonResponse({ ok: false, error: "Missing 'scores' sheet." }, 500);
+  }
+
+  for (var r = 0; r < results.length; r++) {
+    var row = results[r] || {};
+    var player = String(row.player_name || "").trim();
+    if (!player) continue;
+
+    scoresSheet.appendRow([
+      kahootId,
+      player,
+      Number(row.score) || 0,
+      Number(row.rank) || null,
+      createdAt
+    ]);
+  }
+
+  return jsonResponse({ ok: true, kahoot_id: kahootId });
 }

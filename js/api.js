@@ -10,7 +10,7 @@
 /* ──────────────────────────────────────────────
    CONFIGURATION — Paste your Web App URL here
    ────────────────────────────────────────────── */
-var API_BASE = "https://script.google.com/macros/s/AKfycbw67ph3OYHViwRxvnW-4WWkLznD4esvpDYcfsOm_KVlNZzXRgksT0JIl70bOHmJhAHcwA/exec";
+var API_BASE = "https://script.google.com/macros/s/AKfycbz8VjmaiJJ5qF90N9Sjwhi-LWNS-MU7ykSZ8PwkDJhBvc55I10FvMKNzXx7ZFsQvBrJ9w/exec";
 /* ────────────────────────────────────────────── */
 
 // ─── Session cache for API responses (avoids re-fetching on page nav) ───────

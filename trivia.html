@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trivia Leaderboard – McMaster Book Club</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://script.google.com">
+    <link rel="preconnect" href="https://script.googleusercontent.com">
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <script src="js/api.js"></script>
+</head>
+<body>
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <a href="index.html"><img src="images/logo.png" alt="McMaster Book Club logo" class="nav-logo-img"> McMaster Book Club</a>
+            </div>
+            <button class="hamburger" id="hamburger" aria-label="Toggle navigation" aria-expanded="false">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <ul class="nav-menu" id="nav-menu">
+                <li class="nav-item"><a href="index.html#home" class="nav-link">Home</a></li>
+                <li class="nav-item"><a href="index.html#about" class="nav-link">About</a></li>
+                <li class="nav-item"><a href="current-read.html" class="nav-link">Current Read</a></li>
+                <li class="nav-item"><a href="meetings-events.html" class="nav-link">Meetings & Events</a></li>
+                <li class="nav-item"><a href="trivia.html" class="nav-link nav-link-active">Trivia</a></li>
+                <li class="nav-item"><a href="index.html#join" class="nav-link nav-link-cta">Join Us</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main id="main-content">
+        <section class="page-hero">
+            <div class="container">
+                <h1>🎯 Trivia Leaderboards</h1>
+                <p>Track bragging rights across every Kahoot and celebrate our top readers.</p>
+            </div>
+        </section>
+
+        <section class="section trivia-section">
+            <div class="container">
+                <div id="trivia-loading" class="loading-state">Loading leaderboards…</div>
+                <div id="trivia-error" class="error-state" style="display:none;">Unable to load trivia data right now.</div>
+
+                <div id="trivia-content" style="display:none;">
+                    <div class="trivia-card">
+                        <h2><span class="section-icon">🏆</span> All-Time Leaderboard</h2>
+                        <table class="trivia-table">
+                            <thead>
+                                <tr>
+                                    <th>Rank</th>
+                                    <th>Player</th>
+                                    <th>Total Score</th>
+                                    <th>Games</th>
+                                    <th>Wins</th>
+                                </tr>
+                            </thead>
+                            <tbody id="all-time-body"></tbody>
+                        </table>
+                        <div id="all-time-empty" class="trivia-empty" style="display:none;">No scores yet.</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section trivia-section alt">
+            <div class="container">
+                <div class="trivia-card">
+                    <h2><span class="section-icon">📆</span> Last 4 Months</h2>
+                    <table class="trivia-table">
+                        <thead>
+                            <tr>
+                                <th>Rank</th>
+                                <th>Player</th>
+                                <th>Total Score</th>
+                                <th>Games</th>
+                                <th>Wins</th>
+                            </tr>
+                        </thead>
+                        <tbody id="last-four-body"></tbody>
+                    </table>
+                    <div id="last-four-empty" class="trivia-empty" style="display:none;">No recent scores yet.</div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section trivia-section">
+            <div class="container">
+                <div class="trivia-card">
+                    <h2><span class="section-icon">⚡</span> Latest Kahoot</h2>
+                    <div id="latest-kahoot-meta" class="trivia-meta"></div>
+                    <table class="trivia-table">
+                        <thead>
+                            <tr>
+                                <th>Rank</th>
+                                <th>Player</th>
+                                <th>Score</th>
+                            </tr>
+                        </thead>
+                        <tbody id="latest-kahoot-body"></tbody>
+                    </table>
+                    <div id="latest-kahoot-empty" class="trivia-empty" style="display:none;">No Kahoot results yet.</div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section trivia-section alt">
+            <div class="container">
+                <div class="trivia-card">
+                    <h2><span class="section-icon">📚</span> Kahoot Archive</h2>
+                    <div id="archive-list" class="trivia-archive-grid"></div>
+                    <div id="archive-empty" class="trivia-empty" style="display:none;">No past games yet.</div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>McMaster Book Club</h4>
+                <p>Building community through the love of reading.</p>
+            </div>
+            <div class="footer-section">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="index.html#home">Home</a></li>
+                    <li><a href="index.html#about">About</a></li>
+                    <li><a href="current-read.html">Current Read</a></li>
+                    <li><a href="meetings-events.html">Meetings & Events</a></li>
+                    <li><a href="trivia.html">Trivia</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Connect</h4>
+                <div class="footer-social">
+                    <a href="https://www.instagram.com/mcmasterbooks/" target="_blank" rel="noopener" aria-label="Instagram" class="footer-social-link">
+                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <rect width="24" height="24" fill="none"/>
+                            <rect x="2" y="2" width="20" height="20" rx="4.18" ry="4.18" fill="none" stroke="currentColor" stroke-width="2"/>
+                            <circle cx="12" cy="12" r="3.6" fill="none" stroke="currentColor" stroke-width="2"/>
+                            <circle cx="18.5" cy="5.5" r="1.5" fill="currentColor"/>
+                        </svg>
+                    </a>
+                    <a href="https://linktr.ee/mcmasterbooks" target="_blank" rel="noopener" aria-label="Linktree" class="footer-social-link">
+                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M7.953 15.066l-.038-4.18 4.058-.002v13.12h.076V10.882l4.058.002-.038 4.18 4.354-4.1-1.476-1.58-2.762 2.608.038-5.238h3.4L12 0 4.553 6.754h3.4l.038 5.238-2.762-2.608-1.476 1.58 4.2 4.102z" fill="currentColor"/>
+                        </svg>
+                    </a>
+                    <a href="#" aria-label="Discord" class="footer-social-link">
+                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M20.317 4.3671c-1.8345-.8954-3.970-.4383-3.970-.4383l-.195.234c2.3825.7234 3.5175 1.7622 3.5175 1.7622-1.5-.7372-2.9906-1.0972-4.4131-1.2237-.9035-.1117-1.7885-.0835-2.6059.0619 0 0 .137-.1618.4147-.3953-1.6365-.247-3.0992.1584-3.0992.1584s1.1246 1.0369 3.5042 1.7397v-.01c.4725.5648.9451 1.1295 1.3175 1.7622.6234 1.1293.9935 2.4627.9935 3.7961 0 0-.5589 1.1947-2.1768 1.5921 0 0 .1302.1618.4147.1618 1.3175 0 2.1768-.9452 2.1768-.9452.1302 1.2564-.3897 2.511-1.1246 3.4294-.6234.7371-1.5588 1.2565-2.5233 1.3441.5878.4665 1.3175.7919 2.1768.8238.8592.0318 1.7593-.1319 2.5233-.4665.7641-.3346 1.5281-.8874 2.0765-1.55-.3897 2.511-2.6059 4.3671-5.2118 4.3671-1.3175 0-2.5233-.3345-3.5175-1.0369.2914-.1938.5878-.3884.8813-.5829 1.5-.9451 2.8537-2.3758 3.6227-4.0328.7641-1.657 1.0285-3.4933.7641-5.2936-.2645-1.8003-.7641-3.494-1.8345-4.9575z" fill="currentColor"/>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 McMaster Book Club. All rights reserved. Made with <span class="heart">❤️</span> for book lovers.</p>
+        </div>
+    </footer>
+
+    <script>
+        var hamburger = document.getElementById('hamburger');
+        var navMenu = document.getElementById('nav-menu');
+
+        hamburger.addEventListener('click', function () {
+            navMenu.classList.toggle('active');
+            hamburger.setAttribute('aria-expanded',
+                hamburger.getAttribute('aria-expanded') === 'false' ? 'true' : 'false'
+            );
+        });
+
+        document.querySelectorAll('.nav-link').forEach(function (link) {
+            link.addEventListener('click', function () {
+                navMenu.classList.remove('active');
+                hamburger.setAttribute('aria-expanded', 'false');
+            });
+        });
+
+        document.addEventListener('click', function (e) {
+            if (!e.target.closest('.nav-container')) {
+                navMenu.classList.remove('active');
+                hamburger.setAttribute('aria-expanded', 'false');
+            }
+        });
+    </script>
+    <script src="js/trivia.js"></script>
+</body>
+</html>
