@@ -37,13 +37,31 @@
     <main id="main-content">
         <section class="page-hero">
             <div class="container">
-                <h1>Our Team</h1>
-                <p>Meet the people behind McMaster Book Club :)</p>
+                <h1>Meet the Characters</h1>
+                <p>Every great story has a cast.</p>
             </div>
         </section>
 
         <section class="team-section">
-            <div class="team-container" id="team-container" aria-live="polite"></div>
+            <div class="team-container">
+                <div class="team-book" id="team-book" tabindex="0" aria-label="McMaster Book Club Our Team digital book">
+                    <div class="team-book-page team-cover-page" id="team-cover" aria-hidden="false">
+                        <p class="team-book-kicker">McMaster Book Club</p>
+                        <img class="team-cover-logo" src="images/logo.png" alt="McMaster Book Club logo">
+                        <p class="team-cover-title">OUR TEAM</p>
+                        <p class="team-cover-year">2025 / 26</p>
+                        <div class="team-cover-rule" aria-hidden="true"></div>
+                        <p class="team-cover-note">Meet the people behind McMaster Book Club :)</p>
+                    </div>
+                    <div class="team-book-spread" id="team-spread" hidden aria-live="polite"></div>
+                    <button class="team-book-arrow team-book-arrow-previous" id="team-previous" type="button" aria-label="Previous team member">&#8249;</button>
+                    <button class="team-book-arrow team-book-arrow-next" id="team-next" type="button" aria-label="Next team member">&#8250;</button>
+                </div>
+                <div class="team-book-controls" aria-label="Book controls">
+                    <p class="team-page-indicator" id="team-page-indicator">Cover</p>
+                </div>
+                <button class="team-play-control" id="team-play" type="button" aria-label="Pause automatic page turning" aria-pressed="true">&#x23F8;</button>
+            </div>
         </section>
     </main>
 
@@ -210,160 +228,241 @@
             }
         ];
 
-        const sortedMembers = [...teamMembers].sort((a, b) => {
-            if (a.rank !== b.rank) return a.rank - b.rank;
-            return a.order - b.order;
-        });
-
-        const container = document.getElementById('team-container');
-        const grouped = sortedMembers.reduce((acc, member) => {
-            if (!acc[member.rank]) acc[member.rank] = [];
-            acc[member.rank].push(member);
-            return acc;
-        }, {});
+        const sortedMembers = [...teamMembers].sort((a, b) => a.order - b.order);
+        const book = document.getElementById('team-book');
+        const cover = document.getElementById('team-cover');
+        const spread = document.getElementById('team-spread');
+        const indicator = document.getElementById('team-page-indicator');
+        const previous = document.getElementById('team-previous');
+        const next = document.getElementById('team-next');
+        const play = document.getElementById('team-play');
+        let pageIndex = -1;
+        let autoplayTimer = null;
+        let isAutoplay = true;
+        let isAnimating = false;
 
         const createContactLink = (label, href, text) => {
             const row = document.createElement('div');
             row.className = 'team-contact-row';
-
-            const labelEl = document.createElement('div');
+            const labelEl = document.createElement('span');
             labelEl.className = 'team-contact-label';
             labelEl.textContent = label;
-
             const link = document.createElement('a');
             link.className = 'team-contact-link';
             link.textContent = text;
-
-            if (label === 'EMAIL') {
-                link.setAttribute('href', `mailto:${href}`);
-                link.removeAttribute('target');
-                link.removeAttribute('rel');
-            } else {
-                link.setAttribute('href', href);
-                link.setAttribute('target', '_blank');
-                link.setAttribute('rel', 'noopener noreferrer');
+            link.href = label === 'EMAIL' ? `mailto:${href}` : href;
+            if (label !== 'EMAIL') {
+                link.target = '_blank';
+                link.rel = 'noopener noreferrer';
             }
-
-            link.addEventListener('click', function(event) {
-                event.stopPropagation();
-            });
-
-            row.appendChild(labelEl);
-            row.appendChild(link);
+            link.addEventListener('click', event => event.stopPropagation());
+            link.addEventListener('focus', pauseAutoplay);
+            row.append(labelEl, link);
             return row;
         };
 
-        const renderMember = (member) => {
-            const card = document.createElement('article');
-            card.className = 'team-card';
-            card.tabIndex = 0;
-            card.setAttribute('role', 'button');
-            card.setAttribute('aria-label', `${member.fullName} profile`);
-
-            if (member.displayName === 'Kaitlyn') {
-                card.classList.add('team-card-kaitlyn');
-            }
-
-            const inner = document.createElement('div');
-            inner.className = 'team-card-inner';
-
-            const front = document.createElement('div');
-            front.className = 'team-card-face team-card-front';
-
-            const photoWrapper = document.createElement('div');
-            photoWrapper.className = 'team-photo-wrap';
-
+        const makePhoto = member => {
             if (member.placeholder) {
                 const placeholder = document.createElement('div');
                 placeholder.className = 'team-photo team-photo-placeholder';
-                placeholder.setAttribute('role', 'img');
+                placeholder.role = 'img';
                 placeholder.setAttribute('aria-label', 'Cate, VP of Events placeholder — McMaster Book Club');
                 placeholder.textContent = 'C';
-                photoWrapper.appendChild(placeholder);
-            } else {
-                const img = document.createElement('img');
-                img.className = 'team-photo';
-                img.src = member.image;
-                img.alt = `${member.fullName}, ${member.role} — McMaster Book Club`;
-                img.loading = 'lazy';
-                img.style.objectFit = 'cover';
-                img.style.objectPosition = 'center';
-                photoWrapper.appendChild(img);
+                return placeholder;
             }
-
-            const name = document.createElement('h2');
-            name.className = 'team-name';
-            name.textContent = member.displayName;
-
-            const role = document.createElement('p');
-            role.className = 'team-role';
-            role.textContent = member.role;
-
-            front.appendChild(photoWrapper);
-            front.appendChild(name);
-            front.appendChild(role);
-
-            const back = document.createElement('div');
-            back.className = 'team-card-face team-card-back';
-
-            const backName = document.createElement('h2');
-            backName.className = 'team-card-back-name';
-            backName.textContent = member.fullName;
-
-            const backRole = document.createElement('p');
-            backRole.className = 'team-card-back-role';
-            backRole.textContent = member.role;
-
-            const contactList = document.createElement('div');
-            contactList.className = 'team-contact-list';
-
-            contactList.appendChild(createContactLink('EMAIL', member.email, member.email));
-            contactList.appendChild(createContactLink('INSTAGRAM', member.instagramUrl, member.instagramDisplay));
-
-            if (member.linkedinUrl) {
-                contactList.appendChild(createContactLink('LINKEDIN', member.linkedinUrl, member.linkedinDisplay));
-            }
-
-            back.appendChild(backName);
-            back.appendChild(backRole);
-            back.appendChild(contactList);
-
-            inner.appendChild(front);
-            inner.appendChild(back);
-            card.appendChild(inner);
-
-            const toggleCard = function(event) {
-                if (event && event.target && event.target.closest('a')) {
-                    return;
-                }
-                card.classList.toggle('is-flipped');
-            };
-
-            card.addEventListener('click', toggleCard);
-            card.addEventListener('keydown', function(event) {
-                if (event.key === 'Enter' || event.key === ' ') {
-                    event.preventDefault();
-                    toggleCard();
-                }
-            });
-
-            return card;
+            const img = document.createElement('img');
+            img.className = 'team-photo';
+            img.src = member.image;
+            img.alt = `${member.fullName}, ${member.role} — McMaster Book Club`;
+            img.loading = 'lazy';
+            return img;
         };
 
-        Object.keys(grouped).forEach((rankKey) => {
-            const rank = document.createElement('div');
-            rank.className = 'team-rank';
+        const renderPage = (member, index) => {
+            const left = document.createElement('div');
+            left.className = 'team-book-page team-book-photo-page';
+            left.innerHTML = `<span class="team-chapter-label">Chapter ${String(index + 1).padStart(2, '0')}</span>`;
+            const photoFrame = document.createElement('div');
+            photoFrame.className = 'team-photo-wrap';
+            photoFrame.appendChild(makePhoto(member));
+            const leftNumber = document.createElement('span');
+            leftNumber.className = 'team-page-number';
+            leftNumber.textContent = String(index + 1).padStart(2, '0');
+            left.append(photoFrame, leftNumber);
 
-            const row = document.createElement('div');
-            row.className = 'team-row';
+            const right = document.createElement('div');
+            right.className = 'team-book-page team-book-info-page';
+            right.innerHTML = `<span class="team-chapter-label">McMaster Book Club</span><h2>${member.fullName}</h2><p class="team-book-role">${member.role}</p>`;
+            const mobilePhoto = document.createElement('div');
+            mobilePhoto.className = 'team-mobile-photo';
+            mobilePhoto.appendChild(makePhoto(member));
+            const contacts = document.createElement('div');
+            contacts.className = 'team-contact-list';
+            contacts.appendChild(createContactLink('EMAIL', member.email, member.email));
+            contacts.appendChild(createContactLink('INSTAGRAM', member.instagramUrl, member.instagramDisplay));
+            if (member.linkedinUrl) contacts.appendChild(createContactLink('LINKEDIN', member.linkedinUrl, member.linkedinDisplay));
+            const rightNumber = document.createElement('span');
+            rightNumber.className = 'team-page-number';
+            rightNumber.textContent = String(index + 1).padStart(2, '0');
+            right.prepend(mobilePhoto);
+            right.append(contacts, rightNumber);
+            spread.replaceChildren(left, right);
+        };
 
-            grouped[rankKey].forEach((member) => {
-                row.appendChild(renderMember(member));
-            });
+        const renderEndPage = () => {
+            spread.innerHTML = '<div class="team-book-page team-end-page"><span class="team-chapter-label">The final page</span><h2>The End?</h2><p>Not quite.</p><p>There\'s always another chapter.</p></div>';
+        };
 
-            rank.appendChild(row);
-            container.appendChild(rank);
+        function pauseAutoplay() {
+            isAutoplay = false;
+            clearTimeout(autoplayTimer);
+            play.textContent = '\u25B6';
+            play.setAttribute('aria-label', 'Resume automatic page turning');
+            play.setAttribute('aria-pressed', 'false');
+        }
+
+        function scheduleAutoplay() {
+            clearTimeout(autoplayTimer);
+            if (!isAutoplay) return;
+            const nextIndex = pageIndex >= sortedMembers.length ? -1 : pageIndex + 1;
+            autoplayTimer = setTimeout(() => showPage(nextIndex, true), 3000);
+        }
+
+        function updateControls() {
+            previous.disabled = pageIndex <= -1 || isAnimating;
+            next.disabled = pageIndex >= sortedMembers.length || isAnimating;
+            previous.hidden = pageIndex <= -1;
+            next.hidden = pageIndex >= sortedMembers.length;
+        }
+
+        function finishTurn(nextIndex) {
+            if (!isAnimating) return;
+            pageIndex = nextIndex;
+            isAnimating = false;
+            const turningPage = spread.querySelector('.team-turning-page');
+            if (turningPage) turningPage.remove();
+            if (pageIndex === sortedMembers.length) renderEndPage();
+            else renderPage(sortedMembers[pageIndex], pageIndex);
+            indicator.textContent = pageIndex === sortedMembers.length ? 'The End' : `${String(pageIndex + 1).padStart(2, '0')} / ${sortedMembers.length}`;
+            updateControls();
+            scheduleAutoplay();
+        }
+
+        function finishSpecialTurn(nextIndex, turningPage) {
+            if (!isAnimating) return;
+            turningPage.remove();
+            pageIndex = nextIndex;
+            cover.hidden = pageIndex !== -1;
+            spread.hidden = pageIndex === -1;
+            isAnimating = false;
+            indicator.textContent = pageIndex === -1 ? 'Cover' : pageIndex === sortedMembers.length ? 'The End' : `${String(pageIndex + 1).padStart(2, '0')} / ${sortedMembers.length}`;
+            updateControls();
+            scheduleAutoplay();
+        }
+
+        function turnSpecialPage(nextIndex, automatic) {
+            if (isAnimating) return;
+            if (!automatic) pauseAutoplay();
+            isAnimating = true;
+            clearTimeout(autoplayTimer);
+            const direction = nextIndex > pageIndex ? 'next' : 'previous';
+            const currentPage = pageIndex === -1 ? cover : nextIndex === -1 ? spread : spread.querySelector('.team-end-page');
+            if (!currentPage) {
+                isAnimating = false;
+                return;
+            }
+            const turningPage = currentPage.cloneNode(true);
+            turningPage.removeAttribute('id');
+            turningPage.removeAttribute('hidden');
+            turningPage.classList.add('team-turning-page', `team-turning-page-cover-${direction}`);
+            if (nextIndex === -1) {
+                cover.hidden = false;
+                spread.hidden = true;
+            } else {
+                cover.hidden = true;
+                spread.hidden = false;
+                renderPage(sortedMembers[nextIndex], nextIndex);
+            }
+            book.appendChild(turningPage);
+            updateControls();
+            const duration = matchMedia('(prefers-reduced-motion: reduce)').matches ? 120 : 820;
+            turningPage.style.setProperty('--team-turn-duration', `${duration}ms`);
+            turningPage.addEventListener('animationend', () => finishSpecialTurn(nextIndex, turningPage), { once: true });
+            setTimeout(() => finishSpecialTurn(nextIndex, turningPage), duration + 40);
+        }
+
+        function turnPage(nextIndex, automatic) {
+            if (isAnimating || nextIndex < 0 || nextIndex > sortedMembers.length) return;
+            if (!automatic) pauseAutoplay();
+            isAnimating = true;
+            clearTimeout(autoplayTimer);
+            const direction = nextIndex > pageIndex ? 'next' : 'previous';
+            const currentPage = spread.querySelector(direction === 'next' ? '.team-book-info-page' : '.team-book-photo-page') || spread.querySelector('.team-end-page') || spread.firstElementChild;
+            if (!currentPage) {
+                isAnimating = false;
+                return;
+            }
+            const turningPage = currentPage.cloneNode(true);
+            turningPage.classList.add('team-turning-page', `team-turning-page-${direction}`);
+            renderPage(nextIndex === sortedMembers.length ? sortedMembers[0] : sortedMembers[nextIndex], nextIndex);
+            if (nextIndex === sortedMembers.length) renderEndPage();
+            spread.appendChild(turningPage);
+            updateControls();
+            const duration = matchMedia('(prefers-reduced-motion: reduce)').matches ? 120 : 820;
+            turningPage.addEventListener('animationend', () => finishTurn(nextIndex), { once: true });
+            turningPage.style.setProperty('--team-turn-duration', `${duration}ms`);
+            setTimeout(() => finishTurn(nextIndex), duration + 40);
+        }
+
+        function showPage(nextIndex, automatic = false) {
+            if (nextIndex < -1 || nextIndex > sortedMembers.length) return;
+            if ((nextIndex === pageIndex && pageIndex !== -1) || isAnimating) return;
+            if (pageIndex === -1) {
+                if (nextIndex === -1) {
+                    cover.hidden = false;
+                    spread.hidden = true;
+                    indicator.textContent = 'Cover';
+                    updateControls();
+                    scheduleAutoplay();
+                } else {
+                    turnSpecialPage(nextIndex, automatic);
+                }
+                return;
+            }
+            if (nextIndex === -1 || pageIndex === sortedMembers.length) {
+                turnSpecialPage(nextIndex, automatic);
+                return;
+            }
+            turnPage(nextIndex, automatic);
+        }
+
+        function startAutoplay() {
+            isAutoplay = true;
+            play.textContent = '\u23F8';
+            play.setAttribute('aria-label', 'Pause automatic page turning');
+            play.setAttribute('aria-pressed', 'true');
+            scheduleAutoplay();
+        }
+
+        previous.addEventListener('click', () => showPage(pageIndex - 1));
+        next.addEventListener('click', () => showPage(pageIndex + 1));
+        play.addEventListener('click', () => isAutoplay ? pauseAutoplay() : startAutoplay());
+        book.addEventListener('click', event => {
+            if (event.target.closest('button, a')) return;
+            pauseAutoplay();
         });
+        book.addEventListener('keydown', event => {
+            if (event.key === 'ArrowLeft') { event.preventDefault(); showPage(pageIndex - 1); }
+            if (event.key === 'ArrowRight') { event.preventDefault(); showPage(pageIndex + 1); }
+        });
+        let touchStartX = 0;
+        book.addEventListener('touchstart', event => { touchStartX = event.changedTouches[0].clientX; pauseAutoplay(); }, { passive: true });
+        book.addEventListener('touchend', event => {
+            const delta = event.changedTouches[0].clientX - touchStartX;
+            if (Math.abs(delta) > 40) showPage(pageIndex + (delta < 0 ? 1 : -1));
+        }, { passive: true });
+        showPage(-1);
+        startAutoplay();
 
         const hamburger = document.getElementById('hamburger');
         const navMenu = document.getElementById('nav-menu');
