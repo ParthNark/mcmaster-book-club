@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Team</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <a href="index.html"><img src="images/logo.png" alt="McMaster Book Club logo" class="nav-logo-img"> McMaster Book Club</a>
+            </div>
+            <button class="hamburger" id="hamburger" aria-label="Toggle navigation" aria-expanded="false">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <ul class="nav-menu" id="nav-menu">
+                <li class="nav-item"><a href="index.html#home" class="nav-link">Home</a></li>
+                <li class="nav-item"><a href="index.html#about" class="nav-link">About</a></li>
+                <li class="nav-item"><a href="current-read.html" class="nav-link">Current Read</a></li>
+                <li class="nav-item"><a href="meetings-events.html" class="nav-link">Meetings & Events</a></li>
+                <li class="nav-item"><a href="chapters.html" class="nav-link">Past Events</a></li>
+                <li class="nav-item"><a href="our-team.html" class="nav-link nav-link-active">Our Team</a></li>
+                <li class="nav-item"><a href="index.html#join" class="nav-link nav-link-cta">Join Us</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main id="main-content">
+        <section class="page-hero">
+            <div class="container">
+                <h1>Our Team</h1>
+                <p>Meet the people behind McMaster Book Club :)</p>
+            </div>
+        </section>
+
+        <section class="team-section">
+            <div class="team-container" id="team-container" aria-live="polite"></div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>McMaster Book Club</h4>
+                <p>Building community through the love of reading.</p>
+            </div>
+            <div class="footer-section">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="index.html#home">Home</a></li>
+                    <li><a href="index.html#about">About</a></li>
+                    <li><a href="current-read.html">Current Read</a></li>
+                    <li><a href="meetings-events.html">Meetings & Events</a></li>
+                    <li><a href="chapters.html">Past Events</a></li>
+                    <li><a href="our-team.html">Our Team</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Connect</h4>
+                <div class="footer-social">
+                    <a href="https://www.instagram.com/mcmasterbooks/" target="_blank" rel="noopener" aria-label="Instagram" class="footer-social-link">
+                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <rect width="24" height="24" fill="none"/>
+                            <rect x="2" y="2" width="20" height="20" rx="4.18" ry="4.18" fill="none" stroke="currentColor" stroke-width="2"/>
+                            <circle cx="12" cy="12" r="3.6" fill="none" stroke="currentColor" stroke-width="2"/>
+                            <circle cx="18.5" cy="5.5" r="1.5" fill="currentColor"/>
+                        </svg>
+                    </a>
+                    <a href="https://linktr.ee/mcmasterbooks" target="_blank" rel="noopener" aria-label="Linktree" class="footer-social-link">
+                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M7.953 15.066l-.038-4.18 4.058-.002v13.12h.076V10.882l4.058.002-.038 4.18 4.354-4.1-1.476-1.58-2.762 2.608.038-5.238h3.4L12 0 4.553 6.754h3.4l.038 5.238-2.762-2.608-1.476 1.58 4.2 4.102z" fill="currentColor"/>
+                        </svg>
+                    </a>
+                    <a href="#" aria-label="Discord" class="footer-social-link">
+                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M20.317 4.3671c-1.8345-.8954-3.970-.4383-3.970-.4383l-.195.234c2.3825.7234 3.5175 1.7622 3.5175 1.7622-1.5-.7372-2.9906-1.0972-4.4131-1.2237-.9035-.1117-1.7885-.0835-2.6059.0619 0 0 .137-.1618.4147-.3953-1.6365-.247-3.0992.1584-3.0992.1584s1.1246 1.0369 3.5042 1.7397v-.01c.4725.5648.9451 1.1295 1.3175 1.7622.6234 1.1293.9935 2.4627.9935 3.7961 0 0-.5589 1.1947-2.1768 1.5921 0 0 .1302.1618.4147.1618 1.3175 0 2.1768-.9452 2.1768-.9452.1302 1.2564-.3897 2.511-1.1246 3.4294-.6234.7371-1.5588 1.2565-2.5233 1.3441.5878.4665 1.3175.7919 2.1768.8238.8592.0318 1.7593-.1319 2.5233-.4665.7641-.3346 1.5281-.8874 2.0765-1.55-.3897 2.511-2.6059 4.3671-5.2118 4.3671-1.3175 0-2.5233-.3345-3.5175-1.0369.2914-.1938.5878-.3884.8813-.5829 1.5-.9451 2.8537-2.3758 3.6227-4.0328.7641-1.657 1.0285-3.4933.7641-5.2936-.2645-1.8003-.7641-3.494-1.8345-4.9575z" fill="currentColor"/>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 McMaster Book Club. All rights reserved. Made with <span class="heart">❤️</span> for book lovers.</p>
+        </div>
+    </footer>
+
+    <script>
+        const teamMembers = [
+            {
+                displayName: 'Maddie',
+                fullName: 'Maddie Taylor',
+                role: 'Co-President',
+                image: 'images/ourteam/Maddie Co-President.jpg',
+                rank: 1,
+                order: 1,
+                email: 'taylom82@mcmaster.ca',
+                instagramDisplay: '@maddie_taylor3',
+                instagramUrl: 'https://www.instagram.com/maddie_taylor3/'
+            },
+            {
+                displayName: 'Kaitlyn',
+                fullName: 'Kaitlyn Gorgey',
+                role: 'Co-President',
+                image: 'images/ourteam/Kaitlyn Co-President.png',
+                rank: 1,
+                order: 2,
+                email: 'gorgeyk@mcmaster.ca',
+                instagramDisplay: '@gorgeykaitlyn',
+                instagramUrl: 'https://www.instagram.com/gorgeykaitlyn/'
+            },
+            {
+                displayName: 'Alice',
+                fullName: 'Alice Viana',
+                role: 'VP Events',
+                image: 'images/ourteam/Alice VP Events.jpg',
+                rank: 2,
+                order: 3,
+                email: 'rodria49@mcmaster.ca',
+                instagramDisplay: '@alice.viana__',
+                instagramUrl: 'https://www.instagram.com/alice.viana__/'
+            },
+            {
+                displayName: 'Cate',
+                fullName: 'Cate Lin',
+                role: 'VP Events',
+                image: null,
+                rank: 2,
+                order: 4,
+                placeholder: true,
+                email: 'lin445@mcmaster.ca',
+                instagramDisplay: '@noirstargazr',
+                instagramUrl: 'https://www.instagram.com/noirstargazr/'
+            },
+            {
+                displayName: 'Marzia',
+                fullName: 'Marzia Sarker',
+                role: 'VP Outreach',
+                image: 'images/ourteam/Marzia VP Outreach.jpg',
+                rank: 2,
+                order: 5,
+                email: 'sarkem4@mcmaster.ca',
+                instagramDisplay: '@marzia_rs',
+                instagramUrl: 'https://www.instagram.com/marzia_rs/'
+            },
+            {
+                displayName: 'Heer',
+                fullName: 'Heer Upadhyay',
+                role: 'VP Outreach',
+                image: 'images/ourteam/Heer VP Outreach.jpg',
+                rank: 2,
+                order: 6,
+                email: 'upadhh3@mcmaster.ca',
+                instagramDisplay: '@heer76311',
+                instagramUrl: 'https://www.instagram.com/heer76311/'
+            },
+            {
+                displayName: 'Lisumi',
+                fullName: 'Lisumi Wijesingha',
+                role: 'VP Admin',
+                image: 'images/ourteam/Lisumi VP Admin.jpg',
+                rank: 2,
+                order: 7,
+                email: 'wijesinp@mcmaster.ca',
+                instagramDisplay: '@poo.p.i.e',
+                instagramUrl: 'https://www.instagram.com/poo.p.i.e/'
+            },
+            {
+                displayName: 'Julia',
+                fullName: 'Julia Ankenmann',
+                role: 'VP External',
+                image: 'images/ourteam/Julia VP External.jpg',
+                rank: 2,
+                order: 8,
+                email: 'ankenmaj@mcmaster.ca',
+                instagramDisplay: '@jma0_07',
+                instagramUrl: 'https://www.instagram.com/jma0_07/'
+            },
+            {
+                displayName: 'Saige',
+                fullName: 'Saige Moore',
+                role: 'VP Finance',
+                image: 'images/ourteam/Saige of Finance.jpg',
+                rank: 2,
+                order: 9,
+                email: 'moores43@mcmaster.ca',
+                instagramDisplay: '@saigemoore_',
+                instagramUrl: 'https://www.instagram.com/saigemoore_/'
+            },
+            {
+                displayName: 'Parth',
+                fullName: 'Parth Narkhede',
+                role: 'VP Technology',
+                image: 'images/ourteam/Parth VP Tech.png',
+                rank: 2,
+                order: 10,
+                email: 'narkhedp@mcmaster.ca',
+                instagramDisplay: '@pxtlxz_19',
+                instagramUrl: 'https://www.instagram.com/pxtlxz_19/',
+                linkedinDisplay: 'Parth Narkhede',
+                linkedinUrl: 'https://www.linkedin.com/in/parth-narkhede-b2a684260/'
+            }
+        ];
+
+        const sortedMembers = [...teamMembers].sort((a, b) => {
+            if (a.rank !== b.rank) return a.rank - b.rank;
+            return a.order - b.order;
+        });
+
+        const container = document.getElementById('team-container');
+        const grouped = sortedMembers.reduce((acc, member) => {
+            if (!acc[member.rank]) acc[member.rank] = [];
+            acc[member.rank].push(member);
+            return acc;
+        }, {});
+
+        const createContactLink = (label, href, text) => {
+            const row = document.createElement('div');
+            row.className = 'team-contact-row';
+
+            const labelEl = document.createElement('div');
+            labelEl.className = 'team-contact-label';
+            labelEl.textContent = label;
+
+            const link = document.createElement('a');
+            link.className = 'team-contact-link';
+            link.textContent = text;
+
+            if (label === 'EMAIL') {
+                link.setAttribute('href', `mailto:${href}`);
+                link.removeAttribute('target');
+                link.removeAttribute('rel');
+            } else {
+                link.setAttribute('href', href);
+                link.setAttribute('target', '_blank');
+                link.setAttribute('rel', 'noopener noreferrer');
+            }
+
+            link.addEventListener('click', function(event) {
+                event.stopPropagation();
+            });
+
+            row.appendChild(labelEl);
+            row.appendChild(link);
+            return row;
+        };
+
+        const renderMember = (member) => {
+            const card = document.createElement('article');
+            card.className = 'team-card';
+            card.tabIndex = 0;
+            card.setAttribute('role', 'button');
+            card.setAttribute('aria-label', `${member.fullName} profile`);
+
+            if (member.displayName === 'Kaitlyn') {
+                card.classList.add('team-card-kaitlyn');
+            }
+
+            const inner = document.createElement('div');
+            inner.className = 'team-card-inner';
+
+            const front = document.createElement('div');
+            front.className = 'team-card-face team-card-front';
+
+            const photoWrapper = document.createElement('div');
+            photoWrapper.className = 'team-photo-wrap';
+
+            if (member.placeholder) {
+                const placeholder = document.createElement('div');
+                placeholder.className = 'team-photo team-photo-placeholder';
+                placeholder.setAttribute('role', 'img');
+                placeholder.setAttribute('aria-label', 'Cate, VP of Events placeholder — McMaster Book Club');
+                placeholder.textContent = 'C';
+                photoWrapper.appendChild(placeholder);
+            } else {
+                const img = document.createElement('img');
+                img.className = 'team-photo';
+                img.src = member.image;
+                img.alt = `${member.fullName}, ${member.role} — McMaster Book Club`;
+                img.loading = 'lazy';
+                img.style.objectFit = 'cover';
+                img.style.objectPosition = 'center';
+                photoWrapper.appendChild(img);
+            }
+
+            const name = document.createElement('h2');
+            name.className = 'team-name';
+            name.textContent = member.displayName;
+
+            const role = document.createElement('p');
+            role.className = 'team-role';
+            role.textContent = member.role;
+
+            front.appendChild(photoWrapper);
+            front.appendChild(name);
+            front.appendChild(role);
+
+            const back = document.createElement('div');
+            back.className = 'team-card-face team-card-back';
+
+            const backName = document.createElement('h2');
+            backName.className = 'team-card-back-name';
+            backName.textContent = member.fullName;
+
+            const backRole = document.createElement('p');
+            backRole.className = 'team-card-back-role';
+            backRole.textContent = member.role;
+
+            const contactList = document.createElement('div');
+            contactList.className = 'team-contact-list';
+
+            contactList.appendChild(createContactLink('EMAIL', member.email, member.email));
+            contactList.appendChild(createContactLink('INSTAGRAM', member.instagramUrl, member.instagramDisplay));
+
+            if (member.linkedinUrl) {
+                contactList.appendChild(createContactLink('LINKEDIN', member.linkedinUrl, member.linkedinDisplay));
+            }
+
+            back.appendChild(backName);
+            back.appendChild(backRole);
+            back.appendChild(contactList);
+
+            inner.appendChild(front);
+            inner.appendChild(back);
+            card.appendChild(inner);
+
+            const toggleCard = function(event) {
+                if (event && event.target && event.target.closest('a')) {
+                    return;
+                }
+                card.classList.toggle('is-flipped');
+            };
+
+            card.addEventListener('click', toggleCard);
+            card.addEventListener('keydown', function(event) {
+                if (event.key === 'Enter' || event.key === ' ') {
+                    event.preventDefault();
+                    toggleCard();
+                }
+            });
+
+            return card;
+        };
+
+        Object.keys(grouped).forEach((rankKey) => {
+            const rank = document.createElement('div');
+            rank.className = 'team-rank';
+
+            const row = document.createElement('div');
+            row.className = 'team-row';
+
+            grouped[rankKey].forEach((member) => {
+                row.appendChild(renderMember(member));
+            });
+
+            rank.appendChild(row);
+            container.appendChild(rank);
+        });
+
+        const hamburger = document.getElementById('hamburger');
+        const navMenu = document.getElementById('nav-menu');
+
+        if (hamburger && navMenu) {
+            hamburger.addEventListener('click', function() {
+                navMenu.classList.toggle('active');
+                hamburger.setAttribute('aria-expanded', navMenu.classList.contains('active'));
+            });
+
+            document.querySelectorAll('.nav-link').forEach(function(link) {
+                link.addEventListener('click', function() {
+                    navMenu.classList.remove('active');
+                    hamburger.setAttribute('aria-expanded', 'false');
+                });
+            });
+        }
+    </script>
+</body>
+</html>
