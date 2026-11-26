@@ -4,13 +4,53 @@
   "books": [
     {
       "status": "current",
+      "isbn": "9780525556572",
+      "work_id": "",
+      "title": "Everything Is Tuberculosis",
+      "author": "John Green",
+      "month": "November Non-Fiction Read",
+      "summary": "",
+      "tags": [
+        "Non-Fiction"
+      ],
+      "meeting_time": "Thu, Nov 26, 2026 — 6:00–7:00 PM",
+      "meeting_location": "Blue Lounge (The Hub)",
+      "meeting_notes": "",
+      "discussion_prompts": [],
+      "goodreads_url": "",
+      "rating_text": ""
+    },
+    {
+      "status": "past",
+      "isbn": "9781400031702",
+      "work_id": "",
+      "title": "The Secret History",
+      "author": "Donna Tartt",
+      "month": "November General Read",
+      "summary": "A group of eccentric classics students at an elite Vermont college are drawn into a murder, and the novel traces how they got there and what it costs them afterward.",
+      "tags": [],
+      "meeting_time": "Mon, Nov 23, 2026 — 6:00–7:00 PM",
+      "meeting_location": "Blue Lounge (The Hub)",
+      "meeting_notes": "",
+      "discussion_prompts": [],
+      "goodreads_url": "",
+      "rating_text": ""
+    },
+    {
+      "status": "past",
       "isbn": "9781101985366",
       "work_id": "",
       "title": "Final Girls",
       "author": "Riley Sager",
       "month": "September 2026",
-      "summary": "",
-      "tags": ["Horror", "Mystery", "Thriller", "Crime", "Suspense"],
+      "summary": "Years after surviving a massacre, Quincy Carpenter is pulled back into her past when another famous 'final girl' dies and a third shows up at her door with secrets of her own.",
+      "tags": [
+        "Horror",
+        "Mystery",
+        "Thriller",
+        "Crime",
+        "Suspense"
+      ],
       "meeting_time": "Mon, Sep 21, 2026 — 6:00 PM",
       "meeting_location": "Blue Lounge (The Hub)",
       "meeting_notes": "",
@@ -24,14 +64,18 @@
       "rating_text": ""
     },
     {
-      "status": "current",
+      "status": "past",
       "isbn": "9780063021426",
       "work_id": "",
       "title": "Babel",
       "author": "R. F. Kuang",
       "month": "September 2026",
-      "summary": "",
-      "tags": ["Fantasy", "Historical Fiction", "Dark Academia"],
+      "summary": "At Oxford's Royal Institute of Translation, a young scholar discovers how the magic of language props up the British Empire, and must decide whether to serve it or resist.",
+      "tags": [
+        "Fantasy",
+        "Historical Fiction",
+        "Dark Academia"
+      ],
       "meeting_time": "Thu, Sep 24, 2026 — 6:00 PM",
       "meeting_location": "Blue Lounge (The Hub)",
       "meeting_notes": "",
