@@ -162,18 +162,7 @@
             var errorEl   = document.getElementById('me-picks-error');
 
             try {
-                var config;
-                if (typeof getCurrent === 'function' &&
-                    typeof API_BASE !== 'undefined' &&
-                    API_BASE !== 'PASTE_WEB_APP_URL_HERE') {
-                    config = await getCurrent();
-                    if (!config || config.error) throw new Error('API error');
-                } else {
-                    var res = await fetch('data/current.json');
-                    if (!res.ok) throw new Error('Local JSON failed');
-                    config = await res.json();
-                }
-
+                var config = await getCurrent();
                 var books = config.books || [];
                 if (books.length === 0) throw new Error('No books in response');
 
@@ -225,12 +214,6 @@
             var errorEl     = document.getElementById('me-events-error');
 
             try {
-                if (typeof getEvents !== 'function' ||
-                    typeof API_BASE === 'undefined' ||
-                    API_BASE === 'PASTE_WEB_APP_URL_HERE') {
-                    throw new Error('API not configured');
-                }
-
                 var events = await getEvents();
                 if (!Array.isArray(events) || events.length === 0) {
                     throw new Error('No events');

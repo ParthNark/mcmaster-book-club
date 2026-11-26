@@ -1,0 +1,116 @@
+# Pages CMS configuration — edit site content at https://app.pagescms.org
+# Every save commits to this repo, and the site redeploys from main.
+
+content:
+  - name: books
+    label: Books
+    type: file
+    path: data/books.json
+    format: json
+    fields:
+      - name: voting_open
+        label: Voting open
+        type: boolean
+        description: Shows the "Vote for next month's book" button on the Current Read page.
+      - name: vote_form_url
+        label: Voting form link
+        type: string
+        description: Google Form link for the vote. Only used while voting is open.
+      - name: books
+        label: Books
+        type: object
+        list: true
+        description: Current books appear on the site in this order. Past books appear newest first, so keep recent ones near the top.
+        fields:
+          - name: status
+            label: Status
+            type: select
+            required: true
+            description: "current = shown as this month's pick. past = listed under Past Reads. upcoming = saved but hidden."
+            options:
+              values: [current, upcoming, past]
+          - name: isbn
+            label: ISBN
+            type: string
+            description: The cover, title, author and description are fetched from Open Library using this.
+          - name: work_id
+            label: Open Library work ID
+            type: string
+            description: Optional. Use only if the ISBN finds the wrong book (e.g. OL20059198W).
+          - name: title
+            label: Title
+            type: string
+            required: true
+          - name: author
+            label: Author
+            type: string
+          - name: month
+            label: Month
+            type: string
+            description: e.g. "September 2026" or "January Fantasy Book".
+          - name: summary
+            label: Summary
+            type: text
+            description: Shown on Past Reads cards. For current books it's used only if Open Library has no description.
+          - name: tags
+            label: Tags
+            type: string
+            list: true
+          - name: meeting_time
+            label: Meeting time
+            type: string
+            description: e.g. "Mon, Sep 21, 2026 — 6:00 PM".
+          - name: meeting_location
+            label: Meeting location
+            type: string
+          - name: meeting_notes
+            label: Meeting notes
+            type: text
+          - name: discussion_prompts
+            label: Discussion prompts
+            type: string
+            list: true
+          - name: goodreads_url
+            label: Goodreads link
+            type: string
+          - name: rating_text
+            label: Rating text
+            type: string
+            description: Optional, e.g. "4.2 ★". Shown on the homepage card.
+
+  - name: events
+    label: Events
+    type: file
+    path: data/events.json
+    format: json
+    fields:
+      - name: events
+        label: Events
+        type: object
+        list: true
+        description: Events are hidden automatically the day after their date.
+        fields:
+          - name: title
+            label: Title
+            type: string
+            required: true
+          - name: date
+            label: Date
+            type: date
+            required: true
+          - name: time
+            label: Time
+            type: string
+            description: e.g. "6:00 PM".
+          - name: location
+            label: Location
+            type: string
+          - name: description
+            label: Description
+            type: text
+          - name: instagram_url
+            label: Instagram post link
+            type: string
+          - name: rsvp_url
+            label: RSVP link
+            type: string

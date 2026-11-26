@@ -183,31 +183,9 @@
             var containerEl = document.getElementById('cr-books-container');
             var errorEl     = document.getElementById('cr-error');
 
-            /**
-             * Fetch config from Google Sheets API first.
-             * getCurrent() returns normalized { books, voting_open, vote_form_url }.
-             */
-            async function loadConfig() {
-                if (typeof getCurrent === 'function' &&
-                    typeof API_BASE !== 'undefined' &&
-                    API_BASE !== 'PASTE_WEB_APP_URL_HERE') {
-                    try {
-                        var apiData = await getCurrent();
-                        if (apiData && !apiData.error) return apiData;
-                    } catch (e) {
-                        console.warn('API fetch failed, falling back to local JSON:', e);
-                    }
-                }
-                var res = await fetch('data/current.json');
-                if (!res.ok) throw new Error('Could not load config from API or local file');
-                return res.json();
-            }
-
             try {
-                // 1. Load config
-                var config = await loadConfig();
-
-                // books is always an array (normalized by api.js _normalizeCurrent)
+                // 1. Load current books from data/books.json (see js/api.js)
+                var config = await getCurrent();
                 var books = config.books || [];
                 if (books.length === 0) throw new Error('No books in response');
 
@@ -318,12 +296,6 @@
             if (!container) return;
 
             try {
-                if (typeof getPast !== 'function' ||
-                    typeof API_BASE === 'undefined' ||
-                    API_BASE === 'PASTE_WEB_APP_URL_HERE') {
-                    throw new Error('API not configured');
-                }
-
                 var pastBooks = await getPast();
                 if (!Array.isArray(pastBooks) || pastBooks.length === 0) {
                     throw new Error('No past reads returned');

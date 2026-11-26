@@ -1,5 +1,7 @@
 # McMaster Book Club — Google Apps Script Backend
 
+> **Note:** Books and events are now edited in Pages CMS and stored in `data/books.json` and `data/events.json` (see the main README). The site only uses this backend for **newsletter signups** and **trivia**. The `current`, `past` and `events` tab instructions below are kept for reference.
+
 Step-by-step setup guide for club executives. **No coding required** after initial setup.
 
 ---

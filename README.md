@@ -1,130 +1,81 @@
 # 📚 McMaster Book Club Website
 
-Official website for the McMaster Book Club.  
-Built as a dynamic static site powered by Google Sheets as a lightweight CMS.
+Official website for the McMaster Book Club: a static site (HTML, CSS, vanilla JavaScript, no build step).
 
-🌐 **Live Site:**  
-https://mcmasterwebsite-da4bp.ondigitalocean.app/
+🌐 **Live site:** https://mcmasterwebsite-da4bp.ondigitalocean.app/
 
 ---
 
-## 🚀 Overview
+## 🧠 How it works
 
-This project combines a static frontend with a dynamic backend powered by:
-
-- **Google Sheets** – Content management system
-- **Google Apps Script** – API layer
-- **Open Library API** – Book metadata & covers
-- **DigitalOcean App Platform** – Deployment
-
-All book updates, meetings, events, and voting controls are managed through Google Sheets — no code changes required for monthly updates.
-
----
-
-## ✨ Features
-
-### 📖 Current Reads
-- Supports **two monthly book picks**
-- Automatically loads:
-  - Cover image
-  - Title & author
-  - Summary (Open Library + fallback)
-  - Tags
-  - Meeting time & location
-  - Discussion prompts
-- Optional Goodreads link
-- Fully editable via Google Sheets
-
----
-
-### 📅 Meetings & Events Page
-- Separate page for monthly picks
-- Editable meeting details per book
-- Dynamic event cards pulled from Sheets
-- Supports:
-  - Instagram event links
-  - RSVP links
-- Graceful fallback when no events exist
-
----
-
-### 🗳 Voting System
-- Voting toggle controlled in Sheets
-- `voting_open = TRUE` enables vote button
-- Google Form link editable in backend
-
----
-
-### 📬 Newsletter
-- Newsletter signups stored in Google Sheets
-- Handled via Google Apps Script POST endpoint
-
----
-
-## 🧠 Architecture
-Google Sheets
-↓
-Google Apps Script API
-↓
-Static Website (fetch requests)
-↓
-Open Library API (book metadata)
-
-
----
-
-## ⚙️ Backend Setup (Google Apps Script)
-
-1. Create a Google Sheet with:
-   - `current` tab (key/value structure)
-   - `events` tab (table structure)
-   - `newsletter` tab
-
-2. Create Apps Script:
-   - Paste backend `Code.gs`
-   - Set your `SHEET_ID`
-   - Deploy as Web App
-   - Set access to **Anyone**
-
-3. Paste the Web App URL into:
-
-```js
-var API_BASE = "YOUR_DEPLOYED_WEB_APP_URL";
 ```
-📝 Monthly Update Workflow
+Pages CMS (app.pagescms.org)
+      │  saves = git commits
+data/books.json, data/events.json  (in this repo)
+      │  push to main → DigitalOcean redeploys
+Static site  ──►  Open Library API (covers, titles, descriptions)
+      │
+      └─► Google Apps Script  (newsletter signups + trivia only)
+```
 
-To update books:
+| Content | Where it lives | How to edit |
+|---|---|---|
+| Current, upcoming & past books, voting | `data/books.json` | Pages CMS → **Books** |
+| Events | `data/events.json` | Pages CMS → **Events** |
+| Team members | `our-team.html` (`teamMembers` list) | Code |
+| Past event photos | `images/<event>/` + `js/chapters-data.js` | Code (see below) |
+| Newsletter signups, trivia | Google Sheet via `apps-script/Code.gs` | Sheet / `admin-trivia.html` |
 
-Replace:
+---
 
-book1_isbn
+## ✏️ Editing content (Pages CMS)
 
-book2_isbn
+1. Go to **https://app.pagescms.org** and sign in with GitHub.
+2. Open the `mcmaster-book-club` repo. (First time only: install the Pages CMS GitHub app on the repo when prompted.)
+3. Edit **Books** or **Events** and click **Save**. Each save is a commit to `main`, and the site updates once DigitalOcean redeploys (about 1–2 minutes).
 
-Meeting details
+The editor's fields are defined in [`.pages.yml`](.pages.yml).
 
-Discussion prompts
+### 📝 Monthly book update
 
-Toggle voting:
+1. In **Books**, change last month's books from `current` to `past`. Keep the most recent past books near the top of the list.
+2. Add the new books with status `current`: ISBN, title, author, month, meeting time and location, tags, discussion prompts.
+   - The cover, title, author and description are fetched from Open Library using the ISBN.
+   - If the ISBN finds the wrong edition, fill in the Open Library work ID (e.g. `OL20059198W`).
+3. Save.
 
-voting_open = TRUE
+You can add next month's picks early with status `upcoming`: they're saved but not shown.
 
-Add vote_form_url
+### 🗳 Voting
 
-No redeploy needed — changes reflect automatically.
+In **Books**, turn on **Voting open** and paste the Google Form link. Turn it off when voting ends.
 
-🎨 Tech Stack
+### 📅 Events
 
-HTML5
+Add an event in **Events** with a date. Events disappear from the site automatically the day after their date, so there's nothing to clean up.
 
-CSS3
+---
 
-Vanilla JavaScript
+## 📸 Past event photos
 
-Google Apps Script
+1. Add images to a folder under `images/` and register it in `CHAPTER_CONFIG` in `scripts/update-chapters-data.js`.
+2. Run `node scripts/update-chapters-data.js` to regenerate `js/chapters-data.js`.
+3. Commit both. Please resize photos first (about 1600px wide); full-size camera photos make the page slow.
 
-Google Sheets API
+---
 
-Open Library API
+## ⚙️ Backend (Google Apps Script)
 
-DigitalOcean App Platform
+`apps-script/Code.gs` handles newsletter signups (`POST ?path=newsletter`) and trivia uploads and leaderboards (`?action=...`). Its URL is `API_BASE` in `js/api.js`. Setup steps are in [`apps-script/README.md`](apps-script/README.md).
+
+The Sheet's `current`, `past` and `events` tabs are no longer used by the site.
+
+---
+
+## 💻 Local preview
+
+```bash
+python3 -m http.server 8000
+```
+
+Then open http://localhost:8000. Opening the HTML files directly won't load the book data, because browsers block `fetch` from `file://`.

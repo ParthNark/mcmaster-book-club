@@ -49,7 +49,7 @@ function _olCacheSet(config, data) {
 
 /**
  * Main entry point. Tries ISBN → work_id → title search, in order.
- * @param {Object} config — from Google Sheets / data/current.json
+ * @param {Object} config — a current book from getCurrent() (data/books.json)
  * @returns {Promise<Object>} normalized book data
  */
 async function fetchBookFromOpenLibrary(config) {

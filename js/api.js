@@ -1,138 +1,144 @@
 /**
- * McMaster Book Club — API Client
- * ================================
- * Shared fetch functions for talking to the Google Apps Script backend.
+ * McMaster Book Club — Data & API Client
+ * ======================================
  * Loaded via <script src="js/api.js"></script> (no modules, no bundler).
  *
- * SETUP: Replace the URL below with your deployed Web App URL.
+ * Books and events come from JSON files in this repo, edited through
+ * Pages CMS (see .pages.yml):
+ *   data/books.json   — current / upcoming / past books + voting settings
+ *   data/events.json  — events
+ *
+ * Newsletter signups and trivia still go to the Google Apps Script web app.
  */
 
 /* ──────────────────────────────────────────────
-   CONFIGURATION — Paste your Web App URL here
+   Apps Script Web App URL (newsletter + trivia only)
    ────────────────────────────────────────────── */
 var API_BASE = "https://script.google.com/macros/s/AKfycbz8VjmaiJJ5qF90N9Sjwhi-LWNS-MU7ykSZ8PwkDJhBvc55I10FvMKNzXx7ZFsQvBrJ9w/exec";
 /* ────────────────────────────────────────────── */
 
-// ─── Session cache for API responses (avoids re-fetching on page nav) ───────
-var API_CACHE_TTL = 5 * 60 * 1000; // 5 minutes
+// Each data file is fetched at most once per page load.
+var _dataFiles = {};
 
-function _apiCacheGet(key) {
-  try {
-    var raw = sessionStorage.getItem('api_' + key);
-    if (!raw) return null;
-    var cached = JSON.parse(raw);
-    if (Date.now() - cached._ts > API_CACHE_TTL) {
-      sessionStorage.removeItem('api_' + key);
-      return null;
-    }
-    return cached.data;
-  } catch (e) { return null; }
+function _loadDataFile(path) {
+  if (!_dataFiles[path]) {
+    // no-cache: the browser revalidates, so CMS edits show up on the next visit
+    _dataFiles[path] = fetch(path, { cache: 'no-cache' }).then(function (res) {
+      if (!res.ok) throw new Error('Could not load ' + path);
+      return res.json();
+    });
+  }
+  return _dataFiles[path];
 }
 
-function _apiCacheSet(key, data) {
-  try {
-    sessionStorage.setItem('api_' + key, JSON.stringify({ data: data, _ts: Date.now() }));
-  } catch (e) { /* storage full */ }
+function _asList(val) {
+  if (Array.isArray(val)) {
+    return val.map(function (v) { return String(v).trim(); }).filter(Boolean);
+  }
+  return [];
 }
 
+function _booksWithStatus(data, status) {
+  var books = (data && Array.isArray(data.books)) ? data.books : [];
+  return books.filter(function (b) {
+    return b && String(b.status || '').toLowerCase() === status;
+  });
+}
 
 /**
- * Fetch the current-read data from the "current" sheet tab.
- * Always returns { books: [{...}, ...], voting_open: bool, vote_form_url: string }.
- * Handles edge cases: old flat format, missing books array, empty responses.
- * Cached in sessionStorage for 5 minutes.
- * @returns {Promise<Object>}
+ * Current reads.
+ * @returns {Promise<{books: Array, voting_open: boolean, vote_form_url: string}>}
  */
 function getCurrent() {
-  var cached = _apiCacheGet('current');
-  if (cached) return Promise.resolve(_normalizeCurrent(cached));
+  return _loadDataFile('data/books.json').then(function (data) {
+    var books = _booksWithStatus(data, 'current')
+      .filter(function (b) { return b.isbn || b.work_id || b.title; })
+      .map(function (b, i) {
+        return {
+          id: 'book' + (i + 1),           // used for current-read.html#book1 anchors
+          isbn: b.isbn || '',
+          work_id: b.work_id || '',
+          title: b.title || '',
+          author: b.author || '',
+          custom_summary: b.summary || '',
+          tags: _asList(b.tags),
+          meeting_time: b.meeting_time || '',
+          meeting_location: b.meeting_location || '',
+          meeting_notes: b.meeting_notes || '',
+          discussion_prompts: _asList(b.discussion_prompts),
+          goodreads_url: b.goodreads_url || '',
+          rating_text: b.rating_text || ''
+        };
+      });
 
-  return fetch(API_BASE + "?path=current")
-    .then(function (res) { return res.json(); })
-    .then(function (data) {
-      _apiCacheSet('current', data);
-      return _normalizeCurrent(data);
-    });
-}
-
-/**
- * Normalize the API response so every consumer sees a stable shape:
- *   { books: [{id, isbn, ...}, ...], voting_open: bool, vote_form_url: string }
- */
-function _normalizeCurrent(data) {
-  if (!data) return { books: [], voting_open: false, vote_form_url: '' };
-
-  // Ensure books is always an array
-  var books;
-  if (Array.isArray(data.books)) {
-    books = data.books;
-  } else if (data.isbn || data.work_id || data.title) {
-    // Old flat format — wrap in array
-    books = [data];
-  } else {
-    books = [];
-  }
-
-  // Filter out books that lack any identifier (isbn, work_id, or title)
-  books = books.filter(function (b) {
-    return (b.isbn && b.isbn.trim() !== '') ||
-           (b.work_id && b.work_id.trim() !== '') ||
-           (b.title && b.title.trim() !== '');
+    return {
+      books: books,
+      voting_open: data.voting_open === true,
+      vote_form_url: data.vote_form_url || ''
+    };
   });
-
-  // Ensure each book has an id
-  for (var i = 0; i < books.length; i++) {
-    if (!books[i].id) books[i].id = 'book' + (i + 1);
-    // Ensure tags and discussion_prompts are always arrays
-    if (books[i].tags && typeof books[i].tags === 'string') {
-      books[i].tags = books[i].tags.split(';').map(function(t) { return t.trim(); }).filter(Boolean);
-    }
-    if (!Array.isArray(books[i].tags)) books[i].tags = [];
-    if (books[i].discussion_prompts && typeof books[i].discussion_prompts === 'string') {
-      books[i].discussion_prompts = books[i].discussion_prompts.split('|').map(function(t) { return t.trim(); }).filter(Boolean);
-    }
-    if (!Array.isArray(books[i].discussion_prompts)) books[i].discussion_prompts = [];
-  }
-
-  return {
-    books: books,
-    voting_open: data.voting_open === true || String(data.voting_open).toUpperCase() === 'TRUE',
-    vote_form_url: data.vote_form_url || ''
-  };
 }
 
 /**
- * Fetch past reads from the "past" sheet tab.
- * Cached in sessionStorage for 5 minutes.
+ * Past reads, in file order (newest first).
  * @returns {Promise<Array>} — [{ title, author, month, short_blurb }, ...]
  */
 function getPast() {
-  var cached = _apiCacheGet('past');
-  if (cached) return Promise.resolve(cached);
+  return _loadDataFile('data/books.json').then(function (data) {
+    return _booksWithStatus(data, 'past')
+      .filter(function (b) { return b.title; })
+      .map(function (b) {
+        return {
+          title: b.title,
+          author: b.author || '',
+          month: b.month || '',
+          short_blurb: b.summary || ''
+        };
+      });
+  });
+}
 
-  return fetch(API_BASE + "?path=past")
-    .then(function (res) { return res.json(); })
-    .then(function (data) {
-      _apiCacheSet('past', data);
-      return data;
-    });
+var _DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+var _MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+// "2026-09-15" → Date at local midnight (avoids the UTC off-by-one-day shift)
+function _parseISODate(str) {
+  var m = /^(\d{4})-(\d{2})-(\d{2})/.exec(String(str || ''));
+  if (!m) return null;
+  return new Date(Number(m[1]), Number(m[2]) - 1, Number(m[3]));
 }
 
 /**
- * Fetch events from the "events" sheet tab.
- * Cached in sessionStorage for 5 minutes.
+ * Upcoming events, soonest first. Events are hidden the day after their date.
  * @returns {Promise<Array>} — [{ title, date, time, location, description, instagram_embed_url, rsvp_url }, ...]
  */
 function getEvents() {
-  var cached = _apiCacheGet('events');
-  if (cached) return Promise.resolve(cached);
+  return _loadDataFile('data/events.json').then(function (data) {
+    var events = (data && Array.isArray(data.events)) ? data.events : [];
+    var today = new Date();
+    today.setHours(0, 0, 0, 0);
 
-  return fetch(API_BASE + "?path=events")
-    .then(function (res) { return res.json(); })
-    .then(function (data) {
-      _apiCacheSet('events', data);
-      return data;
-    });
+    return events
+      .filter(function (ev) { return ev && ev.title; })
+      .map(function (ev) { return { ev: ev, d: _parseISODate(ev.date) }; })
+      .filter(function (x) { return !x.d || x.d >= today; })
+      .sort(function (a, b) {
+        if (!a.d || !b.d) return a.d ? -1 : (b.d ? 1 : 0);
+        return a.d - b.d;
+      })
+      .map(function (x) {
+        var d = x.d;
+        return {
+          title: x.ev.title,
+          date: d ? (_DAYS[d.getDay()] + ', ' + _MONTHS[d.getMonth()] + ' ' + d.getDate() + ', ' + d.getFullYear()) : String(x.ev.date || ''),
+          time: x.ev.time || '',
+          location: x.ev.location || '',
+          description: x.ev.description || '',
+          instagram_embed_url: x.ev.instagram_url || '',
+          rsvp_url: x.ev.rsvp_url || ''
+        };
+      });
+  });
 }
 
 /**

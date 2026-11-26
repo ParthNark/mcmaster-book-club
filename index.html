@@ -339,20 +339,8 @@
             var errorEl   = document.getElementById('hw-error');
 
             try {
-                // 1. Load config from API (getCurrent always returns normalized shape)
-                var config;
-                if (typeof getCurrent === 'function' &&
-                    typeof API_BASE !== 'undefined' &&
-                    API_BASE !== 'PASTE_WEB_APP_URL_HERE') {
-                    config = await getCurrent();
-                    if (!config || config.error) throw new Error('API returned error');
-                } else {
-                    var res = await fetch('data/current.json');
-                    if (!res.ok) throw new Error('Local JSON failed');
-                    config = await res.json();
-                }
-
-                // books is always an array (normalized by api.js _normalizeCurrent)
+                // 1. Load current books from data/books.json (see js/api.js)
+                var config = await getCurrent();
                 var books = config.books || [];
                 if (books.length === 0) throw new Error('No books in response');
 

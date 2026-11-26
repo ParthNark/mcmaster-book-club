@@ -1,0 +1,91 @@
+{
+  "voting_open": false,
+  "vote_form_url": "",
+  "books": [
+    {
+      "status": "current",
+      "isbn": "9781101985366",
+      "work_id": "",
+      "title": "Final Girls",
+      "author": "Riley Sager",
+      "month": "September 2026",
+      "summary": "",
+      "tags": ["Horror", "Mystery", "Thriller", "Crime", "Suspense"],
+      "meeting_time": "Mon, Sep 21, 2026 — 6:00 PM",
+      "meeting_location": "Blue Lounge (The Hub)",
+      "meeting_notes": "",
+      "discussion_prompts": [
+        "What stood out?",
+        "Favorite character?",
+        "Key theme?",
+        "Would you recommend it?"
+      ],
+      "goodreads_url": "",
+      "rating_text": ""
+    },
+    {
+      "status": "current",
+      "isbn": "9780063021426",
+      "work_id": "",
+      "title": "Babel",
+      "author": "R. F. Kuang",
+      "month": "September 2026",
+      "summary": "",
+      "tags": ["Fantasy", "Historical Fiction", "Dark Academia"],
+      "meeting_time": "Thu, Sep 24, 2026 — 6:00 PM",
+      "meeting_location": "Blue Lounge (The Hub)",
+      "meeting_notes": "",
+      "discussion_prompts": [],
+      "goodreads_url": "",
+      "rating_text": ""
+    },
+    {
+      "status": "past",
+      "isbn": "",
+      "work_id": "",
+      "title": "A Game of Thorns",
+      "author": "George R.R. Martin",
+      "month": "January Fantasy Book",
+      "summary": "An epic tale of political intrigue, shifting alliances, and looming supernatural threats, where noble families battle for control of the Iron Throne in a brutal and unpredictable fantasy world.",
+      "tags": [],
+      "meeting_time": "",
+      "meeting_location": "",
+      "meeting_notes": "",
+      "discussion_prompts": [],
+      "goodreads_url": "",
+      "rating_text": ""
+    },
+    {
+      "status": "past",
+      "isbn": "",
+      "work_id": "",
+      "title": "The Metamorphosis",
+      "author": "Franz Kafka",
+      "month": "January General Book",
+      "summary": "A haunting exploration of alienation and identity, this novella follows Gregor Samsa after he mysteriously transforms into an insect, revealing the fragility of family, duty, and human connection.",
+      "tags": [],
+      "meeting_time": "",
+      "meeting_location": "",
+      "meeting_notes": "",
+      "discussion_prompts": [],
+      "goodreads_url": "",
+      "rating_text": ""
+    },
+    {
+      "status": "past",
+      "isbn": "",
+      "work_id": "",
+      "title": "Anne of Green Gables",
+      "author": "L. M. Montgomery",
+      "month": "December Nostalgia Book",
+      "summary": "A heartwarming coming-of-age story about imaginative and spirited Anne Shirley, whose arrival at Green Gables transforms the lives of those around her in the charming community of Avonlea.",
+      "tags": [],
+      "meeting_time": "",
+      "meeting_location": "",
+      "meeting_notes": "",
+      "discussion_prompts": [],
+      "goodreads_url": "",
+      "rating_text": ""
+    }
+  ]
+}
