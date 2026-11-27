@@ -56,6 +56,42 @@
     renderLamp();
   }
 
+  // ── Book light: the homepage is one screen, so trying to scroll past it
+  //    switches on the clip-on light over the shelf (pointing people to the nav)
+  var shelfNav = document.getElementById('shelf-nav');
+  var hint = document.getElementById('book-light-hint');
+  var lightTimer = null;
+
+  function atBottom() {
+    return window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 2;
+  }
+
+  function lightUp() {
+    if (!shelfNav) return;
+    if (hint && !hint.textContent) hint.textContent = 'Pick a book from the shelf to keep reading';
+    shelfNav.classList.add('is-lit');
+    clearTimeout(lightTimer);
+    lightTimer = setTimeout(function () { shelfNav.classList.remove('is-lit'); }, 1800);
+  }
+
+  window.addEventListener('wheel', function (e) {
+    if (e.deltaY > 0 && atBottom()) lightUp();
+  }, { passive: true });
+
+  var touchY = null;
+  window.addEventListener('touchstart', function (e) { touchY = e.touches[0].clientY; }, { passive: true });
+  window.addEventListener('touchmove', function (e) {
+    if (touchY !== null && touchY - e.touches[0].clientY > 24 && atBottom()) {
+      lightUp();
+      touchY = null;
+    }
+  }, { passive: true });
+
+  document.addEventListener('keydown', function (e) {
+    if (/INPUT|TEXTAREA|SELECT|BUTTON/.test(e.target.tagName)) return;
+    if (['ArrowDown', 'PageDown', 'End', ' '].indexOf(e.key) !== -1 && atBottom()) lightUp();
+  });
+
   // ── Kicker: "Now reading · November 2026" ──────────────
   var kicker = document.getElementById('home-kicker');
   var now = new Date();

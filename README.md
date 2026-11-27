@@ -65,6 +65,7 @@ Nothing on the homepage hero needs editing by hand:
 - **Ticket**: the soonest upcoming event in **Events** (it says "Today" on the day). Add book discussions as events too, so they show up here.
 - **News ticker** (scrolling banner): the next event, a "Pick up … at the McMaster Campus Store" item for each current book (using **Campus Store deal** in Books, e.g. `10% off`; leave it empty to hide), and "Vote now" while voting is open.
 - **Reading lamp**: the pull chain switches to the lamplight theme; each visitor's browser remembers their choice.
+- **One screen**: on laptops and desktops the homepage fits the window with no scrolling (it scales to the screen height); everything else is reached from the bookshelf nav. Trying to scroll switches on the little book light over the shelf to point people there.
 
 ---
 

@@ -4648,3 +4648,179 @@ html.lamp-on .home-page main > .section .newsletter-input {
   .home-ticket,
   .home-btn { transition: none; }
 }
+
+/* --------------------------------------------------------------------------
+   Homepage = one screen. On laptops/desktops everything scales with the
+   window height (--u) so the nav, hero and ticker fit without scrolling;
+   the other pages are reached from the bookshelf nav.
+   -------------------------------------------------------------------------- */
+.home-page { --u: 1; }
+
+@media (min-width: 901px) {
+  @media (max-height: 899px) { .home-page { --u: 0.85; } }
+  @media (max-height: 779px) { .home-page { --u: 0.72; } }
+  @media (max-height: 679px) { .home-page { --u: 0.62; } }
+
+  .home-header { padding-top: calc(0.9rem * var(--u)); }
+
+  .spine--home   { height: calc(150px * var(--u)); }
+  .spine--read   { height: calc(136px * var(--u)); }
+  .spine--events { height: calc(124px * var(--u)); }
+  .spine--past   { height: calc(142px * var(--u)); }
+  .spine--team   { height: calc(118px * var(--u)); }
+  .spine--join   { height: calc(132px * var(--u)); }
+
+  .home-hero { padding: calc(2.25rem * var(--u)) 3.5rem 0; }
+  .home-hero-text { gap: calc(1.6rem * var(--u)); padding-top: calc(1.5rem * var(--u)); }
+  .home-title { font-size: max(3rem, calc(5.6rem * var(--u))); }
+  .home-lede { font-size: max(1.05rem, calc(1.25rem * var(--u))); }
+
+  .home-books { height: calc(560px * var(--u)); }
+  .home-covers { height: calc(440px * var(--u)); }
+  .home-cover--front { width: calc(290px * var(--u)); height: calc(440px * var(--u)); }
+  .home-cover--back { top: calc(52px * var(--u)); width: calc(238px * var(--u)); height: calc(367px * var(--u)); }
+  .home-stand { top: calc(440px * var(--u)); }
+  .home-ticket { top: calc(340px * var(--u)); }
+  .home-covers--single ~ .home-ticket { top: calc(396px * var(--u)); }
+}
+
+/* No scrolling on screens tall enough to fit it all */
+@media (min-width: 901px) and (min-height: 600px) {
+  html:has(body.home-page),
+  body.home-page {
+    height: 100%;
+    overflow: hidden;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Clip-on book light over the shelf (lights up when someone tries to scroll)
+   -------------------------------------------------------------------------- */
+.shelf-nav {
+  position: relative;
+  padding-top: calc(42px * var(--u, 1));
+}
+
+.book-light {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: calc(44px * var(--u, 1));
+  pointer-events: none;
+  z-index: 2;
+}
+
+.book-light-arm {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.book-light-neck {
+  fill: none;
+  stroke: #2a1a1f;
+  stroke-width: 3;
+  stroke-linecap: round;
+  vector-effect: non-scaling-stroke;
+}
+
+html.lamp-on .book-light-neck { stroke: #c9b48f; }
+
+.book-light-clip { fill: #c99a2e; }
+
+.book-light-head {
+  position: absolute;
+  left: 55%;
+  top: 0;
+  transform: translateX(-50%) rotate(-6deg);
+  overflow: visible;
+}
+
+html.lamp-on .book-light-head path { fill: #c9b48f; }
+
+.book-light-bulb {
+  fill: #8a7a6a;
+  transition: fill 0.2s ease;
+}
+
+.book-light-beam {
+  position: absolute;
+  left: 4%;
+  right: 4%;
+  top: calc(100% - 20px);
+  height: calc(210px * var(--u, 1));
+  background: radial-gradient(ellipse 55% 100% at 55% 0%, rgba(255, 224, 138, 0.8) 0%, rgba(255, 224, 138, 0.28) 45%, rgba(255, 224, 138, 0) 75%);
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+
+.book-light-hint {
+  position: absolute;
+  right: 100%;
+  top: calc(60px * var(--u, 1));
+  margin: 0 0.75rem 0 0;
+  white-space: nowrap;
+  font-family: 'Caveat', cursive;
+  font-size: 1.45rem;
+  line-height: 1.1;
+  color: var(--h-accent);
+  opacity: 0;
+  transform: translateX(8px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  pointer-events: none;
+}
+
+.shelf-nav.is-lit .book-light-bulb { fill: #ffe08a; }
+.shelf-nav.is-lit .book-light-head { filter: drop-shadow(0 4px 8px rgba(255, 214, 120, 0.9)); }
+.shelf-nav.is-lit .book-light-beam { opacity: 1; }
+.shelf-nav.is-lit .book-light-hint { opacity: 1; transform: none; }
+
+/* the spines hop in turn, like "pick me" */
+@keyframes spine-nudge {
+  0%, 100% { transform: none; }
+  40% { transform: translateY(-7px); }
+}
+
+.shelf-nav.is-lit .shelf li { animation: spine-nudge 0.6s ease both; }
+.shelf-nav.is-lit .shelf li:nth-child(2) { animation-delay: 0.06s; }
+.shelf-nav.is-lit .shelf li:nth-child(3) { animation-delay: 0.12s; }
+.shelf-nav.is-lit .shelf li:nth-child(4) { animation-delay: 0.18s; }
+.shelf-nav.is-lit .shelf li:nth-child(5) { animation-delay: 0.24s; }
+.shelf-nav.is-lit .shelf li:nth-child(6) { animation-delay: 0.30s; }
+
+@media (max-width: 900px) {
+  .shelf-nav { padding-top: 40px; }
+  .book-light-hint {
+    right: 0;
+    left: 0;
+    top: calc(100% + 0.35rem);
+    margin: 0;
+    font-size: 1.25rem;
+    text-align: center;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .shelf-nav.is-lit .shelf li { animation: none; }
+}
+
+/* Shortest laptop screens: lift the ticket a little so it clears the ticker */
+@media (min-width: 901px) and (max-height: 679px) {
+  .home-ticket { top: calc(318px * var(--u)); }
+  .home-covers--single ~ .home-ticket { top: calc(366px * var(--u)); }
+}
+
+/* Spine labels never wrap; the longer titles keep enough height for their text */
+.spine { white-space: nowrap; }
+
+@media (min-width: 901px) {
+  .spine { letter-spacing: 0.12em; }
+  .spine--read { height: max(128px, calc(136px * var(--u))); }
+  .spine--past { height: max(118px, calc(142px * var(--u))); }
+  .spine--team { height: max(96px, calc(118px * var(--u))); }
+  .spine--join { height: max(92px, calc(132px * var(--u))); }
+  .spine--events { height: max(80px, calc(124px * var(--u))); }
+}
