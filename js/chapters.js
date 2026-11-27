@@ -17,6 +17,7 @@
   var currentFullscreenImage = null;
   var currentChapterIndex = null;
   var fullscreenModal = null;
+  var titleShots = [];   // chapter indexes for the three photos on the title page
 
   function initChapters(data) {
     var chapters = (data && Array.isArray(data.chapters)) ? data.chapters : [];
@@ -37,6 +38,15 @@
         previewImages: photos.slice(0, 3)
       };
     });
+
+    // Three different events, picked at random on each visit. Each event's
+    // first photo is its group shot, so those go on the title page.
+    var order = chaptersWithPreviews.map(function(_, i) { return i; });
+    for (var i = order.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var t = order[i]; order[i] = order[j]; order[j] = t;
+    }
+    titleShots = order.slice(0, 3);
   }
 
   function toRoman(n) {
@@ -97,9 +107,26 @@
       +   '<h2 class="pe-titlepage-title">The Chapters</h2>'
       +   '<p class="pe-titlepage-sub">Everything we’ve read, played, eaten and laughed about together.</p>'
       +   (range ? '<p class="scrap-meta">' + escapeHtml(range) + '</p>' : '')
+      +   titleShotsHtml()
       + '</div>'
       + '<p class="pe-hint">Turn the page →</p>'
       + '</div>';
+  }
+
+  // Small taped group shots under the dates; each opens its event's album
+  function titleShotsHtml() {
+    if (!titleShots.length) return '';
+    return '<div class="pe-title-shots">' + titleShots.map(function(index, n) {
+      var chapter = chaptersWithPreviews[index];
+      return '<figure class="scrap-polaroid pe-title-shot pe-title-shot--' + (n + 1) + '">'
+        + '<button type="button" class="chapter-photo" data-chapter-index="' + index + '" '
+        +   'aria-label="Open all photos from ' + escapeHtml(chapter.title) + '">'
+        +   '<img src="' + encodePath(chapter.allImages[0]) + '" alt="' + escapeHtml(chapter.title) + ' group photo" loading="lazy">'
+        + '</button>'
+        + '<figcaption>' + escapeHtml(chapter.title) + '</figcaption>'
+        + '<span class="scrap-tape" aria-hidden="true"></span>'
+        + '</figure>';
+    }).join('') + '</div>';
   }
 
   function contentsPageHtml() {

@@ -3999,7 +3999,8 @@ a.chapter-view-btn.scrap-open {
    Homepage — bookshelf nav, "Once upon a Mac" hero, news ticker, reading lamp
    (index.html + js/home.js). Lamp on = html.lamp-on → warm lamplight theme.
    ========================================================================== */
-.home-page {
+.home-page,
+.site-page {
   --h-bg: #fbf5ed;
   --h-ink: #2a1a1f;
   --h-muted: #4a3a3f;
@@ -4023,7 +4024,8 @@ a.chapter-view-btn.scrap-open {
   transition: background-color 0.6s ease, color 0.6s ease;
 }
 
-html.lamp-on .home-page {
+html.lamp-on .home-page,
+html.lamp-on .site-page {
   --h-bg: #1d1411;
   --h-ink: #f6e7cc;
   --h-muted: #e2cfae;
@@ -4044,7 +4046,8 @@ html.lamp-on .home-page {
 }
 
 /* the warm pool of light falling from the lamp */
-.home-page::before {
+.home-page::before,
+.site-page::before {
   content: '';
   position: absolute;
   top: 0;
@@ -4058,7 +4061,8 @@ html.lamp-on .home-page {
   z-index: 0;
 }
 
-html.lamp-on .home-page::before {
+html.lamp-on .home-page::before,
+html.lamp-on .site-page::before {
   opacity: 1;
 }
 
@@ -4655,6 +4659,7 @@ html.lamp-on .home-page main > .section .newsletter-input {
    the other pages are reached from the bookshelf nav.
    -------------------------------------------------------------------------- */
 .home-page { --u: 1; }
+.site-page { --u: 0.85; }   /* inner pages: the same shelf, a little shorter */
 
 @media (min-width: 901px) {
   @media (max-height: 899px) { .home-page { --u: 0.85; } }
@@ -4874,8 +4879,9 @@ body {
   background: rgba(255, 248, 228, 0.22);
 }
 
-/* Homepage daytime theme (the lamp theme keeps its own colours) */
-.home-page {
+/* Homepage + inner pages daytime theme (the lamp theme keeps its own colours) */
+.home-page,
+.site-page {
   --h-bg: var(--color-page);
   --h-bulb: #b8a47c;            /* lamp bulb reads as unlit glass on parchment */
   --h-soft: #4f4044;
@@ -4907,7 +4913,8 @@ body {
 .join-kicker { color: #8a3412; }
 .join-hint { color: #4f4044; }
 
-html:not(.lamp-on) .home-page {
+html:not(.lamp-on) .home-page,
+html:not(.lamp-on) .site-page {
   background: var(--paper-bg);
   background-attachment: scroll, scroll, fixed, scroll;
 }
@@ -5095,7 +5102,7 @@ html.lamp-on .lamp-shade {
   line-height: 1.2;
 }
 
-.cal-day.is-past .cal-num { color: #8a7a76; }
+.cal-day.is-past .cal-num { color: #6f605c; }
 
 /* hand-drawn red circle around today */
 .cal-day.is-today::before {
@@ -5895,4 +5902,129 @@ html.lamp-on .lamp-shade {
   .cr-card-q { font-size: 1rem; }
   .cr-ledger li { grid-template-columns: minmax(0, 1fr); gap: 0.1rem; }
   .cr-ledger-month { text-align: left; }
+}
+
+/* ==========================================================================
+   Inner pages: the homepage's shelf header + reading lamp on every page.
+   html.lamp-on (saved in localStorage by js/lamp.js) carries across pages:
+   the room goes dark and the paper (books, calendar, slips) stays lamplit.
+   ========================================================================== */
+.site-page > header,
+.site-page > main,
+.site-page > footer {
+  position: relative;
+  z-index: 1;               /* above the lamp's pool of light */
+}
+
+.site-page .home-header { padding-bottom: 0.5rem; }
+
+/* Shelf spines need a little more room at the inner-page scale */
+@media (min-width: 901px) {
+  .site-page .spine--home { height: max(118px, calc(150px * var(--u))); }
+}
+
+html.lamp-on .site-page {
+  color: var(--h-ink);
+}
+
+html.lamp-on .site-page .footer {
+  background: #150e0c;
+  border-top: 2px solid #4a3527;
+}
+
+/* paper catches the lamplight */
+html.lamp-on .cal-sheet,
+html.lamp-on .cr-open-book,
+html.lamp-on .cr-slip,
+html.lamp-on .cal-ticket {
+  box-shadow: 0 0 0 1px rgba(255, 214, 120, 0.12), 0 22px 46px rgba(0, 0, 0, 0.55), 0 0 60px rgba(255, 196, 90, 0.08);
+}
+
+/* Meetings & Events: the side panel sits on the dark room */
+html.lamp-on .cal-kicker,
+html.lamp-on .cal-upnext-label { color: #f0b85a; }
+html.lamp-on .cal-upnext-list,
+html.lamp-on .cal-upnext-list li { border-color: #5a4535; }
+html.lamp-on .cal-upnext-list button { color: var(--h-ink); }
+html.lamp-on .cal-upnext-date { color: #f0b85a !important; }
+html.lamp-on .cal-aside .cal-btn--solid { background: #f0c674; border-color: #f0c674; color: #1d1411; }
+html.lamp-on .cal-aside .cal-btn--solid:hover { background: #ffd98c; border-color: #ffd98c; }
+html.lamp-on .cal-aside .cal-btn--line { border-color: var(--h-ink); color: var(--h-ink); }
+html.lamp-on .cal-aside .cal-btn--line:hover { background: var(--h-ink); color: #1d1411; }
+html.lamp-on .cal-note { border-color: #6b5640; }
+html.lamp-on .cal-note-title { color: var(--h-ink); }
+html.lamp-on .cal-note-hand { color: #f0b85a; }
+html.lamp-on .cal-note-hand a { color: #ffd27a; }
+
+/* Current Read: the inactive tab reads on the dark room */
+html.lamp-on .cr-tab:not([aria-selected="true"]) { background: #4a1630; color: #f6e7cc; }
+
+/* Past Events + Our Team: controls under the book */
+html.lamp-on .pe-arrow { border-color: #f2e6d3; color: #f2e6d3; }
+html.lamp-on .pe-arrow:hover:not(:disabled) { background: #f2e6d3; color: #1d1411; }
+html.lamp-on .pe-label,
+html.lamp-on .chapters-empty { color: #f2e6d3; }
+
+/* Join: intro and form sit on the dark room */
+html.lamp-on .join-page { color: var(--h-ink); }
+html.lamp-on .join-kicker { color: #f0b85a; }
+html.lamp-on .join-title { color: #ffd27a; }
+html.lamp-on .join-lede,
+html.lamp-on .join-hint { color: #e2cfae; }
+html.lamp-on .join-hint a { color: #ffd27a; }
+html.lamp-on .join-field { color: var(--h-ink); }
+html.lamp-on .join-field input,
+html.lamp-on .join-field select { background: #2a1d18; border-color: #5a4535; color: var(--h-ink); }
+html.lamp-on .join-field input::placeholder { color: #a8957a; }
+html.lamp-on .join-field input:focus,
+html.lamp-on .join-field select:focus { border-color: #f0c674; box-shadow: 0 0 0 3px rgba(240, 198, 116, 0.25); }
+html.lamp-on .join-btn--primary { background: #f0c674; color: #1d1411; }
+html.lamp-on .join-btn--primary:hover { background: #ffd98c; }
+html.lamp-on .join-btn--outline { border-color: var(--h-ink); color: var(--h-ink); }
+html.lamp-on .join-btn--outline:hover { background: var(--h-ink); color: #1d1411; }
+
+/* Join: the newsletter slip is paper, so its text stays dark under the lamp */
+html.lamp-on .return-slip { color: #2a1a1f; }
+html.lamp-on .return-slip .join-btn--outline { border-color: #2a1a1f; color: #2a1a1f; }
+html.lamp-on .return-slip .join-btn--outline:hover { background: #2a1a1f; color: #fbf5ed; }
+
+/* Past Events title page: three random group shots under the dates */
+.pe-title-shots {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 0.9rem;
+  width: 100%;
+  margin-top: 1.4rem;
+}
+
+.pe-title-shot {
+  width: 31%;
+  max-width: 150px;
+  padding: 7px 7px 8px;
+}
+
+.pe-title-shot img { aspect-ratio: 1 / 1; object-fit: cover; }
+
+.pe-title-shot figcaption {
+  font-size: 0.98rem;
+  line-height: 1.05;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.pe-title-shot .scrap-tape { width: 56px; height: 18px; margin-left: -28px; top: -9px; }
+.pe-title-shot--1 { transform: rotate(-6deg); }
+.pe-title-shot--2 { transform: rotate(2deg); margin-top: 0.9rem; }
+.pe-title-shot--3 { transform: rotate(5deg); }
+.pe-title-shot--1 .scrap-tape { background: rgba(201, 154, 46, 0.55); }
+.pe-title-shot--2 .scrap-tape { background: rgba(122, 0, 60, 0.3); transform: rotate(3deg); }
+.pe-title-shot--3 .scrap-tape { background: rgba(95, 111, 82, 0.45); transform: rotate(-6deg); }
+
+@media (max-width: 768px) {
+  .pe-title-shots { gap: 0.6rem; margin-top: 1rem; }
+  .pe-title-shot { padding: 5px 5px 6px; }
+  .pe-title-shot figcaption { font-size: 0.85rem; }
 }

@@ -12,32 +12,61 @@
     <!-- Library-card fonts: display serif and typewriter labels -->
     <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,600;0,9..144,800;1,9..144,400;1,9..144,600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     <script src="js/api.js"></script>
+    <script>
+        // Reading lamp: restore the reader's last choice before the page paints
+        try { if (localStorage.getItem('mbc_lamp') === 'on') document.documentElement.classList.add('lamp-on'); } catch (e) {}
+    </script>
+    <script src="js/lamp.js" defer></script>
 </head>
-<body>
+<body class="site-page">
     <!-- Skip to main content link for accessibility -->
     <a href="#main-content" class="skip-link">Skip to main content</a>
 
-    <!-- Navigation Bar -->
-    <nav class="navbar">
-        <div class="nav-container">
-            <div class="nav-logo">
-                <a href="index.html"><img src="images/logo.png" alt="McMaster Book Club logo" class="nav-logo-img"> McMaster Book Club</a>
+    <!-- Bookshelf header (same as the homepage): each spine is a page, the raised one is where you are -->
+    <header class="home-header">
+        <a class="home-brand" href="index.html">
+            <span class="home-brand-name">McMaster Book Club</span>
+            <span class="home-brand-sub">All readers welcome</span>
+        </a>
+        <div class="home-header-right">
+            <nav class="shelf-nav" aria-label="Main">
+                <div class="book-light" aria-hidden="true">
+                    <svg class="book-light-arm" viewBox="0 0 320 44" preserveAspectRatio="none">
+                        <path class="book-light-neck" d="M308 44 C 308 10, 250 4, 176 12"/>
+                        <rect class="book-light-clip" x="300" y="34" width="16" height="10" rx="2"/>
+                    </svg>
+                    <svg class="book-light-head" width="46" height="26" viewBox="0 0 46 26">
+                        <path d="M4 6 Q23 -2 42 6 L36 18 Q23 22 10 18 Z" fill="#2a1a1f"/>
+                        <ellipse class="book-light-bulb" cx="23" cy="19" rx="12" ry="3.5"/>
+                    </svg>
+                    <span class="book-light-beam"></span>
+                </div>
+                <ul class="shelf">
+                    <li><a class="spine spine--home" href="index.html">Home</a></li>
+                    <li><a class="spine spine--read" href="current-read.html">Current Read</a></li>
+                    <li><a class="spine spine--events" href="meetings-events.html">Events</a></li>
+                    <li><a class="spine spine--past" href="chapters.html">Past Events</a></li>
+                    <li><a class="spine spine--team" href="our-team.html">Our Team</a></li>
+                    <li><a class="spine spine--join is-active" href="join.html" aria-current="page">Join Us</a></li>
+                </ul>
+                <div class="shelf-board" aria-hidden="true"></div>
+            </nav>
+            <div class="lamp">
+                <svg class="lamp-shade" width="78" height="64" viewBox="0 0 78 64" aria-hidden="true">
+                    <path class="lamp-cord" d="M39 0 V12"/>
+                    <path d="M12 44 Q39 6 66 44 Z" fill="#7a003c" stroke="#4d0026" stroke-width="2"/>
+                    <ellipse class="lamp-bulb" cx="39" cy="45" rx="27" ry="5"/>
+                </svg>
+                <button type="button" class="lamp-chain" id="lamp-chain" aria-pressed="false" aria-label="Turn the reading lamp on">
+                    <svg class="lamp-pull" width="14" height="70" viewBox="0 0 14 70" aria-hidden="true">
+                        <path class="lamp-cord" d="M7 0 V52" stroke-dasharray="2 3"/>
+                        <circle cx="7" cy="59" r="6" fill="#c99a2e"/>
+                    </svg>
+                </button>
+                <span class="lamp-text" id="lamp-text">Pull for lamp</span>
             </div>
-            <button class="hamburger" id="hamburger" aria-label="Toggle navigation" aria-expanded="false">
-                <span></span>
-                <span></span>
-                <span></span>
-            </button>
-            <ul class="nav-menu" id="nav-menu">
-                <li class="nav-item"><a href="index.html#home" class="nav-link">Home</a></li>
-                <li class="nav-item"><a href="current-read.html" class="nav-link">Current Read</a></li>
-                <li class="nav-item"><a href="meetings-events.html" class="nav-link">Meetings & Events</a></li>
-                <li class="nav-item"><a href="chapters.html" class="nav-link">Past Events</a></li>
-                <li class="nav-item"><a href="our-team.html" class="nav-link">Our Team</a></li>
-                <li class="nav-item"><a href="join.html" class="nav-link nav-link-cta" aria-current="page">Join Us</a></li>
-            </ul>
         </div>
-    </nav>
+    </header>
 
     <main id="main-content" class="join-page">
         <section class="join-hero" aria-labelledby="join-title">
@@ -162,22 +191,5 @@
     <!-- Member card generator + newsletter slip -->
     <script src="js/join.js"></script>
 
-    <!-- Hamburger Menu Handler -->
-    <script>
-        var hamburger = document.getElementById('hamburger');
-        var navMenu = document.getElementById('nav-menu');
-
-        hamburger.addEventListener('click', function() {
-            navMenu.classList.toggle('active');
-            hamburger.setAttribute('aria-expanded', navMenu.classList.contains('active'));
-        });
-
-        document.querySelectorAll('.nav-link').forEach(function(link) {
-            link.addEventListener('click', function() {
-                navMenu.classList.remove('active');
-                hamburger.setAttribute('aria-expanded', 'false');
-            });
-        });
-    </script>
 </body>
 </html>

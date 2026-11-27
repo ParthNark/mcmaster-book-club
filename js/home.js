@@ -4,7 +4,7 @@
  *   • covers  ← current books in data/books.json (Pages CMS cover upload, else Open Library)
  *   • ticket  ← soonest upcoming event in data/events.json
  *   • ticker  ← next event, Campus Store deal per current book, voting when open
- * Plus the reading lamp, which switches to the warm lamplight theme.
+ * The reading lamp lives in js/lamp.js (shared by every page).
  */
 (function () {
   'use strict';
@@ -32,28 +32,6 @@
   function eventLabel(ev, d) {
     if (isToday(d)) return 'Today';
     return /discussion/i.test(ev.title) ? 'Next discussion' : 'Next event';
-  }
-
-  // ── Reading lamp ───────────────────────────────────────
-  var root = document.documentElement;
-  var chain = document.getElementById('lamp-chain');
-  var lampText = document.getElementById('lamp-text');
-
-  function renderLamp() {
-    var on = root.classList.contains('lamp-on');
-    if (!chain) return;
-    chain.setAttribute('aria-pressed', on ? 'true' : 'false');
-    chain.setAttribute('aria-label', on ? 'Turn the reading lamp off' : 'Turn the reading lamp on');
-    lampText.textContent = on ? 'Lamp on' : 'Pull for lamp';
-  }
-
-  if (chain) {
-    chain.addEventListener('click', function () {
-      var on = root.classList.toggle('lamp-on');
-      try { localStorage.setItem('mbc_lamp', on ? 'on' : 'off'); } catch (e) { /* storage off */ }
-      renderLamp();
-    });
-    renderLamp();
   }
 
   // ── Book light: the homepage is one screen, so trying to scroll past it
