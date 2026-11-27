@@ -1,7 +1,46 @@
 # Pages CMS configuration — edit site content at https://app.pagescms.org
 # Every save commits to this repo, and the site redeploys from main.
 
+# Photo uploads (Past Events). Large photos are shrunk automatically after
+# upload by .github/workflows/compress-photos.yml.
+media:
+  input: images/events
+  output: /images/events
+  rename: safe
+  categories: [image]
+
 content:
+  - name: past_events
+    label: Past Events
+    type: file
+    path: data/past-events.json
+    format: json
+    fields:
+      - name: chapters
+        label: Past events
+        type: object
+        list: true
+        description: Shown on the Past Events page in this order, so keep the newest event at the top. Chapter numbers count up from the bottom.
+        fields:
+          - name: title
+            label: Event name
+            type: string
+            required: true
+          - name: date_label
+            label: Date shown
+            type: string
+            description: e.g. "Oct 2026" or "2025/26".
+          - name: photos
+            label: Photos
+            type: image
+            required: true
+            description: Up to 15 photos. The first three are the thumbnails on the Past Events page (the first is the big one), so put group photos first. Drag to reorder.
+            options:
+              multiple:
+                max: 15
+              unique: true
+              path: images/events
+
   - name: books
     label: Books
     type: file

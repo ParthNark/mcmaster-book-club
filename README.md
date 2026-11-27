@@ -23,7 +23,7 @@ Static site  ──►  Open Library API (covers, titles, descriptions)
 | Current, upcoming & past books, voting | `data/books.json` | Pages CMS → **Books** |
 | Events | `data/events.json` | Pages CMS → **Events** |
 | Team members | `our-team.html` (`teamMembers` list) | Code |
-| Past event photos | `images/events/<event>/` + `js/chapters-data.js` | Code (see below) |
+| Past events & photos | `data/past-events.json` + `images/events/` | Pages CMS → **Past Events** |
 | Newsletter signups, trivia | Google Sheet via `apps-script/Code.gs` | Sheet / `admin-trivia.html` |
 
 ---
@@ -56,14 +56,17 @@ Add an event in **Events** with a date. Events disappear from the site automatic
 
 ---
 
-## 📸 Past event photos
+## 📸 Past events & photos
 
-Event photos come from the club Drive (McMaster Book Club 2026-2027 → Club Organisation → Photos).
+Event photos come from the club Drive (McMaster Book Club 2026-2027 → Club Organisation → Photos). Download the ones you want first.
 
-1. Pick up to 15 photos per event, resized to at most 1600px on the long side (JPEG quality ~80). Full-size camera photos make the page slow.
-2. Save them as `01.jpg`, `02.jpg`, … in a new folder under `images/events/`.
-3. Add the event to `CHAPTER_CONFIG` in `scripts/update-chapters-data.js`. The list is oldest first and chapter numbers follow that order; the page shows the newest chapter at the top. List up to 3 group photos in `featured` to use as the chapter's thumbnails (the first is the large one).
-4. Run `node scripts/update-chapters-data.js` to regenerate `js/chapters-data.js`, then commit.
+1. In Pages CMS, open **Past Events** and click **Add an entry**. New entries go at the bottom, so drag the new event to the **top** of the list (the page shows the list in order, newest first; chapter numbers count up from the bottom).
+2. Fill in **Event name** and **Date shown** (e.g. `Nov 2026`).
+3. Under **Photos**, upload up to 15 photos. Aim for a mix of group shots, candids, the activity and snacks if there were any.
+4. Drag the photos so the **first three are group photos**: they're the thumbnails on the Past Events page, and the first one is the big one.
+5. Save. The site updates in a couple of minutes.
+
+You don't need to resize anything: after each upload a GitHub Action (`.github/workflows/compress-photos.yml`) shrinks any photo over 1600px or 600 KB and commits the smaller version, so the site redeploys once more a minute or two later. Uploaded photos land in `images/events/`.
 
 ---
 

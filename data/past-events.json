@@ -1,0 +1,120 @@
+{
+  "chapters": [
+    {
+      "title": "October Discussions & Halloween Social",
+      "date_label": "Oct 2026",
+      "photos": [
+        "/images/events/octoberevents/01.jpg",
+        "/images/events/octoberevents/15.jpg",
+        "/images/events/octoberevents/13.jpg",
+        "/images/events/octoberevents/02.jpg",
+        "/images/events/octoberevents/03.jpg",
+        "/images/events/octoberevents/04.jpg",
+        "/images/events/octoberevents/05.jpg",
+        "/images/events/octoberevents/06.jpg",
+        "/images/events/octoberevents/07.jpg",
+        "/images/events/octoberevents/08.jpg",
+        "/images/events/octoberevents/09.jpg",
+        "/images/events/octoberevents/10.jpg",
+        "/images/events/octoberevents/11.jpg",
+        "/images/events/octoberevents/12.jpg",
+        "/images/events/octoberevents/14.jpg"
+      ]
+    },
+    {
+      "title": "Scavenger Hunt",
+      "date_label": "Sept 2026",
+      "photos": [
+        "/images/events/scavengerhunt/01.jpg",
+        "/images/events/scavengerhunt/06.jpg",
+        "/images/events/scavengerhunt/02.jpg",
+        "/images/events/scavengerhunt/03.jpg",
+        "/images/events/scavengerhunt/04.jpg",
+        "/images/events/scavengerhunt/05.jpg",
+        "/images/events/scavengerhunt/07.jpg"
+      ]
+    },
+    {
+      "title": "September Book Discussions",
+      "date_label": "Sept 2026",
+      "photos": [
+        "/images/events/septemberdiscussions/01.jpg",
+        "/images/events/septemberdiscussions/02.jpg",
+        "/images/events/septemberdiscussions/03.jpg",
+        "/images/events/septemberdiscussions/04.jpg",
+        "/images/events/septemberdiscussions/05.jpg",
+        "/images/events/septemberdiscussions/06.jpg",
+        "/images/events/septemberdiscussions/07.jpg",
+        "/images/events/septemberdiscussions/08.jpg",
+        "/images/events/septemberdiscussions/09.jpg"
+      ]
+    },
+    {
+      "title": "Clubfest 2026",
+      "date_label": "Sept 2026",
+      "photos": [
+        "/images/events/clubfest2026/01.jpg",
+        "/images/events/clubfest2026/08.jpg",
+        "/images/events/clubfest2026/12.jpg",
+        "/images/events/clubfest2026/02.jpg",
+        "/images/events/clubfest2026/03.jpg",
+        "/images/events/clubfest2026/04.jpg",
+        "/images/events/clubfest2026/05.jpg",
+        "/images/events/clubfest2026/06.jpg",
+        "/images/events/clubfest2026/07.jpg",
+        "/images/events/clubfest2026/09.jpg",
+        "/images/events/clubfest2026/10.jpg",
+        "/images/events/clubfest2026/11.jpg",
+        "/images/events/clubfest2026/13.jpg",
+        "/images/events/clubfest2026/14.jpg",
+        "/images/events/clubfest2026/15.jpg"
+      ]
+    },
+    {
+      "title": "Battle of the Books",
+      "date_label": "2025/26",
+      "photos": [
+        "/images/events/battleofthebooks/01.jpg",
+        "/images/events/battleofthebooks/09.jpg",
+        "/images/events/battleofthebooks/04.jpg",
+        "/images/events/battleofthebooks/02.jpg",
+        "/images/events/battleofthebooks/03.jpg",
+        "/images/events/battleofthebooks/05.jpg",
+        "/images/events/battleofthebooks/06.jpg",
+        "/images/events/battleofthebooks/07.jpg",
+        "/images/events/battleofthebooks/08.jpg",
+        "/images/events/battleofthebooks/10.jpg"
+      ]
+    },
+    {
+      "title": "Murder Mystery Night",
+      "date_label": "2025/26",
+      "photos": [
+        "/images/events/murdermystery/01.jpg",
+        "/images/events/murdermystery/12.jpg",
+        "/images/events/murdermystery/06.jpg",
+        "/images/events/murdermystery/02.jpg",
+        "/images/events/murdermystery/03.jpg",
+        "/images/events/murdermystery/04.jpg",
+        "/images/events/murdermystery/05.jpg",
+        "/images/events/murdermystery/07.jpg",
+        "/images/events/murdermystery/08.jpg",
+        "/images/events/murdermystery/09.jpg",
+        "/images/events/murdermystery/10.jpg",
+        "/images/events/murdermystery/11.jpg",
+        "/images/events/murdermystery/13.jpg",
+        "/images/events/murdermystery/14.jpg"
+      ]
+    },
+    {
+      "title": "Clubfest 2025",
+      "date_label": "Sept 2025",
+      "photos": [
+        "/images/events/clubfest2025/01.jpg",
+        "/images/events/clubfest2025/02.jpg",
+        "/images/events/clubfest2025/03.jpg",
+        "/images/events/clubfest2025/04.jpg"
+      ]
+    }
+  ]
+}

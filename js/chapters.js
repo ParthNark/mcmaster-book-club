@@ -6,48 +6,31 @@
   'use strict';
 
   var container = document.getElementById('chapters-container');
-  if (!container || typeof CHAPTERS_DATA === 'undefined') return;
+  if (!container) return;
+
+  // Past events are edited in Pages CMS → data/past-events.json.
+  // List order = page order (newest at the top); the first 3 photos are the thumbnails.
+  var DATA_URL = 'data/past-events.json';
+  var MAX_PHOTOS = 15;
 
   var chaptersWithPreviews = [];
   var currentFullscreenImage = null;
   var currentChapterIndex = null;
   var fullscreenModal = null;
 
-  function getRandomPreviewImages(images, count) {
-    if (!images || images.length === 0) return [];
-    if (images.length <= count) return images.slice();
-
-    var shuffled = images.slice();
-    for (var i = shuffled.length - 1; i > 0; i--) {
-      var j = Math.floor(Math.random() * (i + 1));
-      var temp = shuffled[i];
-      shuffled[i] = shuffled[j];
-      shuffled[j] = temp;
-    }
-
-    return shuffled.slice(0, count);
-  }
-
-  // Featured (group) photos first, in their listed order; free slots get random others
-  function getPreviewImages(chapter, count) {
-    var images = chapter.images || [];
-    var featured = (chapter.featured || []).filter(function(file) {
-      return images.indexOf(file) !== -1;
-    }).slice(0, count);
-    var rest = images.filter(function(file) { return featured.indexOf(file) === -1; });
-    return featured.concat(getRandomPreviewImages(rest, count - featured.length));
-  }
-
-  // Initialize chapters with their preview images
-  function initChapters() {
-    chaptersWithPreviews = CHAPTERS_DATA.map(function(chapter) {
+  function initChapters(data) {
+    var chapters = (data && Array.isArray(data.chapters)) ? data.chapters : [];
+    chapters = chapters.filter(function(chapter) {
+      return chapter && chapter.title && Array.isArray(chapter.photos) && chapter.photos.length > 0;
+    });
+    chaptersWithPreviews = chapters.map(function(chapter, i) {
+      var photos = chapter.photos.filter(Boolean).slice(0, MAX_PHOTOS);
       return {
-        number: chapter.number,
+        number: String(chapters.length - i).padStart(2, '0'),  // bottom chapter is 01
         title: chapter.title,
-        year: chapter.year,
-        imageFolder: chapter.imageFolder,
-        allImages: chapter.images,
-        previewImages: getPreviewImages(chapter, 3)
+        year: chapter.date_label || '',
+        allImages: photos,
+        previewImages: photos.slice(0, 3)
       };
     });
   }
@@ -58,9 +41,9 @@
     return d.innerHTML;
   }
 
-  function encodeImagePath(imageFolder, filename) {
-    var parts = imageFolder.split('/').concat(filename.split('/'));
-    return parts.map(function(segment) {
+  // "/images/events/a b/01.jpg" → URL-safe path, keeping the slashes
+  function encodePath(path) {
+    return String(path).split('/').map(function(segment) {
       return encodeURIComponent(segment);
     }).join('/');
   }
@@ -75,7 +58,7 @@
     html += '<button type="button" class="chapter-photo chapter-photo--feature" '
       + 'data-chapter-index="' + index + '" '
       + 'aria-label="View all photos from ' + escapeHtml(chapter.title) + '">'
-      + '<img src="' + encodeImagePath(chapter.imageFolder, imgs[0]) + '" alt="' + escapeHtml(chapter.title) + ' - Photo 1" loading="lazy">'
+      + '<img src="' + encodePath(imgs[0]) + '" alt="' + escapeHtml(chapter.title) + ' - Photo 1" loading="lazy">'
       + '</button>';
 
     // Secondary images
@@ -83,7 +66,7 @@
       html += '<button type="button" class="chapter-photo chapter-photo--secondary chapter-photo--a" '
         + 'data-chapter-index="' + index + '" '
         + 'aria-label="View all photos from ' + escapeHtml(chapter.title) + '">'
-        + '<img src="' + encodeImagePath(chapter.imageFolder, imgs[1]) + '" alt="' + escapeHtml(chapter.title) + ' - Photo 2" loading="lazy">'
+        + '<img src="' + encodePath(imgs[1]) + '" alt="' + escapeHtml(chapter.title) + ' - Photo 2" loading="lazy">'
         + '</button>';
     }
 
@@ -91,7 +74,7 @@
       html += '<button type="button" class="chapter-photo chapter-photo--secondary chapter-photo--b" '
         + 'data-chapter-index="' + index + '" '
         + 'aria-label="View all photos from ' + escapeHtml(chapter.title) + '">'
-        + '<img src="' + encodeImagePath(chapter.imageFolder, imgs[2]) + '" alt="' + escapeHtml(chapter.title) + ' - Photo 3" loading="lazy">'
+        + '<img src="' + encodePath(imgs[2]) + '" alt="' + escapeHtml(chapter.title) + ' - Photo 3" loading="lazy">'
         + '</button>';
     }
 
@@ -247,7 +230,7 @@
       };
 
       var image = document.createElement('img');
-      image.src = encodeImagePath(chapter.imageFolder, img);
+      image.src = encodePath(img);
       image.alt = chapter.title + ' - Photo ' + (idx + 1);
       button.appendChild(image);
       gridEl.appendChild(button);
@@ -277,7 +260,7 @@
     var imgEl = modal.querySelector('.chapter-fullscreen-image');
     var counterEl = modal.querySelector('.chapter-fullscreen-counter');
 
-    imgEl.src = encodeImagePath(chapter.imageFolder, chapter.allImages[imageIndex]);
+    imgEl.src = encodePath(chapter.allImages[imageIndex]);
     imgEl.alt = chapter.title + ' - Photo ' + (imageIndex + 1);
     counterEl.textContent = (imageIndex + 1) + ' / ' + chapter.allImages.length;
 
@@ -358,8 +341,19 @@
   }
 
   // Initialize
-  initChapters();
-  renderChapters();
-  initScrollReveal();
+  fetch(DATA_URL, { cache: 'no-cache' })
+    .then(function(res) {
+      if (!res.ok) throw new Error('Could not load ' + DATA_URL);
+      return res.json();
+    })
+    .then(function(data) {
+      initChapters(data);
+      renderChapters();
+      initScrollReveal();
+    })
+    .catch(function(err) {
+      console.warn('Past events load error:', err);
+      container.innerHTML = '<p class="chapters-empty">Photos are on their way! Check back soon.</p>';
+    });
   bindEvents();
 })();
