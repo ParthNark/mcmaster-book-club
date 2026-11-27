@@ -57,6 +57,7 @@ async function fetchBookFromOpenLibrary(config) {
   var cached = _olCacheGet(config);
   if (cached) {
     delete cached._ts;
+    if (config.cover) cached.coverUrl = config.cover;  // Pages CMS cover wins
     return cached;
   }
 
@@ -82,6 +83,8 @@ async function fetchBookFromOpenLibrary(config) {
 
   // Cache the result
   _olCacheSet(config, result);
+  // A cover uploaded in Pages CMS wins over Open Library
+  if (config.cover) result.coverUrl = config.cover;
   return result;
 }
 
@@ -100,6 +103,11 @@ async function fetchByISBN(isbn, result, config) {
 
   // Title
   if (data.title) result.title = data.title;
+
+  // The edition's own cover id is usually a sharper scan than the ISBN cover
+  if (data.covers && data.covers[0] > 0) {
+    result.coverUrl = 'https://covers.openlibrary.org/b/id/' + data.covers[0] + '-L.jpg';
+  }
 
   // Fire authors + work description in PARALLEL (these are independent)
   var authorPromise = resolveAuthors(data.authors || []);
@@ -141,6 +149,11 @@ async function fetchByWorkId(workId, result, config) {
   var data = await res.json();
 
   if (data.title) result.title = data.title;
+
+  // The edition's own cover id is usually a sharper scan than the ISBN cover
+  if (data.covers && data.covers[0] > 0) {
+    result.coverUrl = 'https://covers.openlibrary.org/b/id/' + data.covers[0] + '-L.jpg';
+  }
 
   // Cover from covers array
   if (data.covers && data.covers.length > 0) {

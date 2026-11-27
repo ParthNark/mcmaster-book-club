@@ -12,104 +12,81 @@
     <link rel="preconnect" href="https://script.google.com">
     <link rel="preconnect" href="https://script.googleusercontent.com">
     <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- Book-cover fonts: display serif and typewriter labels -->
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,800;1,9..144,400;1,9..144,600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <script>
+        // Reading lamp: restore the reader's last choice before the page paints
+        try { if (localStorage.getItem('mbc_lamp') === 'on') document.documentElement.classList.add('lamp-on'); } catch (e) {}
+    </script>
     <script src="js/api.js"></script>
     <script src="js/openlibrary.js"></script>
+    <script src="js/home.js" defer></script>
 </head>
-<body>
+<body class="home-page">
     <!-- Skip to main content link for accessibility -->
     <a href="#main-content" class="skip-link">Skip to main content</a>
 
     <!-- Navigation Bar -->
-    <nav class="navbar">
-        <div class="nav-container">
-            <div class="nav-logo">
-                <a href="#home"><img src="images/logo.png" alt="McMaster Book Club logo" class="nav-logo-img"> McMaster Book Club</a>
+    <!-- Bookshelf header: each spine is a page, the raised one is where you are -->
+    <header class="home-header">
+        <a class="home-brand" href="index.html">
+            <span class="home-brand-name">McMaster Book Club</span>
+            <span class="home-brand-sub">All readers welcome</span>
+        </a>
+        <div class="home-header-right">
+            <nav class="shelf-nav" aria-label="Main">
+                <ul class="shelf">
+                    <li><a class="spine spine--home is-active" href="index.html" aria-current="page">Home</a></li>
+                    <li><a class="spine spine--read" href="current-read.html">Current Read</a></li>
+                    <li><a class="spine spine--events" href="meetings-events.html">Events</a></li>
+                    <li><a class="spine spine--past" href="chapters.html">Past Events</a></li>
+                    <li><a class="spine spine--team" href="our-team.html">Our Team</a></li>
+                    <li><a class="spine spine--join" href="join.html">Join Us</a></li>
+                </ul>
+                <div class="shelf-board" aria-hidden="true"></div>
+            </nav>
+            <div class="lamp">
+                <svg class="lamp-shade" width="78" height="64" viewBox="0 0 78 64" aria-hidden="true">
+                    <path class="lamp-cord" d="M39 0 V12"/>
+                    <path d="M12 44 Q39 6 66 44 Z" fill="#7a003c" stroke="#4d0026" stroke-width="2"/>
+                    <ellipse class="lamp-bulb" cx="39" cy="45" rx="27" ry="5"/>
+                </svg>
+                <button type="button" class="lamp-chain" id="lamp-chain" aria-pressed="false" aria-label="Turn the reading lamp on">
+                    <svg class="lamp-pull" width="14" height="70" viewBox="0 0 14 70" aria-hidden="true">
+                        <path class="lamp-cord" d="M7 0 V52" stroke-dasharray="2 3"/>
+                        <circle cx="7" cy="59" r="6" fill="#c99a2e"/>
+                    </svg>
+                </button>
+                <span class="lamp-text" id="lamp-text">Pull for lamp</span>
             </div>
-            <button class="hamburger" id="hamburger" aria-label="Toggle navigation" aria-expanded="false">
-                <span></span>
-                <span></span>
-                <span></span>
-            </button>
-            <ul class="nav-menu" id="nav-menu">
-                <li class="nav-item"><a href="#home" class="nav-link">Home</a></li>
-                <li class="nav-item"><a href="#about" class="nav-link">About</a></li>
-                <li class="nav-item"><a href="current-read.html" class="nav-link">Current Read</a></li>
-                <li class="nav-item"><a href="meetings-events.html" class="nav-link">Meetings & Events</a></li>
-                <li class="nav-item"><a href="chapters.html" class="nav-link">Past Events</a></li>
-                <li class="nav-item"><a href="our-team.html" class="nav-link">Our Team</a></li>
-                <li class="nav-item"><a href="join.html" class="nav-link nav-link-cta">Join Us</a></li>
-            </ul>
         </div>
-    </nav>
+    </header>
 
     <main id="main-content">
-        <!-- Hero / Header Section -->
-        <section id="home" class="hero">
-            <div class="hero-image-container">
-                <img src="images/headerfinal.png" alt="McMaster Book Club Header" class="hero-image">
+        <!-- Hero: slogan + this month's covers + the next event, all from Pages CMS -->
+        <section id="home" class="home-hero">
+            <div class="home-hero-text">
+                <p class="home-kicker" id="home-kicker">Now reading</p>
+                <h1 class="home-title">Once upon <span>a Mac.</span></h1>
+                <p class="home-lede">Typically two books a month, one Blue Lounge, and plenty of fresh perspectives. Everyone at McMaster is welcome: read along, or just come for the snacks.</p>
+                <div class="home-ctas">
+                    <a class="home-btn home-btn--primary" href="current-read.html">See this month's reads
+                        <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </a>
+                    <a class="home-btn home-btn--outline" href="join.html">Join the club</a>
+                </div>
             </div>
-            <div class="bookshelf-divider">
-                <svg class="bookshelf-svg" viewBox="0 0 1440 190" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                    <defs>
-                        <linearGradient id="shelfWood" x1="0" y1="0" x2="0" y2="1">
-                            <stop offset="0%" stop-color="#c98e57"/>
-                            <stop offset="100%" stop-color="#9f6035"/>
-                        </linearGradient>
-                        <linearGradient id="backPanel" x1="0" y1="0" x2="0" y2="1">
-                            <stop offset="0%" stop-color="#ecdde0"/>
-                            <stop offset="100%" stop-color="#e4d0d5"/>
-                        </linearGradient>
-                    </defs>
-
-                    <rect x="0" y="0" width="1440" height="190" fill="url(#backPanel)"/>
-                    <rect x="48" y="38" width="1344" height="14" rx="7" fill="#b9804d" opacity="0.65"/>
-                    <rect x="40" y="52" width="1360" height="20" rx="10" fill="url(#shelfWood)"/>
-                    <rect x="40" y="72" width="1360" height="7" rx="3.5" fill="#7e4b2d" opacity="0.55"/>
-
-                    <g fill="#8a5433" opacity="0.6">
-                        <rect x="120" y="78" width="14" height="56" rx="7"/>
-                        <rect x="430" y="78" width="14" height="56" rx="7"/>
-                        <rect x="740" y="78" width="14" height="56" rx="7"/>
-                        <rect x="1050" y="78" width="14" height="56" rx="7"/>
-                        <rect x="1290" y="78" width="14" height="56" rx="7"/>
-                    </g>
-
-                    <g>
-                        <rect x="88" y="8" width="36" height="44" rx="3" fill="#d4602b" stroke="#8a3f1e" stroke-width="2"/>
-                        <rect x="132" y="0" width="40" height="52" rx="3" fill="#7a003c" stroke="#4f0028" stroke-width="2"/>
-                        <rect x="179" y="10" width="38" height="42" rx="3" fill="#d4b5a0" stroke="#9d7b61" stroke-width="2"/>
-                        <rect x="224" y="2" width="33" height="50" rx="3" fill="#fbf5ed" stroke="#c7b9a5" stroke-width="2"/>
-                        <rect x="263" y="7" width="41" height="45" rx="3" fill="#a91d42" stroke="#76112d" stroke-width="2"/>
-
-                        <rect x="332" y="10" width="35" height="42" rx="3" fill="#d4602b" stroke="#8a3f1e" stroke-width="2"/>
-                        <rect x="372" y="3" width="37" height="49" rx="3" fill="#7a003c" stroke="#4f0028" stroke-width="2"/>
-                        <rect x="416" y="12" width="32" height="40" rx="3" fill="#d4b5a0" stroke="#9d7b61" stroke-width="2"/>
-                        <rect x="454" y="4" width="34" height="48" rx="3" fill="#fbf5ed" stroke="#c7b9a5" stroke-width="2"/>
-                        <rect x="495" y="8" width="39" height="44" rx="3" fill="#a91d42" stroke="#76112d" stroke-width="2"/>
-
-                        <rect x="562" y="9" width="36" height="43" rx="3" fill="#d4602b" stroke="#8a3f1e" stroke-width="2"/>
-                        <rect x="604" y="1" width="39" height="51" rx="3" fill="#7a003c" stroke="#4f0028" stroke-width="2"/>
-                        <rect x="650" y="10" width="36" height="42" rx="3" fill="#d4b5a0" stroke="#9d7b61" stroke-width="2"/>
-                        <rect x="693" y="2" width="34" height="50" rx="3" fill="#fbf5ed" stroke="#c7b9a5" stroke-width="2"/>
-                        <rect x="734" y="7" width="40" height="45" rx="3" fill="#a91d42" stroke="#76112d" stroke-width="2"/>
-
-                        <rect x="802" y="10" width="35" height="42" rx="3" fill="#d4602b" stroke="#8a3f1e" stroke-width="2"/>
-                        <rect x="843" y="3" width="37" height="49" rx="3" fill="#7a003c" stroke="#4f0028" stroke-width="2"/>
-                        <rect x="886" y="10" width="34" height="42" rx="3" fill="#d4b5a0" stroke="#9d7b61" stroke-width="2"/>
-                        <rect x="926" y="2" width="38" height="50" rx="3" fill="#fbf5ed" stroke="#c7b9a5" stroke-width="2"/>
-                        <rect x="971" y="7" width="39" height="45" rx="3" fill="#a91d42" stroke="#76112d" stroke-width="2"/>
-
-                        <rect x="1038" y="9" width="36" height="43" rx="3" fill="#d4602b" stroke="#8a3f1e" stroke-width="2"/>
-                        <rect x="1080" y="1" width="39" height="51" rx="3" fill="#7a003c" stroke="#4f0028" stroke-width="2"/>
-                        <rect x="1126" y="10" width="36" height="42" rx="3" fill="#d4b5a0" stroke="#9d7b61" stroke-width="2"/>
-                        <rect x="1169" y="2" width="34" height="50" rx="3" fill="#fbf5ed" stroke="#c7b9a5" stroke-width="2"/>
-                        <rect x="1210" y="7" width="40" height="45" rx="3" fill="#a91d42" stroke="#76112d" stroke-width="2"/>
-                    </g>
-
-                    <line x1="40" y1="136" x2="1400" y2="136" stroke="#b9859d" stroke-width="4" opacity="0.55"/>
-                </svg>
+            <div class="home-books">
+                <div class="home-covers" id="home-covers" aria-label="This month's reads"></div>
+                <div class="home-stand" aria-hidden="true"></div>
+                <a class="home-ticket" id="home-ticket" href="meetings-events.html" hidden></a>
             </div>
         </section>
+
+        <!-- News ticker: next event, Campus Store deals, voting (from Pages CMS) -->
+        <div class="home-ticker" id="home-ticker-wrap" aria-label="Club news" hidden>
+            <div class="home-ticker-track" id="home-ticker"></div>
+        </div>
 
         <!-- About Us Section -->
         <section id="about" class="section about-section">
@@ -297,34 +274,8 @@
         </div>
     </footer>
 
-    <!-- Mobile Menu Toggle Script -->
+    <!-- Homepage widgets -->
     <script>
-        const hamburger = document.getElementById('hamburger');
-        const navMenu = document.getElementById('nav-menu');
-
-        hamburger.addEventListener('click', () => {
-            navMenu.classList.toggle('active');
-            hamburger.setAttribute('aria-expanded', 
-                hamburger.getAttribute('aria-expanded') === 'false' ? 'true' : 'false'
-            );
-        });
-
-        // Close menu when a link is clicked
-        document.querySelectorAll('.nav-link').forEach(link => {
-            link.addEventListener('click', () => {
-                navMenu.classList.remove('active');
-                hamburger.setAttribute('aria-expanded', 'false');
-            });
-        });
-
-        // Close menu when clicking outside
-        document.addEventListener('click', (e) => {
-            if (!e.target.closest('.nav-container')) {
-                navMenu.classList.remove('active');
-                hamburger.setAttribute('aria-expanded', 'false');
-            }
-        });
-
         /** Escape HTML entities to prevent XSS */
         function _esc(str) {
             var d = document.createElement('div');

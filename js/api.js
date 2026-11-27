@@ -47,7 +47,7 @@ function _booksWithStatus(data, status) {
 
 /**
  * Current reads.
- * @returns {Promise<{books: Array, voting_open: boolean, vote_form_url: string}>}
+ * @returns {Promise<{books: Array, voting_open: boolean, vote_form_url: string, store_deal: string}>}
  */
 function getCurrent() {
   return _loadDataFile('data/books.json').then(function (data) {
@@ -67,14 +67,16 @@ function getCurrent() {
           meeting_notes: b.meeting_notes || '',
           discussion_prompts: _asList(b.discussion_prompts),
           goodreads_url: b.goodreads_url || '',
-          rating_text: b.rating_text || ''
+          rating_text: b.rating_text || '',
+          cover: b.cover || ''            // optional upload; overrides the Open Library cover
         };
       });
 
     return {
       books: books,
       voting_open: data.voting_open === true,
-      vote_form_url: data.vote_form_url || ''
+      vote_form_url: data.vote_form_url || '',
+      store_deal: data.store_deal || ''  // e.g. "10% off" at the Campus Store
     };
   });
 }
@@ -110,7 +112,7 @@ function _parseISODate(str) {
 
 /**
  * Upcoming events, soonest first. Events are hidden the day after their date.
- * @returns {Promise<Array>} — [{ title, date, time, location, description, instagram_embed_url, rsvp_url }, ...]
+ * @returns {Promise<Array>} — [{ title, iso_date, date, time, location, description, instagram_embed_url, rsvp_url }, ...]
  */
 function getEvents() {
   return _loadDataFile('data/events.json').then(function (data) {
@@ -130,6 +132,7 @@ function getEvents() {
         var d = x.d;
         return {
           title: x.ev.title,
+          iso_date: d ? String(x.ev.date).slice(0, 10) : '',
           date: d ? (_DAYS[d.getDay()] + ', ' + _MONTHS[d.getMonth()] + ' ' + d.getDate() + ', ' + d.getFullYear()) : String(x.ev.date || ''),
           time: x.ev.time || '',
           location: x.ev.location || '',

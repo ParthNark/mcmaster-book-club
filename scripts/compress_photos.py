@@ -76,4 +76,4 @@ def main(roots, data_files):
 
 
 if __name__ == '__main__':
-    main(sys.argv[1:] or ['images/events', 'images/ourteam'], sorted(glob.glob('data/*.json')))
+    main(sys.argv[1:] or ['images/events', 'images/ourteam', 'images/covers'], sorted(glob.glob('data/*.json')))

@@ -6,7 +6,7 @@ name: Compress event photos
 on:
   push:
     branches: [main]
-    paths: ['images/events/**', 'images/ourteam/**']
+    paths: ['images/events/**', 'images/ourteam/**', 'images/covers/**']
   workflow_dispatch:
 
 permissions:
@@ -30,11 +30,11 @@ jobs:
         run: pip install Pillow==11.0.0
 
       - name: Compress photos
-        run: python scripts/compress_photos.py images/events images/ourteam
+        run: python scripts/compress_photos.py images/events images/ourteam images/covers
 
       - name: Commit smaller photos
         run: |
-          git add -A images/events images/ourteam data
+          git add -A images/events images/ourteam images/covers data
           if git diff --cached --quiet; then
             echo "Nothing to compress."
             exit 0

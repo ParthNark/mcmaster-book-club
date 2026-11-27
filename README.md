@@ -57,6 +57,17 @@ Add an event in **Events** with a date. Events disappear from the site automatic
 
 ---
 
+## 🏠 Homepage (updates itself)
+
+Nothing on the homepage hero needs editing by hand:
+
+- **Book covers**: the first one or two books marked `current` in **Books**. Covers come from Open Library via the ISBN; if one is missing or wrong, upload one in the book's **Cover image** field.
+- **Ticket**: the soonest upcoming event in **Events** (it says "Today" on the day). Add book discussions as events too, so they show up here.
+- **News ticker** (scrolling banner): the next event, a "Pick up … at the McMaster Campus Store" item for each current book (using **Campus Store deal** in Books, e.g. `10% off`; leave it empty to hide), and "Vote now" while voting is open.
+- **Reading lamp**: the pull chain switches to the lamplight theme; each visitor's browser remembers their choice.
+
+---
+
 ## 🎭 Our Team
 
 In Pages CMS, open **Our Team**. Each member is one spread in the book, in list order (drag to reorder). Fill in first name, full name, role, photo (a portrait works best), email and Instagram handle; LinkedIn, favourite book and currently reading are optional and only show when filled in. Update **Year shown on the cover** each new exec year. Photos are shrunk automatically after upload, like Past Events photos.

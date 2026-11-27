@@ -121,6 +121,10 @@ content:
         label: Voting form link
         type: string
         description: Google Form link for the vote. Only used while voting is open.
+      - name: store_deal
+        label: Campus Store deal
+        type: string
+        description: Shown in the homepage ticker for each current book, e.g. "10% off". Leave empty to hide it.
       - name: books
         label: Books
         type: object
@@ -138,6 +142,12 @@ content:
             label: ISBN
             type: string
             description: The cover, title, author and description are fetched from Open Library using this.
+          - name: cover
+            label: Cover image (optional)
+            type: image
+            description: Only if the Open Library cover is missing or wrong. Otherwise the cover is found automatically from the ISBN.
+            options:
+              path: images/covers
           - name: work_id
             label: Open Library work ID
             type: string

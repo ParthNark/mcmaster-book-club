@@ -1,6 +1,7 @@
 {
   "voting_open": false,
   "vote_form_url": "",
+  "store_deal": "10% off",
   "books": [
     {
       "status": "current",
