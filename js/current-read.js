@@ -188,7 +188,38 @@
       + '<p class="cr-hand">tap a card to flip it</p>'
       + '<ul class="cr-cards">' + cards + '</ul>'
       + other;
+    fitPrompts();
   }
+
+  // Long prompts shrink until they fit on their card. Below 12px they stop
+  // shrinking and the card grows taller instead, so text stays readable.
+  var MIN_PROMPT_PX = 12;
+  function fitPrompts() {
+    var faces = el.right.querySelectorAll('.cr-card-front');
+    for (var i = 0; i < faces.length; i++) {
+      var face = faces[i];
+      var q = face.querySelector('.cr-card-q');
+      var card = face.closest('.cr-card');
+      if (!q || !card) continue;
+      q.style.fontSize = '';
+      card.style.height = '';
+      var size = parseFloat(getComputedStyle(q).fontSize);
+      while (face.scrollHeight > face.clientHeight + 1 && size - 0.5 >= MIN_PROMPT_PX) {
+        size -= 0.5;
+        q.style.fontSize = size + 'px';
+      }
+      var extra = face.scrollHeight - face.clientHeight;
+      if (extra > 1) card.style.height = (card.offsetHeight + extra + 4) + 'px';
+    }
+  }
+
+  // Card sizes change with the window, and the serif font may load late.
+  var fitTimer = null;
+  window.addEventListener('resize', function () {
+    clearTimeout(fitTimer);
+    fitTimer = setTimeout(fitPrompts, 150);
+  });
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitPrompts);
 
   function render() {
     var b = state.books[state.current];
