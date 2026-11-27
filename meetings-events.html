@@ -7,13 +7,10 @@
     <link rel="stylesheet" href="style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preconnect" href="https://openlibrary.org">
-    <link rel="preconnect" href="https://covers.openlibrary.org">
-    <link rel="preconnect" href="https://script.google.com">
-    <link rel="preconnect" href="https://script.googleusercontent.com">
     <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- Wall-calendar fonts: display serif, typewriter labels, handwriting -->
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,800;1,9..144,400;1,9..144,600&family=IBM+Plex+Mono:wght@400;500;600&family=Caveat:wght@600&display=swap" rel="stylesheet">
     <script src="js/api.js"></script>
-    <script src="js/openlibrary.js"></script>
 </head>
 <body>
     <!-- Skip to main content link for accessibility -->
@@ -33,7 +30,7 @@
             <ul class="nav-menu" id="nav-menu">
                 <li class="nav-item"><a href="index.html#home" class="nav-link">Home</a></li>
                 <li class="nav-item"><a href="current-read.html" class="nav-link">Current Read</a></li>
-                <li class="nav-item"><a href="meetings-events.html" class="nav-link nav-link-active">Meetings & Events</a></li>
+                <li class="nav-item"><a href="meetings-events.html" class="nav-link nav-link-active" aria-current="page">Meetings & Events</a></li>
                 <li class="nav-item"><a href="chapters.html" class="nav-link">Past Events</a></li>
                 <li class="nav-item"><a href="our-team.html" class="nav-link">Our Team</a></li>
                 <li class="nav-item"><a href="join.html" class="nav-link nav-link-cta">Join Us</a></li>
@@ -41,38 +38,30 @@
         </div>
     </nav>
 
-    <main id="main-content">
-        <!-- Page Hero -->
-        <section class="page-hero">
-            <div class="container">
-                <h1>📅 Meetings & Events</h1>
-                <p>Stay up to date with our monthly picks, meeting times, and upcoming events.</p>
-            </div>
-        </section>
-
-        <!-- Monthly Picks Section -->
-        <section class="section meetings-events-section">
-            <div class="container">
-                <div class="me-subsection">
-                    <h2 class="me-subheading">📖 Monthly Picks</h2>
-                    <p id="me-picks-loading" class="hw-loading">Loading monthly picks…</p>
-                    <div class="me-picks-grid" id="me-picks-grid" style="display:none;"></div>
-                    <div id="me-picks-error" class="error-state" style="display:none;">Unable to load monthly picks right now.</div>
+    <main id="main-content" class="cal-page">
+        <div class="cal-layout">
+            <section class="cal-sheet" aria-labelledby="cal-month">
+                <div class="cal-rings" aria-hidden="true"></div>
+                <h1 class="cal-eyebrow">Meetings &amp; Events</h1>
+                <div class="cal-head">
+                    <div class="cal-title-row">
+                        <button type="button" class="cal-arrow" id="cal-prev" aria-label="Previous month">&lsaquo;</button>
+                        <h2 class="cal-month" id="cal-month" aria-live="polite">&nbsp;</h2>
+                        <button type="button" class="cal-arrow" id="cal-next" aria-label="Next month">&rsaquo;</button>
+                    </div>
+                    <div class="cal-chips" id="cal-chips" role="group" aria-label="Filter events" hidden></div>
                 </div>
-            </div>
-        </section>
-
-        <!-- Upcoming Events Section -->
-        <section class="section meetings-events-section">
-            <div class="container">
-                <div class="me-subsection">
-                    <h2 class="me-subheading">🎉 Upcoming Events</h2>
-                    <p id="me-events-loading" class="hw-loading">Loading events…</p>
-                    <div id="me-events-container" style="display:none;"></div>
-                    <div id="me-events-error" class="error-state" style="display:none;">Unable to load events right now.</div>
+                <div class="cal-weekdays" aria-hidden="true">
+                    <span>Sun</span><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span>
                 </div>
-            </div>
-        </section>
+                <div class="cal-days" id="cal-days"></div>
+            </section>
+
+            <aside class="cal-aside" aria-label="Event details">
+                <div id="cal-side" aria-live="polite"></div>
+                <div class="cal-upnext" id="cal-upnext"></div>
+            </aside>
+        </div>
     </main>
 
     <!-- Footer (consistent with other pages) -->
@@ -145,116 +134,7 @@
                 hamburger.setAttribute('aria-expanded', 'false');
             }
         });
-
-        /** Escape HTML entities to prevent XSS */
-        function _esc(str) {
-            var d = document.createElement('div');
-            d.appendChild(document.createTextNode(str));
-            return d.innerHTML;
-        }
-
-        // ─── Monthly Picks ─────────────────────────────────────────
-        (async function () {
-            var loadingEl = document.getElementById('me-picks-loading');
-            var gridEl    = document.getElementById('me-picks-grid');
-            var errorEl   = document.getElementById('me-picks-error');
-
-            try {
-                var config = await getCurrent();
-                var books = config.books || [];
-                if (books.length === 0) throw new Error('No books in response');
-
-                var olPromises = books.map(function (b) { return fetchBookFromOpenLibrary(b); });
-                var olResults  = await Promise.all(olPromises);
-
-                var html = '';
-                for (var i = 0; i < books.length; i++) {
-                    var bk   = books[i];
-                    var book = olResults[i];
-                    var bookId = bk.id || ('book' + (i + 1));
-
-                    var title = _esc(book.title || bk.title || 'TBA');
-                    var authorText = (book.authors && book.authors.length > 0)
-                        ? 'by ' + _esc(book.authors.join(', '))
-                        : (bk.author ? 'by ' + _esc(bk.author) : '');
-                    var coverSrc = book.coverUrl || 'images/current-book-cover.png';
-
-                    html += '<article class="me-pick-card">'
-                        + '<div class="me-pick-cover"><img src="' + coverSrc + '" alt="Cover of ' + title + '" onerror="this.onerror=null;this.src=\'images/current-book-cover.png\';"></div>'
-                        + '<div class="me-pick-info">'
-                        +   '<h4 class="me-pick-title">' + title + '</h4>'
-                        +   '<p class="me-pick-author">' + authorText + '</p>'
-                        +   '<div class="me-pick-meeting">'
-                        +     '<p>📅 <strong>' + _esc(bk.meeting_time || 'TBA') + '</strong></p>'
-                        +     '<p>📍 ' + _esc(bk.meeting_location || 'TBA') + '</p>'
-                        +     (bk.meeting_notes ? '<p class="me-pick-notes">' + _esc(bk.meeting_notes) + '</p>' : '')
-                        +   '</div>'
-                        +   '<a href="current-read.html#' + bookId + '" class="btn btn-secondary me-pick-details-btn">View details →</a>'
-                        + '</div>'
-                        + '</article>';
-                }
-
-                if (loadingEl) loadingEl.style.display = 'none';
-                gridEl.innerHTML = html;
-                gridEl.style.display = '';
-
-            } catch (e) {
-                console.warn('Monthly picks load error:', e);
-                if (loadingEl) loadingEl.style.display = 'none';
-                if (errorEl)   errorEl.style.display = 'block';
-            }
-        })();
-
-        // ─── Upcoming Events ───────────────────────────────────────
-        (async function () {
-            var loadingEl   = document.getElementById('me-events-loading');
-            var containerEl = document.getElementById('me-events-container');
-            var errorEl     = document.getElementById('me-events-error');
-
-            try {
-                var events = await getEvents();
-                if (!Array.isArray(events) || events.length === 0) {
-                    throw new Error('No events');
-                }
-
-                var html = '<div class="me-events-grid">';
-                events.forEach(function (ev) {
-                    html += '<article class="me-event-card">';
-                    html += '<h4 class="me-event-title">' + _esc(ev.title || 'Untitled Event') + '</h4>';
-                    if (ev.date || ev.time) {
-                        html += '<p class="me-event-datetime">';
-                        if (ev.date) html += '📅 ' + _esc(ev.date);
-                        if (ev.time) html += (ev.date ? ' · ' : '') + '⏰ ' + _esc(ev.time);
-                        html += '</p>';
-                    }
-                    if (ev.location) {
-                        html += '<p class="me-event-location">📍 ' + _esc(ev.location) + '</p>';
-                    }
-                    if (ev.description) {
-                        html += '<p class="me-event-desc">' + _esc(ev.description) + '</p>';
-                    }
-                    if (ev.instagram_embed_url && ev.instagram_embed_url.trim()) {
-                        html += '<a href="' + _esc(ev.instagram_embed_url) + '" target="_blank" rel="noopener" class="btn btn-secondary me-event-ig-btn">📸 View on Instagram</a>';
-                    }
-                    if (ev.rsvp_url && ev.rsvp_url.trim()) {
-                        html += '<a href="' + _esc(ev.rsvp_url) + '" target="_blank" rel="noopener" class="btn btn-primary me-event-rsvp-btn">RSVP</a>';
-                    }
-                    html += '</article>';
-                });
-                html += '</div>';
-
-                if (loadingEl) loadingEl.style.display = 'none';
-                containerEl.innerHTML = html;
-                containerEl.style.display = '';
-
-            } catch (e) {
-                console.warn('Events load error:', e);
-                if (loadingEl) loadingEl.style.display = 'none';
-                // Show a friendly "no events" message instead of error
-                containerEl.innerHTML = '<p class="me-no-events">No upcoming events right now — check back soon or follow us on <a href="https://www.instagram.com/mcmasterbooks/" target="_blank" rel="noopener" class="inline-link">Instagram</a>!</p>';
-                containerEl.style.display = '';
-            }
-        })();
     </script>
+    <script src="js/calendar.js"></script>
 </body>
 </html>

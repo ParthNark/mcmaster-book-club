@@ -4930,3 +4930,969 @@ html:not(.lamp-on) .home-page {
 html.lamp-on .lamp-shade {
   filter: drop-shadow(0 0 8px rgba(255, 236, 170, 0.95)) drop-shadow(0 10px 22px rgba(255, 196, 90, 0.7));
 }
+
+/* ==========================================================================
+   Meetings & Events — the wall calendar (meetings-events.html + js/calendar.js)
+   Sits on the site parchment; the calendar itself is a cream sheet.
+   ========================================================================== */
+.cal-page {
+  padding: 2.5rem 1.5rem 4rem;
+  color: #2a1a1f;
+}
+
+.cal-layout {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 360px;
+  gap: 2.75rem;
+  align-items: start;
+}
+
+.cal-sheet {
+  position: relative;
+  background: #fffaf2;
+  border: 1px solid #e0cfb2;
+  border-radius: 4px 4px 8px 8px;
+  box-shadow: 0 3px 0 #efe3cc, 0 22px 40px rgba(60, 36, 16, 0.22);
+  padding: 2.25rem 1.6rem 1.25rem;
+  transform: rotate(-0.6deg);
+}
+
+.cal-rings {
+  position: absolute;
+  left: 30px;
+  right: 30px;
+  top: -11px;
+  height: 22px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='46' height='22'%3E%3Crect x='19' width='8' height='22' rx='4' fill='%237d6a5b'/%3E%3Crect x='21' y='2' width='4' height='18' rx='2' fill='%23a08b78'/%3E%3C/svg%3E") repeat-x center / 46px 22px;
+}
+
+.cal-eyebrow {
+  margin: 0 0 0.35rem;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #8a3412;
+}
+
+.cal-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  gap: 0.75rem 1rem;
+  padding-bottom: 0.9rem;
+}
+
+.cal-title-row {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.cal-month {
+  margin: 0;
+  min-width: 9.5ch;
+  font-family: 'Fraunces', serif;
+  font-size: clamp(2rem, 4vw, 2.9rem);
+  font-weight: 800;
+  line-height: 1;
+  color: #7a003c;
+}
+
+.cal-month span {
+  font-weight: 400;
+  font-style: italic;
+  color: #2a1a1f;
+}
+
+.cal-arrow {
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  border: 2px solid #2a1a1f;
+  background: transparent;
+  color: #2a1a1f;
+  font-size: 1.5rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.cal-arrow:hover:not(:disabled) { background: #2a1a1f; color: #fffaf2; }
+.cal-arrow:disabled { opacity: 0.3; cursor: default; }
+
+.cal-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.cal-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 34px;
+  padding: 0 14px;
+  border-radius: 999px;
+  border: 2px solid #2a1a1f;
+  background: transparent;
+  color: #2a1a1f;
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.cal-chip[aria-pressed="true"] { background: #2a1a1f; color: #fffaf2; }
+.cal-chip-dot { width: 8px; height: 8px; border-radius: 50%; box-shadow: 0 0 0 1.5px #fffaf2; }
+
+.cal-weekdays,
+.cal-days {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+}
+
+.cal-weekdays {
+  border-top: 2px solid #2a1a1f;
+}
+
+.cal-weekdays span {
+  padding: 8px 0 6px;
+  text-align: center;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.66rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #5a4a4f;
+}
+
+.cal-day {
+  position: relative;
+  min-height: 96px;
+  padding: 6px 7px;
+  border-top: 1px solid #eadfc9;
+  border-left: 1px solid #eadfc9;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.cal-day:nth-child(7n + 1) { border-left: none; }
+.cal-day.is-blank { background: #f6eedf; }
+
+.cal-num {
+  position: relative;
+  z-index: 1;
+  font-family: 'Fraunces', serif;
+  font-size: 1.05rem;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.cal-day.is-past .cal-num { color: #8a7a76; }
+
+/* hand-drawn red circle around today */
+.cal-day.is-today::before {
+  content: '';
+  position: absolute;
+  left: 1px;
+  top: 1px;
+  width: 34px;
+  height: 31px;
+  border: 2px solid #b5332e;
+  border-radius: 50%;
+  transform: rotate(-12deg);
+}
+
+.cal-cross {
+  position: absolute;
+  left: 6px;
+  top: 4px;
+  font-family: 'Caveat', cursive;
+  font-size: 1.9rem;
+  line-height: 0.9;
+  color: rgba(107, 90, 95, 0.4);
+  pointer-events: none;
+}
+
+.cal-stamps {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-top: auto;
+}
+
+.cal-stamp {
+  display: block;
+  width: 100%;
+  padding: 4px 5px;
+  border: 2px solid var(--stamp);
+  border-radius: 4px;
+  background: rgba(255, 250, 242, 0.85);
+  color: var(--stamp);
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.6rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  line-height: 1.2;
+  text-transform: uppercase;
+  text-align: left;
+  cursor: pointer;
+  transform: rotate(var(--tilt, 0deg));
+  transition: transform 0.2s ease, background-color 0.2s ease, color 0.2s ease;
+}
+
+.cal-stamp-text {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  overflow-wrap: anywhere;
+}
+
+.cal-stamp:hover { transform: rotate(0deg) scale(1.04); }
+.cal-stamp.is-selected { background: var(--stamp); color: #fffaf2; }
+.cal-day.is-past .cal-stamp:not(.is-selected) { opacity: 0.7; }
+
+.cal-stamp:focus-visible,
+.cal-chip:focus-visible,
+.cal-arrow:focus-visible,
+.cal-btn:focus-visible,
+.cal-upnext-list button:focus-visible {
+  outline: 3px solid #c99a2e;
+  outline-offset: 2px;
+}
+
+/* ── Side panel ─────────────────────────────────────────── */
+.cal-aside {
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+  padding-top: 0.5rem;
+}
+
+.cal-kicker,
+.cal-upnext-label {
+  margin: 0 0 0.75rem;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.2em;
+  color: #8a3412;
+}
+
+.cal-ticket {
+  display: flex;
+  background: #fffaf2;
+  border: 1px solid #e0cfb2;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 14px 26px rgba(60, 36, 16, 0.18);
+}
+
+.cal-ticket-stub {
+  width: 84px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem 0;
+  color: #fbf5ed;
+  border-right: 3px dashed #fffaf2;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.16em;
+}
+
+.cal-ticket-stub strong {
+  font-family: 'Fraunces', serif;
+  font-size: 2.6rem;
+  font-weight: 800;
+  letter-spacing: 0;
+  line-height: 1;
+}
+
+.cal-ticket-body {
+  padding: 1rem 1.1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  min-width: 0;
+}
+
+.cal-ticket-body h3 {
+  margin: 0;
+  font-family: 'Fraunces', serif;
+  font-size: 1.35rem;
+  font-weight: 600;
+  line-height: 1.15;
+  color: #2a1a1f;
+}
+
+.cal-ticket-meta {
+  margin: 0;
+  font-size: 0.82rem;
+  color: #4a3a3f;
+}
+
+.cal-ticket-desc {
+  margin: 0;
+  padding-top: 0.15rem;
+  font-family: 'Fraunces', serif;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: #2a1a1f;
+}
+
+.cal-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 1rem;
+}
+
+.cal-btn {
+  flex: 1 1 140px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 46px;
+  padding: 0 1rem;
+  border-radius: 999px;
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.88rem;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.cal-btn--solid { background: #7a003c; color: #fbf5ed; border: 2px solid #7a003c; }
+.cal-btn--solid:hover { background: #5a002c; border-color: #5a002c; color: #fbf5ed; }
+.cal-btn--line { background: transparent; color: #2a1a1f; border: 2px solid #2a1a1f; }
+.cal-btn--line:hover { background: #2a1a1f; color: #fffaf2; }
+
+.cal-upnext-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-top: 1px dotted #9c8462;
+}
+
+.cal-upnext-list li { border-bottom: 1px dotted #9c8462; }
+
+.cal-upnext-list button {
+  width: 100%;
+  display: flex;
+  align-items: baseline;
+  gap: 0.9rem;
+  padding: 0.7rem 0.2rem;
+  border: none;
+  background: none;
+  text-align: left;
+  cursor: pointer;
+  color: #2a1a1f;
+  font-family: inherit;
+}
+
+.cal-upnext-date {
+  flex-shrink: 0;
+  width: 4.2rem;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+}
+
+.cal-upnext-title {
+  font-family: 'Fraunces', serif;
+  font-size: 1rem;
+  line-height: 1.3;
+}
+
+.cal-upnext-list button:hover .cal-upnext-title { text-decoration: underline; }
+
+.cal-note {
+  padding: 1.1rem 1.25rem;
+  border: 2px dashed #9c8462;
+  border-radius: 10px;
+}
+
+.cal-note-title {
+  margin: 0 0 0.3rem;
+  font-family: 'Fraunces', serif;
+  font-size: 1.1rem;
+}
+
+.cal-note-hand {
+  margin: 0;
+  font-family: 'Caveat', cursive;
+  font-size: 1.35rem;
+  line-height: 1.2;
+  color: #8a3412;
+}
+
+.cal-note-hand a { color: #7a003c; }
+
+@media (max-width: 960px) {
+  .cal-layout { grid-template-columns: minmax(0, 1fr); gap: 2rem; }
+  .cal-sheet { transform: none; }
+  .cal-aside { max-width: 560px; }
+}
+
+/* Phones: stamps become coloured tabs; the full name is on the ticket below */
+@media (max-width: 600px) {
+  .cal-page { padding: 2rem 0.75rem 3rem; }
+  .cal-sheet { padding: 1.9rem 0.6rem 0.75rem; }
+  .cal-rings { left: 14px; right: 14px; }
+  .cal-head { padding: 0 0.4rem 0.8rem; }
+  .cal-eyebrow { padding: 0 0.4rem; }
+  .cal-arrow { width: 36px; height: 36px; }
+  .cal-weekdays span { font-size: 0.58rem; letter-spacing: 0.06em; }
+  .cal-day { min-height: 62px; padding: 4px 3px; }
+  .cal-num { font-size: 0.92rem; padding-left: 3px; }
+  .cal-day.is-today::before { width: 28px; height: 26px; }
+  .cal-cross { font-size: 1.5rem; left: 4px; }
+  .cal-stamp {
+    min-height: 24px;
+    padding: 0;
+    background: var(--stamp);
+    transform: none;
+  }
+  .cal-stamp.is-selected { box-shadow: 0 0 0 2px #fffaf2, 0 0 0 4px var(--stamp); }
+  .cal-stamp-text {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+  .cal-ticket-stub { width: 72px; }
+  .cal-ticket-stub strong { font-size: 2.2rem; }
+}
+
+/* ==========================================================================
+   Current Read — the open book (current-read.html + js/current-read.js)
+   Book pages are cream on the site parchment; club colours, not jacket colours.
+   ========================================================================== */
+.cr-page {
+  padding: 2.5rem 1.5rem 4.5rem;
+  color: #2a1a1f;
+}
+
+.cr-book-wrap {
+  max-width: 1120px;
+  margin: 0 auto;
+}
+
+/* index tabs sticking up from the top edge, one per book this month */
+.cr-tabs {
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+  padding-left: 40px;
+}
+
+.cr-tabs[hidden] { display: none; }
+
+.cr-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 36px;
+  max-width: 340px;
+  padding: 0 18px;
+  border: none;
+  border-radius: 8px 8px 0 0;
+  background: #7a003c;
+  color: #fbf5ed;
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-align: left;
+  cursor: pointer;
+  box-shadow: 0 -2px 6px rgba(42, 26, 31, 0.12);
+  transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+.cr-tab:hover { transform: translateY(-3px); }
+.cr-tab[aria-selected="true"] { min-height: 44px; background: #fbf6ea; color: #7a003c; }
+.cr-tab[aria-selected="true"]:hover { transform: none; }
+
+.cr-tab-date {
+  flex-shrink: 0;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.66rem;
+  letter-spacing: 0.14em;
+  opacity: 0.85;
+}
+
+.cr-tab-title {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.cr-book-frame { position: relative; }
+
+.cr-open-book {
+  display: grid;
+  grid-template-columns: minmax(0, 1.18fr) minmax(0, 0.82fr);
+  min-height: 600px;
+  border-radius: 6px;
+  overflow: hidden;
+  box-shadow: 0 3px 0 #eadfc9, 0 6px 0 #c9b388, 0 9px 0 #7a003c, 0 30px 50px rgba(60, 36, 16, 0.32);
+}
+
+.cr-page-l,
+.cr-page-r {
+  position: relative;
+  background: #fbf6ea;
+  box-sizing: border-box;
+  min-width: 0;
+}
+
+.cr-page-l {
+  display: flex;
+  gap: 28px;
+  padding: 34px 34px 36px 44px;
+  box-shadow: inset -26px 0 30px -18px rgba(42, 26, 31, 0.3);
+}
+
+.cr-page-r {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 32px 76px 32px 44px;   /* right padding keeps the cards clear of the ribbon */
+  box-shadow: inset 26px 0 30px -18px rgba(42, 26, 31, 0.3);
+}
+
+/* the bookmark ribbon: runs the full height of the page and hangs out the bottom */
+.cr-ribbon {
+  position: absolute;
+  right: 26px;
+  top: -8px;
+  bottom: -70px;
+  width: 30px;
+  z-index: 2;
+  background: linear-gradient(90deg, #5a002c 0%, #7a003c 30%, #93104f 55%, #7a003c 80%, #5a002c 100%);
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 50% calc(100% - 16px), 0 100%);
+  pointer-events: none;
+}
+
+/* ── Left page ─────────────────────────────────────────── */
+.cr-cover-wrap {
+  position: relative;
+  flex-shrink: 0;
+  align-self: flex-start;
+  padding-top: 6px;
+}
+
+.cr-cover {
+  display: block;
+  width: 190px;
+  height: 287px;
+  object-fit: cover;
+  border-radius: 2px 8px 8px 2px;
+  box-shadow: 0 16px 26px rgba(42, 26, 31, 0.28);
+  transform: rotate(-2.5deg);
+}
+
+.cr-cover--blank {
+  background:
+    linear-gradient(90deg, rgba(0, 0, 0, 0.18) 0 10px, transparent 10px),
+    linear-gradient(#c99a2e, #c99a2e) center 36% / 60% 2px no-repeat,
+    linear-gradient(#c99a2e, #c99a2e) center 40% / 40% 2px no-repeat,
+    #7a003c;
+}
+
+.cr-other .cr-cover--blank { display: block; width: 40px; height: 62px; flex-shrink: 0; border-radius: 1px 3px 3px 1px; }
+
+.cr-note {
+  position: absolute;
+  left: -14px;
+  bottom: -18px;
+  width: 176px;
+  padding: 11px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  background: #fffaf0;
+  border-left: 5px solid #7a003c;
+  box-shadow: 0 10px 16px rgba(42, 26, 31, 0.22);
+  transform: rotate(-4deg);
+}
+
+.cr-note-when {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.6rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  color: #8a3412;
+}
+
+.cr-note-date {
+  font-family: 'Fraunces', serif;
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: #7a003c;
+}
+
+.cr-note-where {
+  font-size: 0.76rem;
+  font-weight: 600;
+  line-height: 1.35;
+}
+
+.cr-info {
+  display: flex;
+  flex-direction: column;
+  gap: 11px;
+  min-width: 0;
+}
+
+.cr-kicker {
+  margin: 0;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #8a3412;
+}
+
+.cr-title {
+  margin: 0;
+  font-family: 'Fraunces', serif;
+  font-size: clamp(1.9rem, 3vw, 2.35rem);
+  font-weight: 800;
+  line-height: 1.04;
+  color: #7a003c;
+  text-wrap: balance;
+}
+
+.cr-author {
+  margin: 0;
+  font-family: 'Fraunces', serif;
+  font-size: 1.2rem;
+  font-style: italic;
+  color: #4f4044;
+}
+
+.cr-tags-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.cr-tags-list li {
+  padding: 3px 10px;
+  border: 1.5px solid #7a003c;
+  border-radius: 999px;
+  color: #7a003c;
+  font-size: 0.7rem;
+  font-weight: 600;
+}
+
+.cr-blurb,
+.cr-notes {
+  margin: 4px 0 0;
+  font-family: 'Fraunces', serif;
+  font-size: 1rem;
+  line-height: 1.6;
+  color: #2a1a1f;
+}
+
+.cr-notes { font-style: italic; color: #4f4044; }
+
+.cr-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: auto;
+  padding-top: 8px;
+}
+
+.cr-actions-row {
+  display: flex;
+  gap: 10px;
+}
+
+.cr-btn {
+  flex: 1 1 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 46px;
+  padding: 0 1rem;
+  border-radius: 999px;
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.86rem;
+  font-weight: 600;
+  text-align: center;
+  text-decoration: none;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.cr-btn--solid { background: #7a003c; color: #fbf5ed; border: 2px solid #7a003c; }
+.cr-btn--solid:hover { background: #5a002c; border-color: #5a002c; color: #fbf5ed; }
+.cr-btn--line { background: transparent; color: #2a1a1f; border: 2px solid #2a1a1f; }
+.cr-btn--line:hover { background: #2a1a1f; color: #fbf6ea; }
+
+/* ── Right page: discussion cards ──────────────────────── */
+.cr-hand {
+  margin: -6px 0 0;
+  font-family: 'Caveat', cursive;
+  font-size: 1.4rem;
+  line-height: 1.2;
+  color: #4f4044;
+}
+
+.cr-hand a { color: #7a003c; }
+
+.cr-cards {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  margin: 4px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.cr-cards li:nth-child(1) { --tilt: -1.5deg; }
+.cr-cards li:nth-child(2) { --tilt: 1.2deg; }
+.cr-cards li:nth-child(3) { --tilt: 1deg; }
+.cr-cards li:nth-child(4) { --tilt: -1.8deg; }
+
+.cr-card {
+  display: block;
+  width: 100%;
+  height: 150px;
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+  perspective: 900px;
+  transform: rotate(var(--tilt, 0deg));
+  transition: transform 0.25s ease;
+}
+
+.cr-card:hover { transform: translateY(-5px) rotate(0deg); }
+
+.cr-card-inner {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: transform 0.5s ease;
+}
+
+.cr-card.is-flipped .cr-card-inner { transform: rotateY(180deg); }
+
+.cr-card-face {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 12px 16px;
+  border-top: 4px solid #c99a2e;
+  border-radius: 6px;
+  box-shadow: 0 8px 14px rgba(42, 26, 31, 0.16);
+  text-align: left;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.cr-card-back { background: #7a003c; color: #f6e7cc; }
+.cr-card-front { background: #fffaf0; color: #2a1a1f; transform: rotateY(180deg); }
+
+.cr-card-label {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.18em;
+}
+
+.cr-card-back .cr-card-label { color: #e8c97a; }
+.cr-card-front .cr-card-label { color: #8a3412; }
+
+.cr-card-num {
+  font-family: 'Fraunces', serif;
+  font-size: 2.5rem;
+  font-weight: 600;
+  line-height: 1;
+}
+
+.cr-card-q {
+  font-family: 'Fraunces', serif;
+  font-size: 1.1rem;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.cr-other {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-top: auto;
+  padding: 16px 0 0;
+  border: none;
+  border-top: 1px dotted #b49c76;
+  background: none;
+  text-align: left;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.cr-other img {
+  width: 40px;
+  height: 62px;
+  flex-shrink: 0;
+  object-fit: cover;
+  border-radius: 1px 3px 3px 1px;
+  box-shadow: 0 4px 8px rgba(42, 26, 31, 0.2);
+}
+
+.cr-other-text { display: flex; flex-direction: column; gap: 2px; }
+
+.cr-other-when {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.14em;
+  color: #4f4044;
+}
+
+.cr-other-title {
+  font-family: 'Fraunces', serif;
+  font-size: 1.05rem;
+  font-style: italic;
+  color: #7a003c;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.cr-tab:focus-visible,
+.cr-card:focus-visible,
+.cr-other:focus-visible,
+.cr-btn:focus-visible {
+  outline: 3px solid #c99a2e;
+  outline-offset: 3px;
+}
+
+.cr-empty {
+  grid-column: 1 / -1;
+  padding: 4rem 2rem;
+  text-align: center;
+  background: #fbf6ea;
+}
+
+/* ── Below the book: vote slip + past reads ledger ─────── */
+.cr-below {
+  max-width: 1120px;
+  margin: 6rem auto 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.6fr);
+  gap: 2rem;
+  align-items: start;
+}
+
+.cr-slip {
+  padding: 1.5rem 1.6rem;
+  background: #fffaf2;
+  border: 1px solid #e0cfb2;
+  border-radius: 8px;
+  box-shadow: 0 12px 24px rgba(60, 36, 16, 0.14);
+}
+
+.cr-slip[hidden] { display: none; }
+.cr-slip:empty { display: none; }
+
+.cr-slip .cr-btn { display: flex; margin-top: 1rem; }
+
+.cr-side-title {
+  margin: 0.35rem 0 0.4rem;
+  font-family: 'Fraunces', serif;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #2a1a1f;
+}
+
+.cr-side-text {
+  margin: 0 0 0.75rem;
+  font-family: 'Fraunces', serif;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+.cr-slip .cr-hand { margin: 0; }
+
+.cr-ledger {
+  margin: 0.5rem 0 0;
+  padding: 0;
+  list-style: none;
+  border-top: 2px solid #2a1a1f;
+}
+
+.cr-ledger li {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr) minmax(0, 1fr);
+  gap: 1rem;
+  align-items: baseline;
+  padding: 0.65rem 0.25rem;
+  border-bottom: 1px dotted #9c8462;
+}
+
+.cr-ledger-title { font-family: 'Fraunces', serif; font-size: 1.02rem; font-weight: 600; }
+.cr-ledger-author { font-family: 'Fraunces', serif; font-style: italic; color: #4f4044; }
+.cr-ledger-month {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #6b4a20;
+  text-align: right;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cr-card-inner, .cr-card, .cr-tab { transition: none; }
+}
+
+/* Tablet: the two pages stack; the ribbon becomes a short marker */
+@media (max-width: 960px) {
+  .cr-open-book { grid-template-columns: minmax(0, 1fr); min-height: 0; }
+  .cr-page-l { padding: 34px 76px 40px 36px; box-shadow: inset 0 -26px 30px -22px rgba(42, 26, 31, 0.3); }
+  .cr-page-r { padding: 32px 36px 36px; box-shadow: inset 0 26px 30px -22px rgba(42, 26, 31, 0.3); }
+  .cr-ribbon { bottom: auto; height: 130px; }
+  .cr-below { grid-template-columns: minmax(0, 1fr); margin-top: 3rem; }
+}
+
+/* Phones: cover on top, text below */
+@media (max-width: 640px) {
+  .cr-page { padding: 1.75rem 0.75rem 3.5rem; }
+  .cr-tabs { padding-left: 10px; gap: 6px; }
+  .cr-tab { flex: 1 1 0; min-width: 0; padding: 0 12px; }
+  .cr-tab-date { display: none; }
+  .cr-page-l { flex-direction: column; align-items: center; padding: 30px 20px 32px; gap: 40px; }
+  .cr-ribbon { right: 16px; top: 0; width: 26px; height: 96px; }
+  .cr-cover { width: 170px; height: 257px; }
+  .cr-note { width: 158px; left: -30px; }
+  .cr-info { align-self: stretch; }
+  .cr-actions-row { flex-direction: column; }
+  .cr-page-r { padding: 28px 18px 30px; }
+  .cr-cards { gap: 12px; }
+  .cr-card { height: 120px; }
+  .cr-card-q { font-size: 1rem; }
+  .cr-ledger li { grid-template-columns: minmax(0, 1fr); gap: 0.1rem; }
+  .cr-ledger-month { text-align: left; }
+}

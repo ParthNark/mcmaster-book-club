@@ -2,6 +2,7 @@
   "events": [
     {
       "title": "Clubfest!!!",
+      "type": "social",
       "date": "2026-09-15",
       "time": "10:00 AM",
       "location": "Table 141, BSB Field",
@@ -11,6 +12,7 @@
     },
     {
       "title": "Scavenger Hunt",
+      "type": "social",
       "date": "2026-09-28",
       "time": "",
       "location": "",
@@ -20,6 +22,7 @@
     },
     {
       "title": "Halloween Social",
+      "type": "social",
       "date": "2026-10-27",
       "time": "6:00–9:00 PM",
       "location": "Clubspace, MUSC",
@@ -29,6 +32,7 @@
     },
     {
       "title": "Social at Williams",
+      "type": "social",
       "date": "2026-11-18",
       "time": "1:00–4:00 PM",
       "location": "Williams (group walk-over from the bus stop outside MUSC at 1 PM)",
@@ -37,7 +41,18 @@
       "rsvp_url": ""
     },
     {
+      "title": "Book Discussion: The Secret History",
+      "type": "discussion",
+      "date": "2026-11-23",
+      "time": "6:00–7:00 PM",
+      "location": "Blue Lounge (The Hub)",
+      "description": "Our November general read by Donna Tartt. Come share your thoughts!",
+      "instagram_url": "",
+      "rsvp_url": ""
+    },
+    {
       "title": "Book Discussion: Everything Is Tuberculosis",
+      "type": "discussion",
       "date": "2026-11-26",
       "time": "6:00–7:00 PM",
       "location": "Blue Lounge (The Hub)",

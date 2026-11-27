@@ -203,12 +203,28 @@ content:
         label: Events
         type: object
         list: true
-        description: Events are hidden automatically the day after their date.
+        description: Upcoming events show on the homepage and are hidden there the day after their date. The calendar on Meetings & Events shows every event, so past ones stay on their month.
         fields:
           - name: title
             label: Title
             type: string
             required: true
+            description: For book discussions start with "Book Discussion:", e.g. "Book Discussion: The Secret History".
+          - name: type
+            label: Type
+            type: select
+            description: Sets the colour of the stamp on the calendar and which filter it falls under.
+            default: social
+            options:
+              values:
+                - value: discussion
+                  label: Book discussion
+                - value: social
+                  label: Social
+                - value: deadline
+                  label: Deadline
+                - value: other
+                  label: Other
           - name: date
             label: Date
             type: date

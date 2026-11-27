@@ -111,6 +111,33 @@ function _parseISODate(str) {
 }
 
 /**
+ * Every event with a valid date, past and upcoming, oldest first.
+ * Used by the wall calendar on Meetings & Events.
+ * @returns {Promise<Array>} — [{ title, date (Date), iso_date, time, location, description, instagram_url, rsvp_url, type }, ...]
+ */
+function getAllEvents() {
+  return _loadDataFile('data/events.json').then(function (data) {
+    var events = (data && Array.isArray(data.events)) ? data.events : [];
+    return events
+      .filter(function (ev) { return ev && ev.title && _parseISODate(ev.date); })
+      .map(function (ev) {
+        return {
+          title: ev.title,
+          date: _parseISODate(ev.date),
+          iso_date: String(ev.date).slice(0, 10),
+          time: ev.time || '',
+          location: ev.location || '',
+          description: ev.description || '',
+          instagram_url: ev.instagram_url || '',
+          rsvp_url: ev.rsvp_url || '',
+          type: ev.type || ''
+        };
+      })
+      .sort(function (a, b) { return a.date - b.date; });
+  });
+}
+
+/**
  * Upcoming events, soonest first. Events are hidden the day after their date.
  * @returns {Promise<Array>} — [{ title, iso_date, date, time, location, description, instagram_embed_url, rsvp_url }, ...]
  */
