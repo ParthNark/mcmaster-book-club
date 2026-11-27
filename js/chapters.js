@@ -1,6 +1,6 @@
 /**
  * McMaster Book Club — Chapters page
- * Renders editorial chapter blocks with lazy-loaded gallery.
+ * Renders past events as one flippable scrapbook (data/past-events.json), with a photo gallery.
  */
 (function () {
   'use strict';
@@ -25,14 +25,28 @@
     });
     chaptersWithPreviews = chapters.map(function(chapter, i) {
       var photos = chapter.photos.filter(Boolean).slice(0, MAX_PHOTOS);
+      var num = chapters.length - i;  // bottom chapter is 01
       return {
-        number: String(chapters.length - i).padStart(2, '0'),  // bottom chapter is 01
+        num: num,
+        number: String(num).padStart(2, '0'),
         title: chapter.title,
         year: chapter.date_label || '',
+        captions: Array.isArray(chapter.captions) ? chapter.captions : [],
+        note: chapter.note || '',
         allImages: photos,
         previewImages: photos.slice(0, 3)
       };
     });
+  }
+
+  function toRoman(n) {
+    var map = [[1000, 'M'], [900, 'CM'], [500, 'D'], [400, 'CD'], [100, 'C'], [90, 'XC'],
+               [50, 'L'], [40, 'XL'], [10, 'X'], [9, 'IX'], [5, 'V'], [4, 'IV'], [1, 'I']];
+    var out = '';
+    map.forEach(function(pair) {
+      while (n >= pair[0]) { out += pair[1]; n -= pair[0]; }
+    });
+    return out;
   }
 
   function escapeHtml(str) {
@@ -48,82 +62,144 @@
     }).join('/');
   }
 
-  function buildCollageHtml(chapter, index) {
-    var imgs = chapter.previewImages;
-    if (!imgs || imgs.length === 0) return '';
-
-    var html = '<div class="chapter-collage" role="group" aria-label="' + escapeHtml(chapter.title) + ' preview photos">';
-
-    // Feature image
-    html += '<button type="button" class="chapter-photo chapter-photo--feature" '
-      + 'data-chapter-index="' + index + '" '
-      + 'aria-label="View all photos from ' + escapeHtml(chapter.title) + '">'
-      + '<img src="' + encodePath(imgs[0]) + '" alt="' + escapeHtml(chapter.title) + ' - Photo 1" loading="lazy">'
-      + '</button>';
-
-    // Secondary images
-    if (imgs.length > 1) {
-      html += '<button type="button" class="chapter-photo chapter-photo--secondary chapter-photo--a" '
-        + 'data-chapter-index="' + index + '" '
-        + 'aria-label="View all photos from ' + escapeHtml(chapter.title) + '">'
-        + '<img src="' + encodePath(imgs[1]) + '" alt="' + escapeHtml(chapter.title) + ' - Photo 2" loading="lazy">'
-        + '</button>';
-    }
-
-    if (imgs.length > 2) {
-      html += '<button type="button" class="chapter-photo chapter-photo--secondary chapter-photo--b" '
-        + 'data-chapter-index="' + index + '" '
-        + 'aria-label="View all photos from ' + escapeHtml(chapter.title) + '">'
-        + '<img src="' + encodePath(imgs[2]) + '" alt="' + escapeHtml(chapter.title) + ' - Photo 3" loading="lazy">'
-        + '</button>';
-    }
-
-    html += '</div>';
-    return html;
+  // One taped polaroid; clicking it opens the album
+  function buildPolaroidHtml(chapter, index, photoIndex, extraClass) {
+    var src = chapter.previewImages[photoIndex];
+    if (!src) return '';
+    var caption = chapter.captions[photoIndex] || '';
+    return '<figure class="scrap-polaroid ' + extraClass + '">'
+      + '<button type="button" class="chapter-photo" data-chapter-index="' + index + '" '
+      +   'aria-label="Open all photos from ' + escapeHtml(chapter.title) + '">'
+      +   '<img src="' + encodePath(src) + '" alt="' + escapeHtml(chapter.title) + ' - Photo ' + (photoIndex + 1) + '">'
+      + '</button>'
+      + (caption ? '<figcaption>' + escapeHtml(caption) + '</figcaption>' : '')
+      + '<span class="scrap-tape" aria-hidden="true"></span>'
+      + '</figure>';
   }
 
-  function buildChapterHtml(chapter, index) {
-    var layoutClass = index % 2 === 0 ? 'chapter--text-left' : 'chapter--text-right';
+  // ── The pages ─────────────────────────────────────────────
+  // The book is a list of spreads: a title page + contents, one spread per
+  // event (newest first, same order as Pages CMS), then "The End?".
 
-    return '<article class="chapter-block ' + layoutClass + '" data-chapter-index="' + index + '">'
-      + '<div class="chapter-text">'
-      +   '<p class="chapter-label">Chapter ' + escapeHtml(chapter.number) + '</p>'
-      +   '<h2 class="chapter-title">' + escapeHtml(chapter.title) + '</h2>'
-      +   '<p class="chapter-year">' + escapeHtml(chapter.year) + '</p>'
-      +   '<div class="chapter-rule" aria-hidden="true"></div>'
-      +   '<button type="button" class="chapter-view-btn" data-chapter-index="' + index + '" aria-label="View all photos from ' + escapeHtml(chapter.title) + '">'
-      +     '<span>View Chapter</span>'
-      +     '<svg class="chapter-view-arrow" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>'
-      +   '</button>'
+  function folio(text) {
+    return '<span class="scrap-folio">— ' + text + ' —</span>';
+  }
+
+  function titlePageHtml() {
+    var newest = chaptersWithPreviews[0];
+    var oldest = chaptersWithPreviews[chaptersWithPreviews.length - 1];
+    var range = (oldest && oldest.year && newest && newest.year && oldest.year !== newest.year)
+      ? oldest.year + ' – ' + newest.year : (newest ? newest.year : '');
+    return '<div class="scrap-page scrap-page--left pe-titlepage">'
+      + '<p class="scrap-runhead">McMaster Book Club</p>'
+      + '<div class="pe-titlepage-body">'
+      +   '<p class="scrap-chapter">a scrapbook of</p>'
+      +   '<h2 class="pe-titlepage-title">The Chapters</h2>'
+      +   '<p class="pe-titlepage-sub">Everything we’ve read, played, eaten and laughed about together.</p>'
+      +   (range ? '<p class="scrap-meta">' + escapeHtml(range) + '</p>' : '')
       + '</div>'
-      + buildCollageHtml(chapter, index)
-      + '</article>';
+      + '<p class="pe-hint">Turn the page →</p>'
+      + '</div>';
   }
 
+  function contentsPageHtml() {
+    var items = chaptersWithPreviews.map(function(chapter, i) {
+      return '<li><button type="button" class="pe-toc-item" data-goto="' + (i + 1) + '">'
+        + '<span class="pe-toc-num">' + toRoman(chapter.num) + '</span>'
+        + '<span class="pe-toc-title">' + escapeHtml(chapter.title)
+        +   (chapter.year ? '<span class="pe-toc-year">' + escapeHtml(chapter.year) + '</span>' : '') + '</span>'
+        + '<span class="pe-toc-page">' + (chapter.num * 2) + '</span>'
+        + '</button></li>';
+    }).join('');
+    return '<div class="scrap-page scrap-page--right pe-contents">'
+      + '<p class="scrap-runhead">Contents</p>'
+      + '<ol class="pe-toc">' + items + '</ol>'
+      + '</div>';
+  }
+
+  function chapterLeftHtml(chapter, index) {
+    return '<div class="scrap-page scrap-page--left">'
+      + '<p class="scrap-runhead">McMaster Book Club</p>'
+      + '<p class="scrap-chapter">Chapter ' + toRoman(chapter.num) + '</p>'
+      + '<h2 class="scrap-title">' + escapeHtml(chapter.title) + '</h2>'
+      + (chapter.year ? '<p class="scrap-meta">' + escapeHtml(chapter.year) + '</p>' : '')
+      + '<div class="scrap-small">'
+      +   buildPolaroidHtml(chapter, index, 1, 'scrap-polaroid--left')
+      +   buildPolaroidHtml(chapter, index, 2, 'scrap-polaroid--right')
+      + '</div>'
+      + folio(chapter.num * 2)
+      + '</div>';
+  }
+
+  function chapterRightHtml(chapter, index) {
+    var count = chapter.allImages.length;
+    var note = chapter.note || (count + (count === 1 ? ' photo' : ' photos') + ' in this chapter. Flip through them all!');
+    return '<div class="scrap-page scrap-page--right">'
+      + '<p class="scrap-runhead">Past Events</p>'
+      + buildPolaroidHtml(chapter, index, 0, 'scrap-polaroid--big')
+      + '<p class="scrap-note">' + escapeHtml(note) + '</p>'
+      + '<div class="scrap-actions">'
+      +   '<button type="button" class="chapter-view-btn scrap-open" data-chapter-index="' + index + '">Open the album</button>'
+      + '</div>'
+      + folio(chapter.num * 2 + 1)
+      + '</div>';
+  }
+
+  function endLeftHtml() {
+    return '<div class="scrap-page scrap-page--left pe-end">'
+      + '<p class="scrap-runhead">McMaster Book Club</p>'
+      + '<div class="pe-titlepage-body">'
+      +   '<p class="scrap-chapter">the final page</p>'
+      +   '<h2 class="pe-titlepage-title">The End?</h2>'
+      +   '<p class="pe-titlepage-sub">Not quite. There’s always another chapter.</p>'
+      + '</div>'
+      + '</div>';
+  }
+
+  function endRightHtml() {
+    return '<div class="scrap-page scrap-page--right pe-end pe-end--right">'
+      + '<p class="scrap-runhead">Coming soon</p>'
+      + '<p class="scrap-note">Chapter ' + toRoman(chaptersWithPreviews.length + 1) + ' could have you in it.</p>'
+      + '<div class="scrap-actions">'
+      +   '<a class="chapter-view-btn scrap-open" href="join.html">Join the club</a>'
+      +   '<button type="button" class="pe-toc-back" data-goto="0">Back to contents</button>'
+      + '</div>'
+      + '</div>';
+  }
+
+  function buildSpreads() {
+    var spreads = [{ label: 'Contents', left: titlePageHtml(), right: contentsPageHtml() }];
+    chaptersWithPreviews.forEach(function(chapter, i) {
+      spreads.push({
+        label: 'Chapter ' + toRoman(chapter.num) + ': ' + chapter.title,
+        left: chapterLeftHtml(chapter, i),
+        right: chapterRightHtml(chapter, i)
+      });
+    });
+    spreads.push({ label: 'The End?', left: endLeftHtml(), right: endRightHtml() });
+    return spreads;
+  }
+
+  function isModalOpen() {
+    var gallery = document.getElementById('chapter-gallery-modal');
+    var fullscreen = document.getElementById('chapter-fullscreen-modal');
+    return !!((gallery && !gallery.hidden) || (fullscreen && !fullscreen.hidden));
+  }
+
+  // The book itself (page turning, contents links, keys, swipes) is js/flipbook.js
   function renderChapters() {
-    var html = '';
-    for (var i = 0; i < chaptersWithPreviews.length; i++) {
-      html += buildChapterHtml(chaptersWithPreviews[i], i);
-    }
-    container.innerHTML = html;
-    bindChapterButtonEvents();
-  }
-
-  function bindChapterButtonEvents() {
-    var viewButtons = container.querySelectorAll('.chapter-view-btn');
-    viewButtons.forEach(function(button) {
-      button.onclick = function() {
-        var index = parseInt(button.getAttribute('data-chapter-index'), 10);
-        openGallery(index);
-      };
+    FlipBook(container, {
+      spreads: buildSpreads(),
+      ariaLabel: 'Past events book',
+      isBlocked: isModalOpen
     });
 
-    var photoButtons = container.querySelectorAll('.chapter-photo');
-    photoButtons.forEach(function(button) {
-      button.onclick = function() {
-        var index = parseInt(button.getAttribute('data-chapter-index'), 10);
-        openGallery(index);
-      };
+    // Polaroids and "Open the album" open that chapter's photos
+    container.addEventListener('click', function(e) {
+      var albumBtn = e.target.closest('.chapter-photo, button.chapter-view-btn');
+      if (albumBtn && albumBtn.hasAttribute('data-chapter-index')) {
+        openGallery(parseInt(albumBtn.getAttribute('data-chapter-index'), 10));
+      }
     });
   }
 
@@ -291,27 +367,6 @@
     openFullscreen(currentChapterIndex, prevIdx);
   }
 
-  function initScrollReveal() {
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-
-    var blocks = container.querySelectorAll('.chapter-block');
-    if (!('IntersectionObserver' in window)) {
-      blocks.forEach(function (el) { el.classList.add('is-visible'); });
-      return;
-    }
-
-    var observer = new IntersectionObserver(function (entries) {
-      entries.forEach(function (entry) {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('is-visible');
-          observer.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
-
-    blocks.forEach(function (el) { observer.observe(el); });
-  }
-
   function bindEvents() {
     document.addEventListener('keydown', function(e) {
       var fullscreenModal = document.getElementById('chapter-fullscreen-modal');
@@ -349,7 +404,6 @@
     .then(function(data) {
       initChapters(data);
       renderChapters();
-      initScrollReveal();
     })
     .catch(function(err) {
       console.warn('Past events load error:', err);

@@ -2798,3 +2798,1199 @@ body.chapter-fullscreen-open {
 @media (max-width: 700px) { .team-book-arrow { width: 48px; height: 82px; font-size: 2.6rem; } }
 @media (prefers-reduced-motion: reduce) { .team-turning-page { animation: none; } .team-turning-page::after { display: none; } }
 
+
+/* ==========================================================================
+   Past Events — scrapbook spreads (chapters.html)
+   ========================================================================== */
+.chapters-section,
+.book-stage {
+  background-color: #3a2420;
+  padding: 3.5rem 0 2rem;
+}
+
+.scrap-page {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  min-height: 620px;
+  padding: 2rem 2.5rem 3.5rem;
+  background: #f6eddc;
+  color: #2a1a1f;
+}
+
+.scrap-page--left {
+  box-shadow: inset -26px 0 30px -18px rgba(42, 26, 31, 0.35);
+}
+
+.scrap-page--right {
+  align-items: center;
+  box-shadow: inset 26px 0 30px -18px rgba(42, 26, 31, 0.35);
+}
+
+.scrap-runhead {
+  align-self: stretch;
+  margin: 0;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  text-align: center;
+  color: #7a6656;
+}
+
+.scrap-chapter {
+  margin: 1rem 0 0;
+  font-family: 'Fraunces', serif;
+  font-style: italic;
+  font-size: 1.05rem;
+  color: #a8431a;
+}
+
+.scrap-title {
+  margin: 0;
+  font-family: 'Fraunces', serif;
+  font-weight: 800;
+  font-size: 2.5rem;
+  line-height: 1.04;
+  color: var(--color-maroon);
+}
+
+.scrap-meta {
+  margin: 0;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.78rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #6b5a5f;
+}
+
+.scrap-small {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 1rem;
+  margin-top: auto;
+  padding-top: 1.75rem;
+}
+
+/* Polaroids */
+.scrap-polaroid {
+  position: relative;
+  margin: 0;
+  padding: 10px 10px 12px;
+  background: #fff;
+  box-shadow: 0 8px 18px rgba(42, 26, 31, 0.25);
+  transition: transform 0.3s ease;
+}
+
+.scrap-polaroid .chapter-photo {
+  display: block;
+  width: 100%;
+  border-radius: 0;
+  cursor: zoom-in;
+}
+
+.scrap-polaroid .chapter-photo:hover {
+  transform: none;
+}
+
+.scrap-polaroid .chapter-photo:focus-visible {
+  outline: 3px solid var(--color-maroon);
+  outline-offset: 2px;
+}
+
+.scrap-polaroid img {
+  aspect-ratio: 4 / 3;
+}
+
+.scrap-polaroid figcaption {
+  padding-top: 0.4rem;
+  font-family: 'Caveat', cursive;
+  font-size: 1.35rem;
+  line-height: 1.1;
+  text-align: center;
+  color: #26344f;
+}
+
+.scrap-polaroid--left {
+  width: 46%;
+  transform: rotate(-5deg);
+}
+
+.scrap-polaroid--right {
+  width: 42%;
+  margin-top: 2.25rem;
+  transform: rotate(4deg);
+}
+
+.scrap-polaroid--big {
+  width: 88%;
+  margin-top: 1.5rem;
+  padding: 12px 12px 14px;
+  transform: rotate(2deg);
+}
+
+.scrap-polaroid--big figcaption {
+  font-size: 1.6rem;
+}
+
+.scrap-polaroid:hover {
+  transform: rotate(0deg) scale(1.02);
+}
+
+/* Washi tape, colour varies per photo */
+.scrap-tape {
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  width: 84px;
+  height: 24px;
+  margin-left: -42px;
+  background: rgba(201, 154, 46, 0.55);
+  transform: rotate(-4deg);
+  pointer-events: none;
+}
+
+.scrap-polaroid--left .scrap-tape { background: rgba(201, 154, 46, 0.55); transform: rotate(5deg); }
+.scrap-polaroid--right .scrap-tape { background: rgba(95, 111, 82, 0.45); transform: rotate(-7deg); }
+.scrap-polaroid--big .scrap-tape { background: rgba(122, 0, 60, 0.35); width: 100px; margin-left: -50px; }
+
+.scrap-note {
+  margin: 1.5rem 0 0;
+  font-family: 'Caveat', cursive;
+  font-size: 1.5rem;
+  line-height: 1.2;
+  color: #a8431a;
+  text-align: center;
+  transform: rotate(-1.5deg);
+}
+
+.scrap-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 0.75rem 1.25rem;
+  margin-top: auto;
+  padding-top: 1.25rem;
+}
+
+.chapter-view-btn.scrap-open {
+  align-self: auto;
+  min-height: 46px;
+  padding: 0 1.4rem;
+  border-radius: 999px;
+  background: var(--color-maroon);
+  color: #fbf5ed;
+  font-size: 0.95rem;
+}
+
+.chapter-view-btn.scrap-open::after {
+  display: none;
+}
+
+.chapter-view-btn.scrap-open:hover {
+  background: var(--color-dark-maroon);
+}
+
+.scrap-next {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  min-height: 44px;
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--color-maroon);
+  text-decoration: none;
+}
+
+.scrap-next img {
+  width: 54px;
+  height: 38px;
+  object-fit: cover;
+  border-radius: 3px;
+}
+
+.scrap-next:hover span {
+  text-decoration: underline;
+}
+
+.scrap-folio {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 1.1rem;
+  font-family: 'Fraunces', serif;
+  font-size: 0.85rem;
+  text-align: center;
+  color: #8a7565;
+}
+
+.chapters-empty {
+  color: #f6eddc;
+  text-align: center;
+  font-family: 'Caveat', cursive;
+  font-size: 1.6rem;
+}
+
+/* Phones and small tablets: one page per spread */
+@media (max-width: 768px) {
+  .chapters-section,
+  .book-stage {
+    padding: 2rem 0 1rem;
+  }
+
+  .scrap-page {
+    min-height: 0;
+    padding: 1.5rem 1.25rem 3rem;
+  }
+
+  .scrap-page--left,
+  .scrap-page--right {
+    box-shadow: none;
+  }
+
+  .scrap-title {
+    font-size: 2rem;
+  }
+
+  .scrap-polaroid--big {
+    width: 94%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scrap-polaroid,
+  .scrap-polaroid:hover {
+    transition: none;
+  }
+}
+
+/* ==========================================================================
+   Join page — member library card + newsletter return slip (join.html)
+   ========================================================================== */
+.join-page {
+  background: var(--color-cream);
+  color: #2a1a1f;
+}
+
+.join-hero {
+  padding: 3.5rem 1.5rem 3rem;
+}
+
+.join-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+  gap: 3.5rem;
+  max-width: 1100px;
+  margin: 0 auto;
+  align-items: start;
+}
+
+.join-intro {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.join-kicker {
+  margin: 0;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.8rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #a8431a;
+}
+
+.join-title {
+  margin: 0;
+  font-family: 'Fraunces', serif;
+  font-weight: 800;
+  font-size: 3.2rem;
+  line-height: 1;
+  color: var(--color-maroon);
+}
+
+.join-lede {
+  margin: 0;
+  max-width: 34rem;
+  font-family: 'Merriweather', serif;
+  font-size: 1rem;
+  line-height: 1.7;
+  color: #4a3a3f;
+}
+
+.card-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding-top: 0.5rem;
+}
+
+.join-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.join-field input,
+.join-field select,
+.return-slip input[type="email"] {
+  min-height: 48px;
+  padding: 0 0.9rem;
+  border: 2px solid #d9c6a6;
+  border-radius: 10px;
+  background: #fffaf2;
+  font: 400 1rem 'Poppins', sans-serif;
+  color: #2a1a1f;
+}
+
+.join-field input:focus,
+.join-field select:focus,
+.return-slip input[type="email"]:focus {
+  outline: none;
+  border-color: var(--color-maroon);
+  box-shadow: 0 0 0 3px rgba(122, 0, 60, 0.15);
+}
+
+.join-btn {
+  min-height: 50px;
+  padding: 0 1.5rem;
+  border-radius: 999px;
+  font: 600 1rem 'Poppins', sans-serif;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+a.join-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+}
+
+.join-btn--primary {
+  border: none;
+  background: var(--color-maroon);
+  color: #fbf5ed;
+}
+
+.join-btn--primary:hover {
+  background: var(--color-dark-maroon);
+}
+
+.join-btn--outline {
+  border: 2px solid #2a1a1f;
+  background: transparent;
+  color: #2a1a1f;
+  min-height: 48px;
+  border-radius: 10px;
+}
+
+.join-btn--outline:hover {
+  background: #2a1a1f;
+  color: #fbf5ed;
+}
+
+.join-btn:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+
+.join-btn:focus-visible {
+  outline: 3px solid var(--color-burnt-orange);
+  outline-offset: 3px;
+}
+
+.join-hint {
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.85rem;
+  color: #6b5a5f;
+}
+
+.join-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 2.25rem;
+  padding-top: 1.5rem;
+}
+
+/* The member card */
+.member-card {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  aspect-ratio: 1200 / 760;
+  padding: 1.6rem 1.75rem;
+  border-radius: 18px;
+  background: var(--color-maroon);
+  color: #fbf5ed;
+  box-shadow: 0 22px 40px rgba(122, 0, 60, 0.35);
+  transform: rotate(-3deg);
+  transition: transform 0.4s ease;
+}
+
+.member-card:hover {
+  transform: rotate(0deg);
+}
+
+.member-card-ring {
+  position: absolute;
+  right: -48px;
+  top: -48px;
+  width: 190px;
+  height: 190px;
+  border-radius: 50%;
+  border: 20px solid rgba(201, 154, 46, 0.25);
+}
+
+.member-card-top,
+.member-card-bottom {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.member-card-top {
+  align-items: flex-start;
+}
+
+.member-card-bottom {
+  align-items: flex-end;
+}
+
+.member-card-club {
+  font-family: 'Fraunces', serif;
+  font-style: italic;
+  font-weight: 600;
+  font-size: 1.35rem;
+}
+
+.member-card-term,
+.member-card-shelf,
+.member-card-number,
+.member-card-since {
+  font-family: 'IBM Plex Mono', monospace;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.member-card-term {
+  font-size: 0.68rem;
+  color: #e7c27a;
+  padding-top: 0.35rem;
+}
+
+.member-card-middle {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.member-card-name {
+  font-family: 'Fraunces', serif;
+  font-weight: 800;
+  font-size: 2.3rem;
+  line-height: 1.05;
+  overflow-wrap: anywhere;
+}
+
+.member-card-shelf {
+  font-size: 0.75rem;
+  color: #f2d9c8;
+}
+
+.member-card-number {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  font-size: 0.8rem;
+}
+
+.member-card-since {
+  font-size: 0.68rem;
+  color: #f2d9c8;
+}
+
+.member-card-barcode {
+  display: flex;
+  align-items: stretch;
+  gap: 2px;
+  height: 46px;
+  padding: 7px 9px;
+  border-radius: 4px;
+  background: #fbf5ed;
+}
+
+.member-card-barcode span {
+  background: #2a1a1f;
+}
+
+.member-card-barcode span:nth-child(even) {
+  background: transparent;
+}
+
+/* Newsletter return slip */
+.return-slip {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 1.25rem 1.4rem;
+  background: #fffaf2;
+  border: 1px solid #e0cfb2;
+  border-top: 2px dashed #c4ad8a;
+  transform: rotate(1deg);
+}
+
+.return-slip-label {
+  margin: 0;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #a8431a;
+}
+
+.return-slip-title {
+  margin: 0;
+  font-family: 'Fraunces', serif;
+  font-size: 1.25rem;
+  line-height: 1.35;
+}
+
+.return-slip-row {
+  display: flex;
+  gap: 0.6rem;
+}
+
+.return-slip-row input[type="email"] {
+  flex: 1;
+  min-width: 0;
+}
+
+.return-slip-msg {
+  margin: 0;
+  min-height: 1.2em;
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.85rem;
+}
+
+.return-slip-msg.is-success { color: #3f6b35; }
+.return-slip-msg.is-error { color: #a32020; }
+
+/* Three ways to start */
+.join-ways {
+  padding: 3rem 1.5rem 4rem;
+  background: #26344f;
+}
+
+.join-ways-title {
+  max-width: 1100px;
+  margin: 0 auto 1.5rem;
+  font-family: 'Fraunces', serif;
+  font-weight: 800;
+  font-size: 2rem;
+  color: #f2e6d3;
+}
+
+.join-ways-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.25rem;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.join-way {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1.5rem;
+  border-radius: 12px;
+  background: #fbf5ed;
+  color: #2a1a1f;
+  text-decoration: none;
+  border-right: 6px dotted #26344f;
+  transition: transform 0.25s ease;
+}
+
+.join-way:hover {
+  transform: translateY(-4px);
+}
+
+.join-way:focus-visible {
+  outline: 3px solid #c99a2e;
+  outline-offset: 3px;
+}
+
+.join-way-num {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.8rem;
+  letter-spacing: 0.2em;
+  color: #a8431a;
+}
+
+.join-way-head {
+  font-family: 'Fraunces', serif;
+  font-weight: 600;
+  font-size: 1.3rem;
+  color: var(--color-maroon);
+}
+
+.join-way-text {
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.9rem;
+  line-height: 1.55;
+  color: #4a3a3f;
+}
+
+@media (max-width: 860px) {
+  .join-grid {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+
+  .join-title {
+    font-size: 2.5rem;
+  }
+
+  .join-ways-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .join-hero {
+    padding: 2.25rem 1rem 2rem;
+  }
+
+  .member-card {
+    aspect-ratio: auto;
+    min-height: 220px;
+    gap: 1rem;
+    padding: 1.1rem 1.2rem;
+    transform: rotate(-2deg);
+  }
+
+  .member-card-club {
+    font-size: 1.05rem;
+    white-space: nowrap;
+  }
+
+  .member-card-term {
+    font-size: 0.6rem;
+    letter-spacing: 0.1em;
+    white-space: nowrap;
+    padding-top: 0.2rem;
+  }
+
+  .member-card-name {
+    font-size: 1.6rem;
+  }
+
+  .member-card-barcode {
+    height: 36px;
+  }
+
+  .return-slip-row {
+    flex-direction: column;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .member-card,
+  .join-way {
+    transition: none;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Past Events — one flippable book
+   -------------------------------------------------------------------------- */
+.pe-book {
+  position: relative;
+  max-width: 1040px;
+  margin: 0 auto;
+  perspective: 2600px;
+  outline: none;
+}
+
+.pe-book:focus-visible {
+  outline: 3px solid #c99a2e;
+  outline-offset: 8px;
+  border-radius: 8px;
+}
+
+.pe-spread {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  height: 660px;
+  border-radius: 6px;
+  overflow: hidden;
+  /* stacked page edges under the book */
+  box-shadow: 0 3px 0 #eadfc9, 0 6px 0 #d9c8a8, 0 9px 0 #eadfc9, 0 28px 50px rgba(0, 0, 0, 0.45);
+}
+
+.pe-slot {
+  min-width: 0;
+  height: 100%;
+}
+
+.pe-slot > .scrap-page,
+.pe-face > .scrap-page {
+  height: 100%;
+  min-height: 0;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+/* The turning leaf: front = the page you're turning, back = the page underneath it */
+.pe-leaf {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  z-index: 5;
+  transform-style: preserve-3d;
+  transition: transform 850ms cubic-bezier(0.645, 0.045, 0.355, 1);
+}
+
+.pe-leaf--right { left: 50%; width: 50%; transform-origin: left center; }
+.pe-leaf--left { left: 0; width: 50%; transform-origin: right center; }
+.pe-leaf--full { left: 0; width: 100%; transform-origin: left center; }
+
+.pe-leaf--right.is-turning { transform: rotateY(-180deg); }
+.pe-leaf--left.is-turning { transform: rotateY(180deg); }
+.pe-leaf--full.is-turning { transform: rotateY(-180deg); }
+.pe-leaf--from-left { transform: rotateY(-180deg); }
+.pe-leaf--from-left.is-turning { transform: rotateY(0deg); }
+
+.pe-face {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.pe-face--back {
+  transform: rotateY(180deg);
+}
+
+/* soft shadow that peaks halfway through the turn */
+.pe-face::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(90deg, rgba(58, 36, 32, 0) 55%, rgba(58, 36, 32, 0.28));
+  opacity: 0;
+  transition: opacity 425ms ease;
+}
+
+.pe-leaf.is-turning .pe-face::after {
+  opacity: 1;
+}
+
+.pe-blank {
+  background: #f6eddc;
+}
+
+/* Title page & "The End?" */
+.pe-titlepage-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.8rem;
+  margin: auto 0;
+  text-align: center;
+}
+
+.pe-titlepage-body .scrap-chapter {
+  margin: 0;
+}
+
+.pe-titlepage-title {
+  margin: 0;
+  font-family: 'Fraunces', serif;
+  font-weight: 800;
+  font-size: 3.6rem;
+  line-height: 1;
+  color: var(--color-maroon);
+}
+
+.pe-titlepage-sub {
+  max-width: 20rem;
+  margin: 0;
+  font-family: 'Fraunces', serif;
+  font-style: italic;
+  font-size: 1.15rem;
+  line-height: 1.45;
+  color: #4a3a3f;
+}
+
+.pe-hint {
+  margin: 0;
+  align-self: flex-end;
+  font-family: 'Caveat', cursive;
+  font-size: 1.5rem;
+  color: #a8431a;
+}
+
+.pe-end--right {
+  justify-content: center;
+}
+
+.pe-end--right .scrap-actions {
+  flex-direction: column;
+  margin-top: 0;
+}
+
+.pe-toc-back {
+  min-height: 44px;
+  border: none;
+  background: none;
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--color-maroon);
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+a.chapter-view-btn.scrap-open {
+  text-decoration: none;
+}
+
+/* Contents */
+.pe-toc {
+  list-style: none;
+  margin: 1.25rem 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.pe-toc-item {
+  display: grid;
+  grid-template-columns: 2.75rem minmax(0, 1fr) auto;
+  align-items: baseline;
+  gap: 0.75rem;
+  width: 100%;
+  min-height: 44px;
+  padding: 0.6rem 0.25rem;
+  border: none;
+  border-bottom: 1px dotted #c4ad8a;
+  background: none;
+  text-align: left;
+  cursor: pointer;
+  color: #2a1a1f;
+}
+
+.pe-toc-item:hover .pe-toc-title,
+.pe-toc-item:focus-visible .pe-toc-title {
+  color: var(--color-maroon);
+  text-decoration: underline;
+}
+
+.pe-toc-item:focus-visible {
+  outline: 2px solid var(--color-maroon);
+  outline-offset: 2px;
+}
+
+.pe-toc-num {
+  font-family: 'Fraunces', serif;
+  font-style: italic;
+  font-size: 1rem;
+  color: #a8431a;
+}
+
+.pe-toc-title {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  font-family: 'Fraunces', serif;
+  font-weight: 600;
+  font-size: 1.05rem;
+  line-height: 1.25;
+}
+
+.pe-toc-year {
+  font-family: 'IBM Plex Mono', monospace;
+  font-weight: 400;
+  font-size: 0.68rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #6b5a5f;
+}
+
+.pe-toc-page {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.8rem;
+  color: #7a6656;
+}
+
+/* Arrows + where you are */
+.pe-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.25rem;
+  max-width: 1040px;
+  margin: 2.25rem auto 1rem;
+}
+
+.pe-arrow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 50px;
+  height: 50px;
+  flex-shrink: 0;
+  border: 2px solid #f2e6d3;
+  border-radius: 50%;
+  background: transparent;
+  color: #f2e6d3;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.pe-arrow:hover:not(:disabled) {
+  background: #f2e6d3;
+  color: #3a2420;
+}
+
+.pe-arrow:focus-visible {
+  outline: 3px solid #c99a2e;
+  outline-offset: 3px;
+}
+
+.pe-arrow:disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+
+.pe-label {
+  min-width: 16rem;
+  margin: 0;
+  font-family: 'Fraunces', serif;
+  font-style: italic;
+  font-size: 1.05rem;
+  text-align: center;
+  color: #f2e6d3;
+}
+
+/* Phones: one page at a time */
+@media (max-width: 768px) {
+  .pe-spread {
+    grid-template-columns: 1fr;
+    height: 620px;
+  }
+
+  .pe-slot--right {
+    display: none;
+  }
+
+  .pe-titlepage-title {
+    font-size: 2.8rem;
+  }
+
+  .pe-label {
+    min-width: 0;
+    flex: 1;
+    font-size: 0.95rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pe-leaf,
+  .pe-face::after {
+    transition: none;
+  }
+}
+
+/* Autoplay button next to the arrows (Our Team) */
+.pe-play {
+  width: 44px;
+  height: 44px;
+}
+
+/* Compact contents list (longer cast lists) */
+.pe-toc--compact {
+  margin-top: 0.75rem;
+}
+
+.pe-toc--compact .pe-toc-item {
+  min-height: 44px;
+  padding: 0.35rem 0.25rem;
+}
+
+.pe-toc--compact .pe-toc-title {
+  font-size: 0.98rem;
+}
+
+/* --------------------------------------------------------------------------
+   Our Team — character pages
+   -------------------------------------------------------------------------- */
+.team-book-logo {
+  width: 84px;
+  height: 84px;
+  object-fit: contain;
+  margin-bottom: 0.25rem;
+}
+
+.team-portrait-page {
+  align-items: center;
+}
+
+.scrap-polaroid--portrait {
+  width: 72%;
+  max-width: 330px;
+  margin: auto;
+  padding: 12px 12px 14px;
+  transform: rotate(-2.5deg);
+}
+
+.scrap-polaroid--portrait .scrap-tape {
+  background: rgba(122, 0, 60, 0.35);
+}
+
+.scrap-polaroid--portrait figcaption {
+  font-size: 1.9rem;
+}
+
+.team-portrait {
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  background: #efe4d1;
+}
+
+.team-portrait img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  aspect-ratio: auto;
+}
+
+.team-portrait-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  font-family: 'Fraunces', serif;
+  font-weight: 800;
+  font-size: 6rem;
+  color: var(--color-maroon);
+}
+
+.scrap-page--right.team-sheet-page {
+  align-items: flex-start;
+}
+
+.team-sheet-page .scrap-chapter {
+  margin-top: 2.25rem;
+}
+
+.team-character-role {
+  margin: 0.2rem 0 0;
+  font-family: 'Fraunces', serif;
+  font-style: italic;
+  font-size: 1.4rem;
+  color: #a8431a;
+}
+
+.team-sheet-rule {
+  display: block;
+  width: 56px;
+  height: 3px;
+  margin: 1rem 0 0.5rem;
+  background: var(--color-burnt-orange);
+}
+
+.team-sheet {
+  display: flex;
+  flex-direction: column;
+  align-self: stretch;
+  margin: 0;
+}
+
+.team-sheet-row {
+  display: grid;
+  grid-template-columns: 9.5rem minmax(0, 1fr);
+  gap: 0.75rem;
+  align-items: baseline;
+  padding: 0.7rem 0;
+  border-bottom: 1px dotted #c4ad8a;
+}
+
+.team-sheet-row dt {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #6b5a5f;
+}
+
+.team-sheet-row dd {
+  margin: 0;
+  min-width: 0;
+  overflow-wrap: anywhere;
+  font-family: 'Fraunces', serif;
+  font-size: 1.05rem;
+  color: #2a1a1f;
+}
+
+.team-sheet-row a {
+  color: var(--color-maroon);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.team-sheet-row a:hover {
+  color: var(--color-dark-maroon);
+}
+
+.team-stamp {
+  position: absolute;
+  right: 2.25rem;
+  bottom: 3.5rem;
+  max-width: 60%;
+  padding: 0.4rem 0.75rem;
+  border: 3px double #b5332e;
+  border-radius: 6px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-weight: 600;
+  font-size: 0.9rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #b5332e;
+  opacity: 0.75;
+  transform: rotate(-8deg);
+}
+
+@media (max-width: 768px) {
+  .scrap-polaroid--portrait {
+    width: 80%;
+  }
+
+  .team-sheet-row {
+    grid-template-columns: 1fr;
+    gap: 0.2rem;
+  }
+
+  .team-stamp {
+    right: 1.25rem;
+    bottom: 3.25rem;
+  }
+}

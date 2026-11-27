@@ -19,7 +19,13 @@
         "/images/events/octoberevents/11.jpg",
         "/images/events/octoberevents/12.jpg",
         "/images/events/octoberevents/14.jpg"
-      ]
+      ],
+      "captions": [
+        "the couch crew",
+        "costume committee",
+        "by the events board"
+      ],
+      "note": ""
     },
     {
       "title": "Scavenger Hunt",
@@ -32,7 +38,13 @@
         "/images/events/scavengerhunt/04.jpg",
         "/images/events/scavengerhunt/05.jpg",
         "/images/events/scavengerhunt/07.jpg"
-      ]
+      ],
+      "captions": [
+        "the whole crew",
+        "team photo, take two",
+        "squad assembled"
+      ],
+      "note": ""
     },
     {
       "title": "September Book Discussions",
@@ -47,7 +59,13 @@
         "/images/events/septemberdiscussions/07.jpg",
         "/images/events/septemberdiscussions/08.jpg",
         "/images/events/septemberdiscussions/09.jpg"
-      ]
+      ],
+      "captions": [
+        "September regulars",
+        "a full Blue Lounge",
+        "mid-laugh"
+      ],
+      "note": ""
     },
     {
       "title": "Clubfest 2026",
@@ -68,7 +86,13 @@
         "/images/events/clubfest2026/13.jpg",
         "/images/events/clubfest2026/14.jpg",
         "/images/events/clubfest2026/15.jpg"
-      ]
+      ],
+      "captions": [
+        "recruiting with books",
+        "booth besties",
+        "come say hi!"
+      ],
+      "note": ""
     },
     {
       "title": "Battle of the Books",
@@ -84,7 +108,13 @@
         "/images/events/battleofthebooks/07.jpg",
         "/images/events/battleofthebooks/08.jpg",
         "/images/events/battleofthebooks/10.jpg"
-      ]
+      ],
+      "captions": [
+        "the contenders",
+        "post-battle chaos",
+        "answer sheets in hand"
+      ],
+      "note": ""
     },
     {
       "title": "Murder Mystery Night",
@@ -104,7 +134,13 @@
         "/images/events/murdermystery/11.jpg",
         "/images/events/murdermystery/13.jpg",
         "/images/events/murdermystery/14.jpg"
-      ]
+      ],
+      "captions": [
+        "suspects, all of them",
+        "armed and suspicious",
+        "alibis pending"
+      ],
+      "note": ""
     },
     {
       "title": "Clubfest 2025",
@@ -114,7 +150,13 @@
         "/images/events/clubfest2025/02.jpg",
         "/images/events/clubfest2025/03.jpg",
         "/images/events/clubfest2025/04.jpg"
-      ]
+      ],
+      "captions": [
+        "clubfest selfie",
+        "peace sign energy",
+        "first booth of the year"
+      ],
+      "note": ""
     }
   ]
 }

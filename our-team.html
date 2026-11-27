@@ -3,11 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Our Team</title>
+    <title>Our Team – McMaster Book Club</title>
     <link rel="stylesheet" href="style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- Book fonts: display serif, handwriting for captions, typewriter for labels -->
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,600;0,9..144,800;1,9..144,400&family=Caveat:wght@500;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 </head>
 <body>
     <a href="#main-content" class="skip-link">Skip to main content</a>
@@ -29,7 +31,7 @@
                 <li class="nav-item"><a href="meetings-events.html" class="nav-link">Meetings & Events</a></li>
                 <li class="nav-item"><a href="chapters.html" class="nav-link">Past Events</a></li>
                 <li class="nav-item"><a href="our-team.html" class="nav-link nav-link-active">Our Team</a></li>
-                <li class="nav-item"><a href="index.html#join" class="nav-link nav-link-cta">Join Us</a></li>
+                <li class="nav-item"><a href="join.html" class="nav-link nav-link-cta">Join Us</a></li>
             </ul>
         </div>
     </nav>
@@ -42,25 +44,9 @@
             </div>
         </section>
 
-        <section class="team-section">
-            <div class="team-container">
-                <div class="team-book" id="team-book" tabindex="0" aria-label="McMaster Book Club Our Team digital book">
-                    <div class="team-book-page team-cover-page" id="team-cover" aria-hidden="false">
-                        <p class="team-book-kicker">McMaster Book Club</p>
-                        <img class="team-cover-logo" src="images/logo.png" alt="McMaster Book Club logo">
-                        <p class="team-cover-title">OUR TEAM</p>
-                        <p class="team-cover-year">2025 / 26</p>
-                        <div class="team-cover-rule" aria-hidden="true"></div>
-                        <p class="team-cover-note">Meet the people behind McMaster Book Club :)</p>
-                    </div>
-                    <div class="team-book-spread" id="team-spread" hidden aria-live="polite"></div>
-                    <button class="team-book-arrow team-book-arrow-previous" id="team-previous" type="button" aria-label="Previous team member">&#8249;</button>
-                    <button class="team-book-arrow team-book-arrow-next" id="team-next" type="button" aria-label="Next team member">&#8250;</button>
-                </div>
-                <div class="team-book-controls" aria-label="Book controls">
-                    <p class="team-page-indicator" id="team-page-indicator">Cover</p>
-                </div>
-                <button class="team-play-control" id="team-play" type="button" aria-label="Pause automatic page turning" aria-pressed="true">&#x23F8;</button>
+        <section class="book-stage" aria-label="Our Team book">
+            <div class="chapters-container" id="team-book">
+                <p class="chapters-empty">Opening the book…</p>
             </div>
         </section>
     </main>
@@ -111,358 +97,9 @@
         </div>
     </footer>
 
+    <script src="js/flipbook.js"></script>
+    <script src="js/team.js"></script>
     <script>
-        const teamMembers = [
-            {
-                displayName: 'Maddie',
-                fullName: 'Maddie Taylor',
-                role: 'Co-President',
-                image: 'images/ourteam/Maddie Co-President.jpg',
-                rank: 1,
-                order: 1,
-                email: 'taylom82@mcmaster.ca',
-                instagramDisplay: '@maddie_taylor3',
-                instagramUrl: 'https://www.instagram.com/maddie_taylor3/'
-            },
-            {
-                displayName: 'Kaitlyn',
-                fullName: 'Kaitlyn Gorgey',
-                role: 'Co-President',
-                image: 'images/ourteam/Kaitlyn Co-President.png',
-                rank: 1,
-                order: 2,
-                email: 'gorgeyk@mcmaster.ca',
-                instagramDisplay: '@gorgeykaitlyn',
-                instagramUrl: 'https://www.instagram.com/gorgeykaitlyn/'
-            },
-            {
-                displayName: 'Alice',
-                fullName: 'Alice Viana',
-                role: 'VP Events',
-                image: 'images/ourteam/Alice VP Events.jpg',
-                rank: 2,
-                order: 3,
-                email: 'rodria49@mcmaster.ca',
-                instagramDisplay: '@alice.viana__',
-                instagramUrl: 'https://www.instagram.com/alice.viana__/'
-            },
-            {
-                displayName: 'Cate',
-                fullName: 'Cate Lin',
-                role: 'VP Events',
-                image: 'images/ourteam/Cate VP Events.jpg',
-                rank: 2,
-                order: 4,
-                email: 'lin445@mcmaster.ca',
-                instagramDisplay: '@noirstargazr',
-                instagramUrl: 'https://www.instagram.com/noirstargazr/'
-            },
-            {
-                displayName: 'Marzia',
-                fullName: 'Marzia Sarker',
-                role: 'VP Outreach',
-                image: 'images/ourteam/Marzia VP Outreach.jpg',
-                rank: 2,
-                order: 5,
-                email: 'sarkem4@mcmaster.ca',
-                instagramDisplay: '@marzia_rs',
-                instagramUrl: 'https://www.instagram.com/marzia_rs/'
-            },
-            {
-                displayName: 'Heer',
-                fullName: 'Heer Upadhyay',
-                role: 'VP Outreach',
-                image: 'images/ourteam/Heer VP Outreach.jpg',
-                rank: 2,
-                order: 6,
-                email: 'upadhh3@mcmaster.ca',
-                instagramDisplay: '@heer76311',
-                instagramUrl: 'https://www.instagram.com/heer76311/'
-            },
-            {
-                displayName: 'Lisumi',
-                fullName: 'Lisumi Wijesingha',
-                role: 'VP Admin',
-                image: 'images/ourteam/Lisumi VP Admin.jpg',
-                rank: 2,
-                order: 7,
-                email: 'wijesinp@mcmaster.ca',
-                instagramDisplay: '@poo.p.i.e',
-                instagramUrl: 'https://www.instagram.com/poo.p.i.e/'
-            },
-            {
-                displayName: 'Julia',
-                fullName: 'Julia Ankenmann',
-                role: 'VP External',
-                image: 'images/ourteam/Julia VP External.jpg',
-                rank: 2,
-                order: 8,
-                email: 'ankenmaj@mcmaster.ca',
-                instagramDisplay: '@jma0_07',
-                instagramUrl: 'https://www.instagram.com/jma0_07/'
-            },
-            {
-                displayName: 'Saige',
-                fullName: 'Saige Moore',
-                role: 'VP Finance',
-                image: 'images/ourteam/Saige of Finance.jpg',
-                rank: 2,
-                order: 9,
-                email: 'moores43@mcmaster.ca',
-                instagramDisplay: '@saigemoore_',
-                instagramUrl: 'https://www.instagram.com/saigemoore_/'
-            },
-            {
-                displayName: 'Parth',
-                fullName: 'Parth Narkhede',
-                role: 'VP Technology',
-                image: 'images/ourteam/Parth VP Tech.png',
-                rank: 2,
-                order: 10,
-                email: 'narkhedp@mcmaster.ca',
-                instagramDisplay: '@pxtlxz_19',
-                instagramUrl: 'https://www.instagram.com/pxtlxz_19/',
-                linkedinDisplay: 'Parth Narkhede',
-                linkedinUrl: 'https://www.linkedin.com/in/parth-narkhede-b2a684260/'
-            }
-        ];
-
-        const sortedMembers = [...teamMembers].sort((a, b) => a.order - b.order);
-        const book = document.getElementById('team-book');
-        const cover = document.getElementById('team-cover');
-        const spread = document.getElementById('team-spread');
-        const indicator = document.getElementById('team-page-indicator');
-        const previous = document.getElementById('team-previous');
-        const next = document.getElementById('team-next');
-        const play = document.getElementById('team-play');
-        let pageIndex = -1;
-        let autoplayTimer = null;
-        let isAutoplay = true;
-        let isAnimating = false;
-
-        const createContactLink = (label, href, text) => {
-            const row = document.createElement('div');
-            row.className = 'team-contact-row';
-            const labelEl = document.createElement('span');
-            labelEl.className = 'team-contact-label';
-            labelEl.textContent = label;
-            const link = document.createElement('a');
-            link.className = 'team-contact-link';
-            link.textContent = text;
-            link.href = label === 'EMAIL' ? `mailto:${href}` : href;
-            if (label !== 'EMAIL') {
-                link.target = '_blank';
-                link.rel = 'noopener noreferrer';
-            }
-            link.addEventListener('click', event => event.stopPropagation());
-            link.addEventListener('focus', pauseAutoplay);
-            row.append(labelEl, link);
-            return row;
-        };
-
-        const makePhoto = member => {
-            if (member.placeholder) {
-                const placeholder = document.createElement('div');
-                placeholder.className = 'team-photo team-photo-placeholder';
-                placeholder.role = 'img';
-                placeholder.setAttribute('aria-label', 'Cate, VP of Events placeholder — McMaster Book Club');
-                placeholder.textContent = 'C';
-                return placeholder;
-            }
-            const img = document.createElement('img');
-            img.className = 'team-photo';
-            img.src = member.image;
-            img.alt = `${member.fullName}, ${member.role} — McMaster Book Club`;
-            img.loading = 'lazy';
-            return img;
-        };
-
-        const renderPage = (member, index) => {
-            const left = document.createElement('div');
-            left.className = 'team-book-page team-book-photo-page';
-            left.innerHTML = `<span class="team-chapter-label">Chapter ${String(index + 1).padStart(2, '0')}</span>`;
-            const photoFrame = document.createElement('div');
-            photoFrame.className = 'team-photo-wrap';
-            photoFrame.appendChild(makePhoto(member));
-            const leftNumber = document.createElement('span');
-            leftNumber.className = 'team-page-number';
-            leftNumber.textContent = String(index + 1).padStart(2, '0');
-            left.append(photoFrame, leftNumber);
-
-            const right = document.createElement('div');
-            right.className = 'team-book-page team-book-info-page';
-            right.innerHTML = `<span class="team-chapter-label">McMaster Book Club</span><h2>${member.fullName}</h2><p class="team-book-role">${member.role}</p>`;
-            const mobilePhoto = document.createElement('div');
-            mobilePhoto.className = 'team-mobile-photo';
-            mobilePhoto.appendChild(makePhoto(member));
-            const contacts = document.createElement('div');
-            contacts.className = 'team-contact-list';
-            contacts.appendChild(createContactLink('EMAIL', member.email, member.email));
-            contacts.appendChild(createContactLink('INSTAGRAM', member.instagramUrl, member.instagramDisplay));
-            if (member.linkedinUrl) contacts.appendChild(createContactLink('LINKEDIN', member.linkedinUrl, member.linkedinDisplay));
-            const rightNumber = document.createElement('span');
-            rightNumber.className = 'team-page-number';
-            rightNumber.textContent = String(index + 1).padStart(2, '0');
-            right.prepend(mobilePhoto);
-            right.append(contacts, rightNumber);
-            spread.replaceChildren(left, right);
-        };
-
-        const renderEndPage = () => {
-            spread.innerHTML = '<div class="team-book-page team-end-page"><span class="team-chapter-label">The final page</span><h2>The End?</h2><p>Not quite.</p><p>There\'s always another chapter.</p></div>';
-        };
-
-        function pauseAutoplay() {
-            isAutoplay = false;
-            clearTimeout(autoplayTimer);
-            play.textContent = '\u25B6';
-            play.setAttribute('aria-label', 'Resume automatic page turning');
-            play.setAttribute('aria-pressed', 'false');
-        }
-
-        function scheduleAutoplay() {
-            clearTimeout(autoplayTimer);
-            if (!isAutoplay) return;
-            const nextIndex = pageIndex >= sortedMembers.length ? -1 : pageIndex + 1;
-            autoplayTimer = setTimeout(() => showPage(nextIndex, true), 3000);
-        }
-
-        function updateControls() {
-            previous.disabled = pageIndex <= -1 || isAnimating;
-            next.disabled = pageIndex >= sortedMembers.length || isAnimating;
-            previous.hidden = pageIndex <= -1;
-            next.hidden = pageIndex >= sortedMembers.length;
-        }
-
-        function finishTurn(nextIndex) {
-            if (!isAnimating) return;
-            pageIndex = nextIndex;
-            isAnimating = false;
-            const turningPage = spread.querySelector('.team-turning-page');
-            if (turningPage) turningPage.remove();
-            if (pageIndex === sortedMembers.length) renderEndPage();
-            else renderPage(sortedMembers[pageIndex], pageIndex);
-            indicator.textContent = pageIndex === sortedMembers.length ? 'The End' : `${String(pageIndex + 1).padStart(2, '0')} / ${sortedMembers.length}`;
-            updateControls();
-            scheduleAutoplay();
-        }
-
-        function finishSpecialTurn(nextIndex, turningPage) {
-            if (!isAnimating) return;
-            turningPage.remove();
-            pageIndex = nextIndex;
-            cover.hidden = pageIndex !== -1;
-            spread.hidden = pageIndex === -1;
-            isAnimating = false;
-            indicator.textContent = pageIndex === -1 ? 'Cover' : pageIndex === sortedMembers.length ? 'The End' : `${String(pageIndex + 1).padStart(2, '0')} / ${sortedMembers.length}`;
-            updateControls();
-            scheduleAutoplay();
-        }
-
-        function turnSpecialPage(nextIndex, automatic) {
-            if (isAnimating) return;
-            if (!automatic) pauseAutoplay();
-            isAnimating = true;
-            clearTimeout(autoplayTimer);
-            const direction = nextIndex > pageIndex ? 'next' : 'previous';
-            const currentPage = pageIndex === -1 ? cover : nextIndex === -1 ? spread : spread.querySelector('.team-end-page');
-            if (!currentPage) {
-                isAnimating = false;
-                return;
-            }
-            const turningPage = currentPage.cloneNode(true);
-            turningPage.removeAttribute('id');
-            turningPage.removeAttribute('hidden');
-            turningPage.classList.add('team-turning-page', `team-turning-page-cover-${direction}`);
-            if (nextIndex === -1) {
-                cover.hidden = false;
-                spread.hidden = true;
-            } else {
-                cover.hidden = true;
-                spread.hidden = false;
-                renderPage(sortedMembers[nextIndex], nextIndex);
-            }
-            book.appendChild(turningPage);
-            updateControls();
-            const duration = matchMedia('(prefers-reduced-motion: reduce)').matches ? 120 : 820;
-            turningPage.style.setProperty('--team-turn-duration', `${duration}ms`);
-            turningPage.addEventListener('animationend', () => finishSpecialTurn(nextIndex, turningPage), { once: true });
-            setTimeout(() => finishSpecialTurn(nextIndex, turningPage), duration + 40);
-        }
-
-        function turnPage(nextIndex, automatic) {
-            if (isAnimating || nextIndex < 0 || nextIndex > sortedMembers.length) return;
-            if (!automatic) pauseAutoplay();
-            isAnimating = true;
-            clearTimeout(autoplayTimer);
-            const direction = nextIndex > pageIndex ? 'next' : 'previous';
-            const currentPage = spread.querySelector(direction === 'next' ? '.team-book-info-page' : '.team-book-photo-page') || spread.querySelector('.team-end-page') || spread.firstElementChild;
-            if (!currentPage) {
-                isAnimating = false;
-                return;
-            }
-            const turningPage = currentPage.cloneNode(true);
-            turningPage.classList.add('team-turning-page', `team-turning-page-${direction}`);
-            renderPage(nextIndex === sortedMembers.length ? sortedMembers[0] : sortedMembers[nextIndex], nextIndex);
-            if (nextIndex === sortedMembers.length) renderEndPage();
-            spread.appendChild(turningPage);
-            updateControls();
-            const duration = matchMedia('(prefers-reduced-motion: reduce)').matches ? 120 : 820;
-            turningPage.addEventListener('animationend', () => finishTurn(nextIndex), { once: true });
-            turningPage.style.setProperty('--team-turn-duration', `${duration}ms`);
-            setTimeout(() => finishTurn(nextIndex), duration + 40);
-        }
-
-        function showPage(nextIndex, automatic = false) {
-            if (nextIndex < -1 || nextIndex > sortedMembers.length) return;
-            if ((nextIndex === pageIndex && pageIndex !== -1) || isAnimating) return;
-            if (pageIndex === -1) {
-                if (nextIndex === -1) {
-                    cover.hidden = false;
-                    spread.hidden = true;
-                    indicator.textContent = 'Cover';
-                    updateControls();
-                    scheduleAutoplay();
-                } else {
-                    turnSpecialPage(nextIndex, automatic);
-                }
-                return;
-            }
-            if (nextIndex === -1 || pageIndex === sortedMembers.length) {
-                turnSpecialPage(nextIndex, automatic);
-                return;
-            }
-            turnPage(nextIndex, automatic);
-        }
-
-        function startAutoplay() {
-            isAutoplay = true;
-            play.textContent = '\u23F8';
-            play.setAttribute('aria-label', 'Pause automatic page turning');
-            play.setAttribute('aria-pressed', 'true');
-            scheduleAutoplay();
-        }
-
-        previous.addEventListener('click', () => showPage(pageIndex - 1));
-        next.addEventListener('click', () => showPage(pageIndex + 1));
-        play.addEventListener('click', () => isAutoplay ? pauseAutoplay() : startAutoplay());
-        book.addEventListener('click', event => {
-            if (event.target.closest('button, a')) return;
-            pauseAutoplay();
-        });
-        book.addEventListener('keydown', event => {
-            if (event.key === 'ArrowLeft') { event.preventDefault(); showPage(pageIndex - 1); }
-            if (event.key === 'ArrowRight') { event.preventDefault(); showPage(pageIndex + 1); }
-        });
-        let touchStartX = 0;
-        book.addEventListener('touchstart', event => { touchStartX = event.changedTouches[0].clientX; pauseAutoplay(); }, { passive: true });
-        book.addEventListener('touchend', event => {
-            const delta = event.changedTouches[0].clientX - touchStartX;
-            if (Math.abs(delta) > 40) showPage(pageIndex + (delta < 0 ? 1 : -1));
-        }, { passive: true });
-        showPage(-1);
-        startAutoplay();
-
         const hamburger = document.getElementById('hamburger');
         const navMenu = document.getElementById('nav-menu');
 

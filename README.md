@@ -22,8 +22,9 @@ Static site  ──►  Open Library API (covers, titles, descriptions)
 |---|---|---|
 | Current, upcoming & past books, voting | `data/books.json` | Pages CMS → **Books** |
 | Events | `data/events.json` | Pages CMS → **Events** |
-| Team members | `our-team.html` (`teamMembers` list) | Code |
+| Team members | `data/team.json` + `images/ourteam/` | Pages CMS → **Our Team** |
 | Past events & photos | `data/past-events.json` + `images/events/` | Pages CMS → **Past Events** |
+| Join page (member card + newsletter) | `join.html`, `js/join.js` | Code |
 | Newsletter signups, trivia | Google Sheet via `apps-script/Code.gs` | Sheet / `admin-trivia.html` |
 
 ---
@@ -56,6 +57,12 @@ Add an event in **Events** with a date. Events disappear from the site automatic
 
 ---
 
+## 🎭 Our Team
+
+In Pages CMS, open **Our Team**. Each member is one spread in the book, in list order (drag to reorder). Fill in first name, full name, role, photo (a portrait works best), email and Instagram handle; LinkedIn, favourite book and currently reading are optional and only show when filled in. Update **Year shown on the cover** each new exec year. Photos are shrunk automatically after upload, like Past Events photos.
+
+---
+
 ## 📸 Past events & photos
 
 Event photos come from the club Drive (McMaster Book Club 2026-2027 → Club Organisation → Photos). Download the ones you want first.
@@ -64,6 +71,7 @@ Event photos come from the club Drive (McMaster Book Club 2026-2027 → Club Org
 2. Fill in **Event name** and **Date shown** (e.g. `Nov 2026`).
 3. Under **Photos**, upload up to 15 photos. Aim for a mix of group shots, candids, the activity and snacks if there were any.
 4. Drag the photos so the **first three are group photos**: they're the thumbnails on the Past Events page, and the first one is the big one.
+   - Optional: add up to three short **Polaroid captions** (big photo first) and a **Handwritten note** under the big photo. Without a note, the page shows how many photos are in the album.
 5. Save. The site updates in a couple of minutes.
 
 You don't need to resize anything: after each upload a GitHub Action (`.github/workflows/compress-photos.yml`) shrinks any photo over 1600px or 600 KB and commits the smaller version, so the site redeploys once more a minute or two later. Uploaded photos land in `images/events/`.

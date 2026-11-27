@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Join – McMaster Book Club</title>
+    <meta name="description" content="Join the McMaster Book Club for free and get your member library card.">
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- Library-card fonts: display serif and typewriter labels -->
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,600;0,9..144,800;1,9..144,400;1,9..144,600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <script src="js/api.js"></script>
+</head>
+<body>
+    <!-- Skip to main content link for accessibility -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <a href="index.html"><img src="images/logo.png" alt="McMaster Book Club logo" class="nav-logo-img"> McMaster Book Club</a>
+            </div>
+            <button class="hamburger" id="hamburger" aria-label="Toggle navigation" aria-expanded="false">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <ul class="nav-menu" id="nav-menu">
+                <li class="nav-item"><a href="index.html#home" class="nav-link">Home</a></li>
+                <li class="nav-item"><a href="index.html#about" class="nav-link">About</a></li>
+                <li class="nav-item"><a href="current-read.html" class="nav-link">Current Read</a></li>
+                <li class="nav-item"><a href="meetings-events.html" class="nav-link">Meetings & Events</a></li>
+                <li class="nav-item"><a href="chapters.html" class="nav-link">Past Events</a></li>
+                <li class="nav-item"><a href="our-team.html" class="nav-link">Our Team</a></li>
+                <li class="nav-item"><a href="join.html" class="nav-link nav-link-cta" aria-current="page">Join Us</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main id="main-content" class="join-page">
+        <section class="join-hero" aria-labelledby="join-title">
+            <div class="join-grid">
+                <div class="join-intro">
+                    <p class="join-kicker">Join the club · Free</p>
+                    <h1 id="join-title" class="join-title">Get your library card</h1>
+                    <p class="join-lede">No dues, no reading quotas. Read along when you can and come to whatever discussions and events you like. Make your card, then come say hi.</p>
+
+                    <div class="card-form" id="card-form">
+                        <label class="join-field">
+                            <span>Your name</span>
+                            <input type="text" id="card-name" maxlength="32" autocomplete="name" placeholder="e.g. Jane Austen">
+                        </label>
+                        <label class="join-field">
+                            <span>Favourite shelf</span>
+                            <select id="card-shelf">
+                                <option>Fantasy</option>
+                                <option>Mystery &amp; Thriller</option>
+                                <option>Literary Fiction</option>
+                                <option>Romance</option>
+                                <option>Sci-Fi</option>
+                                <option>Horror</option>
+                                <option>Historical Fiction</option>
+                                <option>Non-Fiction</option>
+                                <option>Poetry</option>
+                                <option>Classics</option>
+                            </select>
+                        </label>
+                        <a href="https://campus.hellorubric.com/?s=16518" target="_blank" rel="noopener" class="join-btn join-btn--primary" id="card-join">Make it official on Rubric</a>
+                        <p class="join-hint">Opens Rubric in a new tab: join the club there to get early access to events.</p>
+                    </div>
+                </div>
+
+                <div class="join-cards">
+                    <div class="member-card" id="member-card" role="img" aria-label="Your McMaster Book Club member card">
+                        <span class="member-card-ring" aria-hidden="true"></span>
+                        <div class="member-card-top">
+                            <span class="member-card-club">McMaster Book Club</span>
+                            <span class="member-card-term" id="card-term">Reader</span>
+                        </div>
+                        <div class="member-card-middle">
+                            <span class="member-card-name" id="card-name-out">Your Name</span>
+                            <span class="member-card-shelf">Favourite shelf: <span id="card-shelf-out">Fantasy</span></span>
+                        </div>
+                        <div class="member-card-bottom">
+                            <span class="member-card-number"><span id="card-number">MBC-0000</span><span class="member-card-since" id="card-since">Member since</span></span>
+                            <span class="member-card-barcode" id="card-barcode" aria-hidden="true"></span>
+                        </div>
+                    </div>
+
+                    <form class="return-slip" id="newsletter-form" novalidate aria-labelledby="slip-title">
+                        <p class="return-slip-label">Return slip · Monthly newsletter</p>
+                        <p class="return-slip-title" id="slip-title">New picks, event dates and the occasional book rec, once a month.</p>
+                        <div class="return-slip-row">
+                            <label for="newsletter-email" class="sr-only">Email address</label>
+                            <input type="email" id="newsletter-email" placeholder="you@mcmaster.ca" autocomplete="email" required aria-describedby="newsletter-msg">
+                            <!-- Honeypot field (hidden from humans, catches bots) -->
+                            <input type="text" id="newsletter-website" name="website" tabindex="-1" autocomplete="off" class="sr-only" aria-hidden="true">
+                            <button type="submit" class="join-btn join-btn--outline" id="newsletter-submit">Subscribe</button>
+                        </div>
+                        <p class="return-slip-msg" id="newsletter-msg" role="status" aria-live="polite"></p>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <section class="join-ways" aria-labelledby="ways-title">
+            <h2 id="ways-title" class="join-ways-title">Three ways to start</h2>
+            <div class="join-ways-grid">
+                <a class="join-way" href="meetings-events.html">
+                    <span class="join-way-num">01</span>
+                    <span class="join-way-head">Come to a discussion</span>
+                    <span class="join-way-text">See this month's picks and meeting times. Just show up, no sign-up needed.</span>
+                </a>
+                <a class="join-way" href="https://www.instagram.com/mcmasterbooks/" target="_blank" rel="noopener">
+                    <span class="join-way-num">02</span>
+                    <span class="join-way-head">Follow @mcmasterbooks</span>
+                    <span class="join-way-text">Event announcements, newsletters and votes happen on Instagram first.</span>
+                </a>
+                <a class="join-way" href="https://linktr.ee/mcmasterbooks" target="_blank" rel="noopener">
+                    <span class="join-way-num">03</span>
+                    <span class="join-way-head">Open our Linktree</span>
+                    <span class="join-way-text">Sign-up forms, RSVPs and everything else in one place.</span>
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer (shared across pages) -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>McMaster Book Club</h4>
+                <p>Bringing readers together at McMaster University.</p>
+            </div>
+            <div class="footer-section">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="index.html#home">Home</a></li>
+                    <li><a href="index.html#about">About</a></li>
+                    <li><a href="current-read.html">Current Read</a></li>
+                    <li><a href="meetings-events.html">Meetings & Events</a></li>
+                    <li><a href="chapters.html">Past Events</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Connect</h4>
+                <div class="footer-social">
+                    <a href="https://www.instagram.com/mcmasterbooks/" target="_blank" rel="noopener" class="footer-social-link" aria-label="Instagram">
+                        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                            <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm4.846-14.36c-.794 0-1.439.645-1.439 1.439s.645 1.439 1.439 1.439 1.438-.645 1.438-1.439-.644-1.439-1.438-1.439z"/>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 McMaster Book Club. Made with <span class="heart">❤️</span> for readers.</p>
+        </div>
+    </footer>
+
+    <!-- Member card generator + newsletter slip -->
+    <script src="js/join.js"></script>
+
+    <!-- Hamburger Menu Handler -->
+    <script>
+        var hamburger = document.getElementById('hamburger');
+        var navMenu = document.getElementById('nav-menu');
+
+        hamburger.addEventListener('click', function() {
+            navMenu.classList.toggle('active');
+            hamburger.setAttribute('aria-expanded', navMenu.classList.contains('active'));
+        });
+
+        document.querySelectorAll('.nav-link').forEach(function(link) {
+            link.addEventListener('click', function() {
+                navMenu.classList.remove('active');
+                hamburger.setAttribute('aria-expanded', 'false');
+            });
+        });
+    </script>
+</body>
+</html>

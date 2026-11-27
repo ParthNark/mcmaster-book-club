@@ -1,13 +1,14 @@
-"""Shrink event photos so the Past Events page stays fast.
+"""Shrink uploaded photos so the Past Events and Our Team pages stay fast.
 
-Any JPEG/PNG/WebP under images/events that is wider or taller than MAX_SIDE,
-or larger than MAX_BYTES, is resized to fit MAX_SIDE and saved as a JPEG
-(quality 80, EXIF rotation applied, metadata stripped). JPEGs keep their name;
-a PNG/WebP becomes <name>.jpg and its path is updated in data/past-events.json.
+Any JPEG/PNG/WebP under the given folders that is wider or taller than
+MAX_SIDE, or larger than MAX_BYTES, is resized to fit MAX_SIDE and saved as a
+JPEG (quality 80, EXIF rotation applied, metadata stripped). JPEGs keep their
+name; a PNG/WebP becomes <name>.jpg and its path is updated in data/*.json.
 Photos already small enough are left untouched, so running it twice is safe.
 
-Usage: python scripts/compress_photos.py [images/events] [data/past-events.json]
+Usage: python scripts/compress_photos.py [images/events images/ourteam ...]
 """
+import glob
 import io
 import os
 import sys
@@ -46,31 +47,33 @@ def compress(path):
     return new_path
 
 
-def main(root, data_file):
+def main(roots, data_files):
     renamed = {}
     changed = 0
-    for dirpath, _, files in os.walk(root):
-        for name in sorted(files):
-            if os.path.splitext(name)[1].lower() not in EXTENSIONS:
-                continue
-            path = os.path.join(dirpath, name)
-            new_path = compress(path)
-            if new_path:
-                changed += 1
-                if new_path != path:
-                    renamed['/' + path.replace(os.sep, '/')] = '/' + new_path.replace(os.sep, '/')
+    for root in roots:
+        for dirpath, _, files in os.walk(root):
+            for name in sorted(files):
+                if os.path.splitext(name)[1].lower() not in EXTENSIONS:
+                    continue
+                path = os.path.join(dirpath, name)
+                new_path = compress(path)
+                if new_path:
+                    changed += 1
+                    if new_path != path:
+                        renamed['/' + path.replace(os.sep, '/')] = '/' + new_path.replace(os.sep, '/')
 
-    if renamed and os.path.exists(data_file):
+    for data_file in data_files if renamed else []:
         with open(data_file, encoding='utf-8') as f:
             text = f.read()
+        updated = text
         for old, new in renamed.items():
-            text = text.replace('"' + old + '"', '"' + new + '"')
-        with open(data_file, 'w', encoding='utf-8') as f:
-            f.write(text)
-        print(f'Updated {len(renamed)} photo path(s) in {data_file}')
+            updated = updated.replace('"' + old + '"', '"' + new + '"')
+        if updated != text:
+            with open(data_file, 'w', encoding='utf-8') as f:
+                f.write(updated)
+            print(f'Updated photo paths in {data_file}')
     print(f'{changed} photo(s) compressed')
 
 
 if __name__ == '__main__':
-    main(sys.argv[1] if len(sys.argv) > 1 else 'images/events',
-         sys.argv[2] if len(sys.argv) > 2 else 'data/past-events.json')
+    main(sys.argv[1:] or ['images/events', 'images/ourteam'], sorted(glob.glob('data/*.json')))

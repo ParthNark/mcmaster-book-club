@@ -1,12 +1,12 @@
-# Shrinks photos uploaded through Pages CMS (Past Events) so the page stays fast.
-# Runs after every push to main that touches images/events/, compresses any
+# Shrinks photos uploaded through Pages CMS (Past Events, Our Team) so pages stay fast.
+# Runs after every push to main that touches images/events/ or images/ourteam/, compresses any
 # photo over 1600px or 600 KB in place, and commits the smaller files back.
 name: Compress event photos
 
 on:
   push:
     branches: [main]
-    paths: ['images/events/**']
+    paths: ['images/events/**', 'images/ourteam/**']
   workflow_dispatch:
 
 permissions:
@@ -30,11 +30,11 @@ jobs:
         run: pip install Pillow==11.0.0
 
       - name: Compress photos
-        run: python scripts/compress_photos.py images/events
+        run: python scripts/compress_photos.py images/events images/ourteam
 
       - name: Commit smaller photos
         run: |
-          git add -A images/events data/past-events.json
+          git add -A images/events images/ourteam data
           if git diff --cached --quiet; then
             echo "Nothing to compress."
             exit 0

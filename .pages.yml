@@ -1,15 +1,72 @@
 # Pages CMS configuration — edit site content at https://app.pagescms.org
 # Every save commits to this repo, and the site redeploys from main.
 
-# Photo uploads (Past Events). Large photos are shrunk automatically after
-# upload by .github/workflows/compress-photos.yml.
+# Photo uploads (Past Events → images/events, Our Team → images/ourteam).
+# Large photos are shrunk automatically after upload by
+# .github/workflows/compress-photos.yml.
 media:
-  input: images/events
-  output: /images/events
+  input: images
+  output: /images
   rename: safe
   categories: [image]
 
 content:
+  - name: team
+    label: Our Team
+    type: file
+    path: data/team.json
+    format: json
+    fields:
+      - name: year
+        label: Year shown on the cover
+        type: string
+        description: e.g. "2026 / 27".
+      - name: members
+        label: Team members
+        type: object
+        list: true
+        description: The book shows one member per spread, in this order. Drag to reorder.
+        fields:
+          - name: name
+            label: First name
+            type: string
+            required: true
+            description: Shown as the handwritten caption on the photo.
+          - name: full_name
+            label: Full name
+            type: string
+            required: true
+          - name: role
+            label: Role
+            type: string
+            required: true
+            description: e.g. "Co-President" or "VP Events".
+          - name: photo
+            label: Photo
+            type: image
+            description: A portrait photo works best. Large photos are shrunk automatically.
+            options:
+              path: images/ourteam
+          - name: email
+            label: Email
+            type: string
+          - name: instagram
+            label: Instagram handle
+            type: string
+            description: Without the @, e.g. maddie_taylor3.
+          - name: linkedin
+            label: LinkedIn link
+            type: string
+            description: Optional. The full profile URL.
+          - name: favourite_book
+            label: Favourite book
+            type: string
+            description: Optional, shows on their page.
+          - name: currently_reading
+            label: Currently reading
+            type: string
+            description: Optional, shows on their page.
+
   - name: past_events
     label: Past Events
     type: file
@@ -34,12 +91,21 @@ content:
             label: Photos
             type: image
             required: true
-            description: Up to 15 photos. The first three are the thumbnails on the Past Events page (the first is the big one), so put group photos first. Drag to reorder.
+            description: Up to 15 photos. The first three are the polaroids on the Past Events page (the first is the big one), so put group photos first. Drag to reorder.
             options:
               multiple:
                 max: 15
               unique: true
               path: images/events
+          - name: captions
+            label: Polaroid captions
+            type: string
+            list: true
+            description: Optional handwritten captions for the first three photos, in the same order (big photo first). Keep them short, e.g. "the couch crew".
+          - name: note
+            label: Handwritten note
+            type: string
+            description: Optional. Shown under the big photo. Leave empty to show how many photos are in the album.
 
   - name: books
     label: Books

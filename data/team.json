@@ -1,0 +1,115 @@
+{
+  "year": "2025 / 26",
+  "members": [
+    {
+      "name": "Maddie",
+      "full_name": "Maddie Taylor",
+      "role": "Co-President",
+      "photo": "/images/ourteam/Maddie Co-President.jpg",
+      "email": "taylom82@mcmaster.ca",
+      "instagram": "maddie_taylor3",
+      "linkedin": "",
+      "favourite_book": "",
+      "currently_reading": ""
+    },
+    {
+      "name": "Kaitlyn",
+      "full_name": "Kaitlyn Gorgey",
+      "role": "Co-President",
+      "photo": "/images/ourteam/Kaitlyn Co-President.jpg",
+      "email": "gorgeyk@mcmaster.ca",
+      "instagram": "gorgeykaitlyn",
+      "linkedin": "",
+      "favourite_book": "",
+      "currently_reading": ""
+    },
+    {
+      "name": "Alice",
+      "full_name": "Alice Viana",
+      "role": "VP Events",
+      "photo": "/images/ourteam/Alice VP Events.jpg",
+      "email": "rodria49@mcmaster.ca",
+      "instagram": "alice.viana__",
+      "linkedin": "",
+      "favourite_book": "",
+      "currently_reading": ""
+    },
+    {
+      "name": "Cate",
+      "full_name": "Cate Lin",
+      "role": "VP Events",
+      "photo": "/images/ourteam/Cate VP Events.jpg",
+      "email": "lin445@mcmaster.ca",
+      "instagram": "noirstargazr",
+      "linkedin": "",
+      "favourite_book": "",
+      "currently_reading": ""
+    },
+    {
+      "name": "Marzia",
+      "full_name": "Marzia Sarker",
+      "role": "VP Outreach",
+      "photo": "/images/ourteam/Marzia VP Outreach.jpg",
+      "email": "sarkem4@mcmaster.ca",
+      "instagram": "marzia_rs",
+      "linkedin": "",
+      "favourite_book": "",
+      "currently_reading": ""
+    },
+    {
+      "name": "Heer",
+      "full_name": "Heer Upadhyay",
+      "role": "VP Outreach",
+      "photo": "/images/ourteam/Heer VP Outreach.jpg",
+      "email": "upadhh3@mcmaster.ca",
+      "instagram": "heer76311",
+      "linkedin": "",
+      "favourite_book": "",
+      "currently_reading": ""
+    },
+    {
+      "name": "Lisumi",
+      "full_name": "Lisumi Wijesingha",
+      "role": "VP Admin",
+      "photo": "/images/ourteam/Lisumi VP Admin.jpg",
+      "email": "wijesinp@mcmaster.ca",
+      "instagram": "poo.p.i.e",
+      "linkedin": "",
+      "favourite_book": "",
+      "currently_reading": ""
+    },
+    {
+      "name": "Julia",
+      "full_name": "Julia Ankenmann",
+      "role": "VP External",
+      "photo": "/images/ourteam/Julia VP External.jpg",
+      "email": "ankenmaj@mcmaster.ca",
+      "instagram": "jma0_07",
+      "linkedin": "",
+      "favourite_book": "",
+      "currently_reading": ""
+    },
+    {
+      "name": "Saige",
+      "full_name": "Saige Moore",
+      "role": "VP Finance",
+      "photo": "/images/ourteam/Saige of Finance.jpg",
+      "email": "moores43@mcmaster.ca",
+      "instagram": "saigemoore_",
+      "linkedin": "",
+      "favourite_book": "",
+      "currently_reading": ""
+    },
+    {
+      "name": "Parth",
+      "full_name": "Parth Narkhede",
+      "role": "VP Technology",
+      "photo": "/images/ourteam/Parth VP Tech.jpg",
+      "email": "narkhedp@mcmaster.ca",
+      "instagram": "pxtlxz_19",
+      "linkedin": "https://www.linkedin.com/in/parth-narkhede-b2a684260/",
+      "favourite_book": "",
+      "currently_reading": ""
+    }
+  ]
+}
