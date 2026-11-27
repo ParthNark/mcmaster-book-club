@@ -1,9 +1,9 @@
 const fs = require('fs');
 const path = require('path');
-const { updateChapterData } = require('./update-chapters-data');
+const { CHAPTER_CONFIG, updateChapterData } = require('./update-chapters-data');
 
 const projectRoot = path.resolve(__dirname, '..');
-const watchedFolders = ['images/battleofthebooks', 'images/murdermystery'];
+const watchedFolders = CHAPTER_CONFIG.map((chapter) => chapter.imageFolder);
 const watchers = [];
 
 function refresh() {

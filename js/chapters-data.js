@@ -1,53 +1,165 @@
 var CHAPTERS_DATA = [
   {
-    "number": "01",
+    "number": "07",
+    "title": "October Discussions & Halloween Social",
+    "year": "Oct 2026",
+    "imageFolder": "images/events/octoberevents",
+    "featured": [
+      "01.jpg",
+      "15.jpg",
+      "13.jpg"
+    ],
+    "images": [
+      "01.jpg",
+      "02.jpg",
+      "03.jpg",
+      "04.jpg",
+      "05.jpg",
+      "06.jpg",
+      "07.jpg",
+      "08.jpg",
+      "09.jpg",
+      "10.jpg",
+      "11.jpg",
+      "12.jpg",
+      "13.jpg",
+      "14.jpg",
+      "15.jpg"
+    ]
+  },
+  {
+    "number": "06",
+    "title": "Scavenger Hunt",
+    "year": "Sept 2026",
+    "imageFolder": "images/events/scavengerhunt",
+    "featured": [
+      "01.jpg",
+      "06.jpg",
+      "02.jpg"
+    ],
+    "images": [
+      "01.jpg",
+      "02.jpg",
+      "03.jpg",
+      "04.jpg",
+      "05.jpg",
+      "06.jpg",
+      "07.jpg"
+    ]
+  },
+  {
+    "number": "05",
+    "title": "September Book Discussions",
+    "year": "Sept 2026",
+    "imageFolder": "images/events/septemberdiscussions",
+    "featured": [
+      "01.jpg",
+      "02.jpg",
+      "03.jpg"
+    ],
+    "images": [
+      "01.jpg",
+      "02.jpg",
+      "03.jpg",
+      "04.jpg",
+      "05.jpg",
+      "06.jpg",
+      "07.jpg",
+      "08.jpg",
+      "09.jpg"
+    ]
+  },
+  {
+    "number": "04",
+    "title": "Clubfest 2026",
+    "year": "Sept 2026",
+    "imageFolder": "images/events/clubfest2026",
+    "featured": [
+      "01.jpg",
+      "08.jpg",
+      "12.jpg"
+    ],
+    "images": [
+      "01.jpg",
+      "02.jpg",
+      "03.jpg",
+      "04.jpg",
+      "05.jpg",
+      "06.jpg",
+      "07.jpg",
+      "08.jpg",
+      "09.jpg",
+      "10.jpg",
+      "11.jpg",
+      "12.jpg",
+      "13.jpg",
+      "14.jpg",
+      "15.jpg"
+    ]
+  },
+  {
+    "number": "03",
     "title": "Battle of the Books",
     "year": "2025/26",
-    "imageFolder": "images/battleofthebooks",
+    "imageFolder": "images/events/battleofthebooks",
+    "featured": [
+      "01.jpg",
+      "09.jpg",
+      "04.jpg"
+    ],
     "images": [
-      "DSCF2857.JPEG",
-      "DSCF2858.JPEG",
-      "DSCF2858(1).JPEG",
-      "DSCF2859.JPEG",
-      "DSCF2860.JPEG",
-      "DSCF2861.JPEG",
-      "DSCF2862.JPEG",
-      "DSCF2863.JPEG",
-      "DSCF2864.JPEG",
-      "DSCF2865.JPEG",
-      "DSCF2866.JPEG",
-      "DSCF2867.JPEG",
-      "DSCF2869.JPEG"
+      "01.jpg",
+      "02.jpg",
+      "03.jpg",
+      "04.jpg",
+      "05.jpg",
+      "06.jpg",
+      "07.jpg",
+      "08.jpg",
+      "09.jpg",
+      "10.jpg"
     ]
   },
   {
     "number": "02",
     "title": "Murder Mystery Night",
     "year": "2025/26",
-    "imageFolder": "images/murdermystery",
+    "imageFolder": "images/events/murdermystery",
+    "featured": [
+      "01.jpg",
+      "12.jpg",
+      "06.jpg"
+    ],
     "images": [
-      "b1.jpg",
-      "b2.jpg",
-      "b3.jpg",
-      "b4.jpg",
-      "b5.jpg",
-      "b6.jpg",
-      "b7.jpg",
-      "b8.jpg",
-      "b9.jpg",
-      "b10.jpg",
-      "b11.jpg",
-      "b12.jpg",
-      "b13.jpg",
-      "b14.jpg",
-      "b15.jpg",
-      "b16.jpg",
-      "b17.jpg",
-      "b18.jpg",
-      "b19.jpg",
-      "b20.jpg",
-      "b21.jpg",
-      "b22.jpg"
+      "01.jpg",
+      "02.jpg",
+      "03.jpg",
+      "04.jpg",
+      "05.jpg",
+      "06.jpg",
+      "07.jpg",
+      "08.jpg",
+      "09.jpg",
+      "10.jpg",
+      "11.jpg",
+      "12.jpg",
+      "13.jpg",
+      "14.jpg"
+    ]
+  },
+  {
+    "number": "01",
+    "title": "Clubfest 2025",
+    "year": "Sept 2025",
+    "imageFolder": "images/events/clubfest2025",
+    "featured": [
+      "01.jpg"
+    ],
+    "images": [
+      "01.jpg",
+      "02.jpg",
+      "03.jpg",
+      "04.jpg"
     ]
   }
 ];

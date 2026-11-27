@@ -28,7 +28,17 @@
     return shuffled.slice(0, count);
   }
 
-  // Initialize chapters with random preview images
+  // Featured (group) photos first, in their listed order; free slots get random others
+  function getPreviewImages(chapter, count) {
+    var images = chapter.images || [];
+    var featured = (chapter.featured || []).filter(function(file) {
+      return images.indexOf(file) !== -1;
+    }).slice(0, count);
+    var rest = images.filter(function(file) { return featured.indexOf(file) === -1; });
+    return featured.concat(getRandomPreviewImages(rest, count - featured.length));
+  }
+
+  // Initialize chapters with their preview images
   function initChapters() {
     chaptersWithPreviews = CHAPTERS_DATA.map(function(chapter) {
       return {
@@ -37,7 +47,7 @@
         year: chapter.year,
         imageFolder: chapter.imageFolder,
         allImages: chapter.images,
-        previewImages: getRandomPreviewImages(chapter.images, 3)
+        previewImages: getPreviewImages(chapter, 3)
       };
     });
   }

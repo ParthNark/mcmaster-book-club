@@ -23,7 +23,7 @@ Static site  ──►  Open Library API (covers, titles, descriptions)
 | Current, upcoming & past books, voting | `data/books.json` | Pages CMS → **Books** |
 | Events | `data/events.json` | Pages CMS → **Events** |
 | Team members | `our-team.html` (`teamMembers` list) | Code |
-| Past event photos | `images/<event>/` + `js/chapters-data.js` | Code (see below) |
+| Past event photos | `images/events/<event>/` + `js/chapters-data.js` | Code (see below) |
 | Newsletter signups, trivia | Google Sheet via `apps-script/Code.gs` | Sheet / `admin-trivia.html` |
 
 ---
@@ -58,9 +58,12 @@ Add an event in **Events** with a date. Events disappear from the site automatic
 
 ## 📸 Past event photos
 
-1. Add images to a folder under `images/` and register it in `CHAPTER_CONFIG` in `scripts/update-chapters-data.js`.
-2. Run `node scripts/update-chapters-data.js` to regenerate `js/chapters-data.js`.
-3. Commit both. Please resize photos first (about 1600px wide); full-size camera photos make the page slow.
+Event photos come from the club Drive (McMaster Book Club 2026-2027 → Club Organisation → Photos).
+
+1. Pick up to 15 photos per event, resized to at most 1600px on the long side (JPEG quality ~80). Full-size camera photos make the page slow.
+2. Save them as `01.jpg`, `02.jpg`, … in a new folder under `images/events/`.
+3. Add the event to `CHAPTER_CONFIG` in `scripts/update-chapters-data.js`. The list is oldest first and chapter numbers follow that order; the page shows the newest chapter at the top. List up to 3 group photos in `featured` to use as the chapter's thumbnails (the first is the large one).
+4. Run `node scripts/update-chapters-data.js` to regenerate `js/chapters-data.js`, then commit.
 
 ---
 

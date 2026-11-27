@@ -8,6 +8,42 @@
       "description": "Come visit our awesome booth at McMaster Club Fest!!",
       "instagram_url": "",
       "rsvp_url": ""
+    },
+    {
+      "title": "Scavenger Hunt",
+      "date": "2026-09-28",
+      "time": "",
+      "location": "",
+      "description": "Sign up with a team of 4, or come solo and we'll put you in a group at the event! Sign-up link in our Instagram bio.",
+      "instagram_url": "https://www.instagram.com/p/DdonQz3urrD/",
+      "rsvp_url": ""
+    },
+    {
+      "title": "Halloween Social",
+      "date": "2026-10-27",
+      "time": "6:00–9:00 PM",
+      "location": "Clubspace, MUSC",
+      "description": "Come hang out with us and enjoy some spooky activities!",
+      "instagram_url": "https://www.instagram.com/p/De_2HANiWKX/",
+      "rsvp_url": ""
+    },
+    {
+      "title": "Social at Williams",
+      "date": "2026-11-18",
+      "time": "1:00–4:00 PM",
+      "location": "Williams (group walk-over from the bus stop outside MUSC at 1 PM)",
+      "description": "Bring your book, work or games! RSVP required (link in our Instagram bio). You don't have to stay the whole time.",
+      "instagram_url": "https://www.instagram.com/p/DfkMobQFB37/",
+      "rsvp_url": ""
+    },
+    {
+      "title": "Book Discussion: Everything Is Tuberculosis",
+      "date": "2026-11-26",
+      "time": "6:00–7:00 PM",
+      "location": "Blue Lounge (The Hub)",
+      "description": "Our November non-fiction read by John Green. Come share your thoughts!",
+      "instagram_url": "https://www.instagram.com/p/DfMyix-FFaQ/",
+      "rsvp_url": ""
     }
   ]
 }
