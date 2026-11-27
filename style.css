@@ -5593,6 +5593,15 @@ html.lamp-on .lamp-shade {
   color: #4f4044;
 }
 
+.cr-rating {
+  margin: -4px 0 0;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: #8a3412;
+}
+
 .cr-tags-list {
   display: flex;
   flex-wrap: wrap;

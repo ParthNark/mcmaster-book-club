@@ -51,6 +51,7 @@
   }
 
   function sameDay(a, b) { return a && b && a.getTime() === b.getTime(); }
+  function sameMonth(a, b) { return !!(a && b && a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth()); }
 
   // Trim long Open Library descriptions to a couple of sentences.
   function shorten(text, max) {
@@ -81,6 +82,7 @@
       meeting_notes: b.meeting_notes || '',
       discussion_prompts: list(b.discussion_prompts),
       goodreads_url: b.goodreads_url || '',
+      rating_text: b.rating_text || '',
       cover: b.cover || '',
       date: parseMeetingDate(b.meeting_time)
     };
@@ -144,6 +146,7 @@
       +   (b.month ? '<p class="cr-kicker">' + esc(b.month) + '</p>' : '')
       +   '<h1 class="cr-title">' + esc(b.title) + '</h1>'
       +   (author ? '<p class="cr-author">by ' + esc(author) + '</p>' : '')
+      +   (b.rating_text ? '<p class="cr-rating">' + esc(b.rating_text) + '</p>' : '')
       +   (tags.length ? '<ul class="cr-tags-list">' + tags.map(function (t) { return '<li>' + esc(t) + '</li>'; }).join('') + '</ul>' : '')
       +   (blurb ? '<p class="cr-blurb">' + esc(blurb) + '</p>' : '')
       +   (b.meeting_notes ? '<p class="cr-notes">' + esc(b.meeting_notes) + '</p>' : '')
@@ -176,7 +179,7 @@
         : '';
       other = '<button type="button" class="cr-other" data-book="' + oi + '">'
         + oImg
-        + '<span class="cr-other-text"><span class="cr-other-when">ALSO THIS MONTH' + (oWhen ? ' · ' + oWhen : '') + '</span>'
+        + '<span class="cr-other-text"><span class="cr-other-when">' + (sameMonth(b.date, o.date) ? 'ALSO THIS MONTH' : 'ALSO ON THE SHELF') + (oWhen ? ' · ' + oWhen : '') + '</span>'
         + '<span class="cr-other-title">' + esc(o.title) + (o.author ? ', ' + esc(o.author) : '') + ' →</span></span></button>';
     }
 

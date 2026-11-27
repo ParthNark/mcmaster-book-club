@@ -86,12 +86,12 @@ content:
           - name: date_label
             label: Date shown
             type: string
-            description: e.g. "Oct 2026" or "2025/26".
+            description: e.g. "Oct 2026". The title page's date range runs from the bottom event's date to the top event's, so use "Mon Year" for those.
           - name: photos
             label: Photos
             type: image
             required: true
-            description: Up to 15 photos. The first three are the polaroids on the Past Events page (the first is the big one), so put group photos first. Drag to reorder.
+            description: Up to 15 photos. The first three are the polaroids on this event's pages (the first is the big one), and the first one can also appear on the scrapbook's title page, so put a group photo first. Drag to reorder.
             options:
               multiple:
                 max: 15
@@ -166,7 +166,7 @@ content:
           - name: summary
             label: Summary
             type: text
-            description: Shown on Past Reads cards. For current books it's used only if Open Library has no description.
+            description: Shown on the Current Read page (in place of the Open Library description) and kept for Past Reads. Leave empty to use Open Library's.
           - name: tags
             label: Tags
             type: string
@@ -174,7 +174,7 @@ content:
           - name: meeting_time
             label: Meeting time
             type: string
-            description: e.g. "Mon, Sep 21, 2026 — 6:00 PM".
+            description: 'Include the date with the year, e.g. "Thu, Nov 26, 2026 — 6:00–7:00 PM". Current Read uses the date for "Tonight" / "Discussed", and to group books discussed in the same month.'
           - name: meeting_location
             label: Meeting location
             type: string
@@ -191,7 +191,7 @@ content:
           - name: rating_text
             label: Rating text
             type: string
-            description: Optional, e.g. "4.2 ★". Shown on the homepage card.
+            description: Optional, e.g. "4.2 ★ on Goodreads". Shown under the author on the Current Read page.
 
   - name: events
     label: Events
@@ -209,7 +209,7 @@ content:
             label: Title
             type: string
             required: true
-            description: For book discussions start with "Book Discussion:", e.g. "Book Discussion: The Secret History".
+            description: 'For book discussions start with "Book Discussion:", e.g. "Book Discussion: The Secret History".'
           - name: type
             label: Type
             type: select
